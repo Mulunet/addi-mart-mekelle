@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Addi Mart | ዓዲ ማርት — Mekelle Neighborhood Grocery</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Noto+Sans+Ethiopic:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -36,11 +37,9 @@
       font-family: 'Montserrat', 'Noto Sans Ethiopic', sans-serif;
     }
 
-    /* Language Modes */
     body.lang-en .ti-only { display: none !important; }
     body.lang-ti .en-only { display: none !important; }
 
-    /* Header */
     header {
       position: sticky;
       top: 0;
@@ -123,11 +122,10 @@
       gap: 6px;
     }
 
-    /* Hero Banner */
     .hero {
       background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
       color: #fff;
-      padding: 24px 16px;
+      padding: 22px 16px;
     }
     .hero-inner {
       max-width: 1120px;
@@ -150,14 +148,13 @@
       margin-bottom: 8px;
     }
     .hero h1 {
-      font-size: 24px;
+      font-size: 23px;
       line-height: 1.25;
       margin-bottom: 8px;
     }
     .hero p {
       font-size: 14px;
       opacity: 0.94;
-      margin-bottom: 14px;
     }
     .promo-strip {
       background: rgba(255,255,255,0.12);
@@ -166,52 +163,34 @@
       padding: 12px 14px;
       font-size: 13px;
     }
-    .promo-code {
-      background: var(--accent);
-      color: #fff;
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
 
-    /* Container */
     .container {
       max-width: 1120px;
       margin: 0 auto;
       padding: 18px 16px;
     }
 
-    /* Free Delivery Progress */
-    .delivery-bar {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px 16px;
-      margin-bottom: 18px;
-      box-shadow: var(--shadow);
-    }
-    .delivery-bar-top {
+    .sync-banner {
       display: flex;
       justify-content: space-between;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 6px;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 14px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--muted);
     }
-    .progress-track {
+    .sync-dot {
+      display: inline-block;
+      width: 8px;
       height: 8px;
-      background: #E5E7EB;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-      transition: width 0.25s ease;
+      border-radius: 50%;
+      background: #16A34A;
+      margin-right: 6px;
     }
 
-    /* Search & Category Filters */
     .controls {
       display: flex;
       flex-direction: column;
@@ -251,7 +230,6 @@
       border-color: var(--primary);
     }
 
-    /* Bundles */
     .section-title {
       font-size: 18px;
       font-weight: 800;
@@ -289,7 +267,6 @@
       width: fit-content;
     }
 
-    /* Product Grid */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -306,6 +283,7 @@
       justify-content: space-between;
       gap: 10px;
     }
+    .card.sold-out { opacity: 0.62; }
     .card-top {
       display: flex;
       justify-content: space-between;
@@ -333,6 +311,10 @@
     .stock-badge.low {
       background: #FEF3C7;
       color: #92400E;
+    }
+    .stock-badge.out {
+      background: #FEE2E2;
+      color: #991B1B;
     }
     .item-cat {
       font-size: 11px;
@@ -367,7 +349,8 @@
       font-size: 13px;
       cursor: pointer;
     }
-    .btn-add:hover { background: var(--primary-dark); }
+    .btn-add:hover:not(:disabled) { background: var(--primary-dark); }
+    .btn-add:disabled { background: #9CA3AF; cursor: not-allowed; }
     .qty-stepper {
       display: flex;
       align-items: center;
@@ -393,7 +376,6 @@
       color: var(--primary-dark);
     }
 
-    /* Sticky Bottom Bar */
     .sticky-checkout {
       position: fixed;
       bottom: 0;
@@ -423,9 +405,9 @@
       font-size: 14px;
       cursor: pointer;
     }
-    .btn-primary:hover { background: var(--accent-dark); }
+    .btn-primary:hover:not(:disabled) { background: var(--accent-dark); }
+    .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
 
-    /* Drawer / Modal */
     .backdrop {
       position: fixed;
       inset: 0;
@@ -536,15 +518,29 @@
       padding-top: 6px;
       margin-top: 6px;
     }
-    .ticket-box {
-      background: #111827;
-      color: #F9FAFB;
-      border-radius: 10px;
-      padding: 12px;
-      font-family: monospace;
-      font-size: 12px;
-      white-space: pre-wrap;
+    .status-card {
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 13px;
       display: none;
+    }
+    .status-card.success {
+      display: block;
+      background: #ECFDF5;
+      border: 1.5px solid #10B981;
+      color: #065F46;
+    }
+    .status-card.error {
+      display: block;
+      background: #FEF2F2;
+      border: 1.5px solid #EF4444;
+      color: #991B1B;
+    }
+    .status-card.uncertain {
+      display: block;
+      background: #FFFBEB;
+      border: 1.5px solid #F59E0B;
+      color: #92400E;
     }
     .btn-telegram {
       display: flex;
@@ -557,10 +553,11 @@
       text-decoration: none;
       border: none;
       border-radius: 12px;
-      padding: 13px;
+      padding: 12px;
       font-weight: 700;
-      font-size: 15px;
+      font-size: 14px;
       cursor: pointer;
+      margin-top: 10px;
     }
     footer {
       max-width: 1120px;
@@ -612,34 +609,27 @@
         <span class="ti-only"><br/>ንጹህን ትኩስን ኣስቤዛ ኣብ ገዛኹም ነብጽሕ</span>
       </h1>
       <p>
-        <span class="en-only">Transparent ETB prices, verified weights, and 30–50 min Bajaj delivery via @AddiMartMekelle_bot.</span>
+        <span class="en-only">Live stock & ETB prices synced with @AddiMartMekelle_bot — 30–50 min Bajaj delivery across Mekelle.</span>
         <span class="ti-only"> ግልጺ ዋጋታትን ቅልጡፍ ናይ ባጃጅ ምብጻሕን ብቴሌግራም።</span>
       </p>
     </div>
     <div class="promo-strip">
       <div style="margin-bottom:6px;">
-        🎉 <strong>Founding Member Promo:</strong> Use code <span class="promo-code">ADDI10</span> for <strong>10% OFF</strong> your first order!
+        ⚡ <strong>Instant Mini App Checkout:</strong> Orders deduct stock automatically and send live confirmation in Telegram.
       </div>
       <div>
-        🚚 <strong>Free Bajaj Delivery</strong> in Mekelle on orders of <strong>1,500 ETB</strong> or more.
+        🛵 <strong>Flat Bajaj Delivery:</strong> 40 ETB (Hawelti, Kedamay Weyane, Adi Haki) • 50 ETB (Ayder, Semien, Hadnet).
       </div>
     </div>
   </div>
 </section>
 
 <main class="container">
-  <!-- Free Delivery Progress -->
-  <div class="delivery-bar">
-    <div class="delivery-bar-top">
-      <span id="deliveryMsg">Add 1,500 ETB more for FREE Bajaj delivery in Mekelle</span>
-      <span id="deliveryPct">0%</span>
-    </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="deliveryFill"></div>
-    </div>
+  <div class="sync-banner">
+    <span><span class="sync-dot" id="syncDot"></span><span id="syncStatusText">Showing catalog • Syncing live inventory...</span></span>
+    <span id="authModeBadge" style="font-weight:700;color:var(--primary);">Web Storefront</span>
   </div>
 
-  <!-- Search & Category Filters -->
   <div class="controls">
     <input
       type="search"
@@ -651,15 +641,13 @@
     <div class="cat-pills" id="categoryPills"></div>
   </div>
 
-  <!-- Combo Bundles -->
   <div class="section-title">
     <span>🧺 <span class="en-only">Household Combo Bundles</span> <span class="ti-only">ናይ ስድራቤት ፓኬጃት</span></span>
   </div>
   <div class="bundles-grid" id="bundlesGrid"></div>
 
-  <!-- Product Catalog -->
   <div class="section-title">
-    <span>🛍️ <span class="en-only">Everyday Groceries (16 Items)</span> <span class="ti-only">መዓልታዊ ኣስቤዛ</span></span>
+    <span>🛍️ <span class="en-only">Everyday Groceries</span> <span class="ti-only">መዓልታዊ ኣስቤዛ</span></span>
     <span style="font-size:12px;color:var(--muted);font-weight:600;" id="catalogCount">16 items</span>
   </div>
   <div class="product-grid" id="productGrid"></div>
@@ -670,7 +658,6 @@
   <div>Telebirr: <strong>+251955005400</strong> • CBE: <strong>1000034736425</strong> • Bot: <strong>@AddiMartMekelle_bot</strong></div>
 </footer>
 
-<!-- Sticky Checkout Bar -->
 <div class="sticky-checkout">
   <div class="sticky-inner">
     <div>
@@ -687,7 +674,6 @@
   </div>
 </div>
 
-<!-- Checkout Drawer -->
 <div class="backdrop" id="cartBackdrop" onclick="closeCartOnBackdrop(event)">
   <aside class="drawer" aria-label="Shopping cart and checkout">
     <div class="drawer-header">
@@ -697,30 +683,19 @@
 
     <div id="cartItemsList"></div>
 
-    <!-- Promo Code -->
-    <div class="form-group">
-      <label>Promo Code (Try ADDI10)</label>
-      <div class="gps-row">
-        <input type="text" id="promoInput" class="form-control" placeholder="Enter ADDI10" />
-        <button type="button" class="btn-secondary" onclick="applyPromo()">Apply</button>
-      </div>
-      <small id="promoStatus" style="color:var(--primary);font-weight:600;"></small>
-    </div>
-
-    <!-- Customer Details -->
     <div class="form-group">
       <label>Customer Name / ሽም ዓሚል *</label>
-      <input type="text" id="custName" class="form-control" placeholder="e.g. Selamawit / ሰላማዊት" />
+      <input type="text" id="custName" class="form-control" maxlength="80" placeholder="e.g. Selamawit / ሰላማዊት" oninput="resetOrderRef()" />
     </div>
 
     <div class="form-group">
       <label>Phone Number / ቁጽሪ ስልኪ *</label>
-      <input type="tel" id="custPhone" class="form-control" placeholder="0914... or +251914..." />
+      <input type="tel" id="custPhone" class="form-control" placeholder="0914... or +251914..." oninput="resetOrderRef()" />
     </div>
 
     <div class="form-group">
       <label>Mekelle Sub-City / ክፍለ ከተማ *</label>
-      <select id="subCity" class="form-control" onchange="updateTotals()">
+      <select id="subCity" class="form-control" onchange="resetOrderRef(); updateTotals()">
         <option value="Hawelti" data-fee="40">Hawelti / ሓወልቲ (40 ETB)</option>
         <option value="Kedamay Weyane" data-fee="40">Kedamay Weyane / ቀዳማይ ወያነ (40 ETB)</option>
         <option value="Adi Haki" data-fee="40">Adi Haki / ዓዲ ሓቂ (40 ETB)</option>
@@ -733,33 +708,32 @@
     <div class="form-group">
       <label>Delivery Location Pin or Landmark / ኣድራሻ *</label>
       <div class="gps-row">
-        <input type="text" id="locationInput" class="form-control" placeholder="Nearby landmark or GPS link" />
+        <input type="text" id="locationInput" class="form-control" maxlength="300" placeholder="Nearby landmark or GPS link" oninput="resetOrderRef()" />
         <button type="button" class="btn-secondary" onclick="pinGPS()">📍 Pin GPS</button>
       </div>
     </div>
 
     <div class="form-group">
       <label>Payment Method / ኣገባብ ክፍሊት *</label>
-      <select id="paymentMethod" class="form-control" onchange="togglePayDetails()">
+      <select id="paymentMethod" class="form-control" onchange="resetOrderRef(); togglePayDetails()">
         <option value="Telebirr">Telebirr (ቴሌብር)</option>
         <option value="CBE Transfer">CBE Transfer (ንግድ ባንክ)</option>
         <option value="Cash">Cash on Delivery (ብጥረ ገንዘብ)</option>
       </select>
     </div>
 
-    <!-- Payment Account Info -->
     <div class="pay-card" id="payInfoBox">
       <div id="telebirrBox">
         <strong>Telebirr Account (Addi Mart):</strong>
         <div class="copy-row">
-          <span>+251955005400</span>
+          <span id="telebirrNum">+251955005400</span>
           <button type="button" class="btn-secondary" onclick="copyText('+251955005400', this)">Copy</button>
         </div>
       </div>
       <div id="cbeBox" style="display:none;">
         <strong>CBE Account (Addi Mart):</strong>
         <div class="copy-row">
-          <span>1000034736425</span>
+          <span id="cbeNum">1000034736425</span>
           <button type="button" class="btn-secondary" onclick="copyText('1000034736425', this)">Copy</button>
         </div>
       </div>
@@ -768,30 +742,27 @@
       </div>
     </div>
 
-    <!-- Totals -->
     <div class="summary-box">
       <div class="summary-line"><span>Items Subtotal</span><span><strong id="sumSubtotal">0</strong> ETB</span></div>
-      <div class="summary-line" id="discountRow" style="display:none;color:#B45309;">
-        <span>Promo Discount (ADDI10 - 10%)</span><span>-<strong id="sumDiscount">0</strong> ETB</span>
-      </div>
       <div class="summary-line"><span>Bajaj Delivery Fee</span><span><strong id="sumDelivery">40</strong> ETB</span></div>
       <div class="summary-total"><span>Total Payable</span><span><span id="sumTotal">0</span> ETB</span></div>
     </div>
 
-    <button type="button" class="btn-primary" style="width:100%;padding:13px;" onclick="generateOrderTicket()">
-      1. Generate Order Ticket (#AM)
+    <button type="button" id="placeOrderBtn" class="btn-primary" style="width:100%;padding:13px;font-size:15px;" onclick="submitOrder()">
+      ✅ Place Order Now
     </button>
 
-    <pre class="ticket-box" id="ticketPreview"></pre>
-
-    <a id="telegramSendBtn" class="btn-telegram" href="https://t.me/AddiMartMekelle_bot" target="_blank" rel="noopener">
-      2. Open @AddiMartMekelle_bot to Confirm
-    </a>
+    <div id="orderStatusCard" class="status-card"></div>
   </aside>
 </div>
 
 <script>
-  const PRODUCTS = [
+  // ==========================================================================
+  // BACKEND CONFIGURATION (Code.gs v9.0 Web App /exec URL)
+  // ==========================================================================
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx-sO3593Vq_NVXXbZGLG9DhIxQINH68NSe7UneYSuz6Useh2u8sWqwy7uzHzXqFSuR4Q/exec';
+
+  const FALLBACK_PRODUCTS = [
     { sku: 'AM-GR-001', cat: 'Grains & Flour', en: 'White Teff', ti: 'ጻዕዳ ጣፍ', unit: 'kg', price: 118, stock: 65, emoji: '🌾' },
     { sku: 'AM-GR-002', cat: 'Grains & Flour', en: 'Red Teff', ti: 'ቀይሕ ጣፍ', unit: 'kg', price: 105, stock: 60, emoji: '🌾' },
     { sku: 'AM-GR-003', cat: 'Grains & Flour', en: 'Wheat Flour', ti: 'ሓሪጭ ስርናይ', unit: 'kg', price: 78, stock: 170, emoji: '🥖' },
@@ -813,7 +784,7 @@
   const BUNDLES = [
     {
       id: 'BND-1',
-      tag: 'SAVE 55 ETB',
+      tag: 'POPULAR PACK',
       en: 'Family Pantry Starter Bundle',
       ti: 'ናይ ስድራቤት ቀንዲ ፓኬጅ',
       desc: '5kg White Teff + 5L Cooking Oil + 2kg Sugar + 1kg Berbere',
@@ -829,9 +800,122 @@
     }
   ];
 
+  let PRODUCTS = FALLBACK_PRODUCTS.map(p => ({ ...p }));
   let cart = JSON.parse(localStorage.getItem('addi_mart_cart') || '{}');
   let activeCategory = 'All';
-  let discountRate = 0;
+  let activeClientOrderRef = null;
+  let commitUncertainLocked = false;
+  let isSubmitting = false;
+
+  // Telegram Mini App SDK initialization
+  const tgWebApp = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+  if (tgWebApp) {
+    tgWebApp.ready();
+    tgWebApp.expand();
+    const u = tgWebApp.initDataUnsafe && tgWebApp.initDataUnsafe.user;
+    if (u && u.first_name) {
+      const fullName = [u.first_name, u.last_name || ''].join(' ').trim();
+      document.getElementById('custName').value = fullName;
+    }
+    if (tgWebApp.initData) {
+      document.getElementById('authModeBadge').textContent = '✓ Verified Telegram Mini App';
+    }
+  }
+
+  function newOrderRef_() {
+    const prefix = (tgWebApp && tgWebApp.initData) ? 'TMA' : 'WEB';
+    const rand = Math.random().toString(36).substring(2, 8).toUpperCase();
+    return prefix + '-' + Date.now() + '-' + rand;
+  }
+
+  // Keep the exact same clientOrderRef across retries until the user modifies cart/fields
+  function resetOrderRef() {
+    if (!commitUncertainLocked) {
+      activeClientOrderRef = null;
+    }
+  }
+
+  async function syncLiveCatalog() {
+    const statusEl = document.getElementById('syncStatusText');
+    const dotEl = document.getElementById('syncDot');
+    try {
+      const res = await fetch(WEB_APP_URL + '?action=catalog', { method: 'GET' });
+      const data = await res.json();
+      if (!data || !data.ok || !Array.isArray(data.products)) {
+        throw new Error('Invalid catalog payload');
+      }
+
+      const fallbackMap = Object.create(null);
+      FALLBACK_PRODUCTS.forEach(p => { fallbackMap[p.sku] = p; });
+
+      const liveSkus = new Set();
+      const merged = [];
+
+      data.products.forEach(lp => {
+        liveSkus.add(lp.sku);
+        const fb = fallbackMap[lp.sku];
+        if (fb) {
+          merged.push({
+            ...fb,
+            cat: lp.category || fb.cat,
+            unit: lp.unit || fb.unit,
+            price: Number(lp.price) || fb.price,
+            stock: Math.max(0, Math.floor(Number(lp.stock) || 0))
+          });
+        } else {
+          const parts = String(lp.name || lp.sku).split('/');
+          merged.push({
+            sku: lp.sku,
+            cat: lp.category || 'Other',
+            en: parts[0].trim(),
+            ti: parts[1] ? parts[1].trim() : parts[0].trim(),
+            unit: lp.unit || 'unit',
+            price: Number(lp.price) || 0,
+            stock: Math.max(0, Math.floor(Number(lp.stock) || 0)),
+            emoji: '🛒'
+          });
+        }
+      });
+
+      // Keep any fallback items not returned by live catalog marked as 0 stock
+      FALLBACK_PRODUCTS.forEach(fb => {
+        if (!liveSkus.has(fb.sku)) {
+          merged.push({ ...fb, stock: 0 });
+        }
+      });
+
+      PRODUCTS = merged;
+
+      // Clamp any saved cart items to current live stock
+      Object.keys(cart).forEach(sku => {
+        const p = PRODUCTS.find(x => x.sku === sku);
+        if (!p || p.stock <= 0) delete cart[sku];
+        else if (cart[sku] > p.stock) cart[sku] = p.stock;
+      });
+      saveCart();
+
+      if (data.subCities) {
+        const subSel = document.getElementById('subCity');
+        Array.from(subSel.options).forEach(opt => {
+          if (data.subCities[opt.value] !== undefined) {
+            opt.dataset.fee = String(data.subCities[opt.value]);
+          }
+        });
+      }
+
+      renderCategories();
+      renderBundles();
+      renderCatalog();
+      renderCartItems();
+      updateTotals();
+
+      dotEl.style.background = '#16A34A';
+      statusEl.textContent = 'Live inventory & prices synced (' + data.products.length + ' items in stock)';
+    } catch (err) {
+      dotEl.style.background = '#F59E0B';
+      statusEl.textContent = 'Offline catalog mode • Prices verified at checkout';
+    }
+  }
 
   function setLang(mode, btn) {
     document.body.className = 'lang-' + mode;
@@ -847,9 +931,11 @@
   function changeQty(sku, delta) {
     const p = PRODUCTS.find(x => x.sku === sku);
     if (!p) return;
-    const next = Math.max(0, Math.min(p.stock, (cart[sku] || 0) + delta));
+    const maxAllowed = Math.min(p.stock, 100);
+    const next = Math.max(0, Math.min(maxAllowed, (cart[sku] || 0) + delta));
     if (next === 0) delete cart[sku];
     else cart[sku] = next;
+    resetOrderRef();
     saveCart();
     renderCatalog();
     renderCartItems();
@@ -860,8 +946,11 @@
     if (!b) return;
     Object.entries(b.items).forEach(([sku, qty]) => {
       const p = PRODUCTS.find(x => x.sku === sku);
-      if (p) cart[sku] = Math.min(p.stock, (cart[sku] || 0) + qty);
+      if (p && p.stock > 0) {
+        cart[sku] = Math.min(Math.min(p.stock, 100), (cart[sku] || 0) + qty);
+      }
     });
+    resetOrderRef();
     saveCart();
     renderCatalog();
     openCart();
@@ -916,13 +1005,17 @@
 
     document.getElementById('productGrid').innerHTML = filtered.map(p => {
       const qty = cart[p.sku] || 0;
-      const isLow = p.stock <= 12;
+      const isOut = p.stock <= 0;
+      const isLow = p.stock > 0 && p.stock <= 12;
+      const badgeClass = isOut ? 'out' : (isLow ? 'low' : '');
+      const badgeText = isOut ? 'Out of stock' : `${isLow ? 'Low: ' : ''}${p.stock} ${p.unit}`;
+
       return `
-        <article class="card">
+        <article class="card ${isOut ? 'sold-out' : ''}">
           <div>
             <div class="card-top">
               <div class="emoji-icon">${p.emoji}</div>
-              <span class="stock-badge ${isLow ? 'low' : ''}">${isLow ? 'Low stock: ' : ''}${p.stock} ${p.unit}</span>
+              <span class="stock-badge ${badgeClass}">${badgeText}</span>
             </div>
             <div class="item-cat" style="margin-top:10px;">${p.cat}</div>
             <h3 class="item-name">
@@ -934,13 +1027,15 @@
             <div class="item-price" style="margin-bottom:8px;">
               ${p.price.toLocaleString()} ETB <span class="item-unit">/ ${p.unit}</span>
             </div>
-            ${qty === 0
-              ? `<button class="btn-add" onclick="changeQty('${p.sku}', 1)">+ Add to Cart</button>`
-              : `<div class="qty-stepper">
-                   <button class="qty-btn" onclick="changeQty('${p.sku}', -1)">−</button>
-                   <span class="qty-val">${qty} ${p.unit}</span>
-                   <button class="qty-btn" onclick="changeQty('${p.sku}', 1)">+</button>
-                 </div>`
+            ${isOut
+              ? `<button class="btn-add" disabled>Out of Stock</button>`
+              : (qty === 0
+                ? `<button class="btn-add" onclick="changeQty('${p.sku}', 1)">+ Add to Cart</button>`
+                : `<div class="qty-stepper">
+                     <button class="qty-btn" onclick="changeQty('${p.sku}', -1)">−</button>
+                     <span class="qty-val">${qty} ${p.unit}</span>
+                     <button class="qty-btn" onclick="changeQty('${p.sku}', 1)">+</button>
+                   </div>`)
             }
           </div>
         </article>
@@ -985,21 +1080,10 @@
       }
     });
 
-    // Free delivery progress bar (1,500 ETB threshold)
-    const target = 1500;
-    const pct = Math.min(100, Math.round((subtotal / target) * 100));
-    document.getElementById('deliveryFill').style.width = pct + '%';
-    document.getElementById('deliveryPct').textContent = pct + '%';
-    document.getElementById('deliveryMsg').textContent = subtotal >= target
-      ? '🎉 You unlocked FREE Bajaj delivery in Mekelle!'
-      : `Add ${(target - subtotal).toLocaleString()} ETB more for FREE Bajaj delivery in Mekelle`;
-
-    const discount = Math.round(subtotal * discountRate);
-    const afterDiscount = subtotal - discount;
     const subSel = document.getElementById('subCity');
     const baseFee = Number(subSel.options[subSel.selectedIndex].dataset.fee || 40);
-    const deliveryFee = subtotal === 0 ? 0 : (subtotal >= target ? 0 : baseFee);
-    const total = afterDiscount + deliveryFee;
+    const deliveryFee = subtotal === 0 ? 0 : baseFee;
+    const total = subtotal + deliveryFee;
 
     document.getElementById('headerCartCount').textContent = count;
     document.getElementById('headerCartTotal').textContent = subtotal.toLocaleString();
@@ -1007,23 +1091,8 @@
     document.getElementById('stickySubtotal').textContent = subtotal.toLocaleString();
 
     document.getElementById('sumSubtotal').textContent = subtotal.toLocaleString();
-    document.getElementById('discountRow').style.display = discount > 0 ? 'flex' : 'none';
-    document.getElementById('sumDiscount').textContent = discount.toLocaleString();
     document.getElementById('sumDelivery').textContent = deliveryFee.toLocaleString();
     document.getElementById('sumTotal').textContent = total.toLocaleString();
-  }
-
-  function applyPromo() {
-    const code = document.getElementById('promoInput').value.trim().toUpperCase();
-    const status = document.getElementById('promoStatus');
-    if (code === 'ADDI10') {
-      discountRate = 0.10;
-      status.textContent = '✅ ADDI10 applied: 10% founding member discount!';
-    } else {
-      discountRate = 0;
-      status.textContent = '⚠️ Invalid code. Use ADDI10 for 10% off.';
-    }
-    updateTotals();
   }
 
   function togglePayDetails() {
@@ -1050,6 +1119,7 @@
     navigator.geolocation.getCurrentPosition(
       pos => {
         inp.value = `https://maps.google.com/?q=${pos.coords.latitude.toFixed(6)},${pos.coords.longitude.toFixed(6)}`;
+        resetOrderRef();
       },
       () => {
         inp.value = '';
@@ -1072,59 +1142,129 @@
     if (e.target.id === 'cartBackdrop') closeCart();
   }
 
-  function generateOrderTicket() {
+  function showStatusCard(type, htmlContent) {
+    const card = document.getElementById('orderStatusCard');
+    card.className = 'status-card ' + type;
+    card.innerHTML = htmlContent;
+  }
+
+  async function submitOrder() {
+    if (isSubmitting) return;
+
+    if (commitUncertainLocked) {
+      showStatusCard('uncertain',
+        '<strong>⚠️ Previous Checkout Awaiting Verification</strong><br/>' +
+        'Do not place a duplicate order. Please contact <strong>@AddiMartMekelle_bot</strong> with reference <code>' + activeClientOrderRef + '</code>.'
+      );
+      return;
+    }
+
     const entries = Object.entries(cart);
     if (!entries.length) {
-      alert('Please add at least one product to your cart first.');
+      showStatusCard('error', 'Please add at least one product to your cart first.');
       return;
     }
-    const name = document.getElementById('custName').value.trim();
+
+    const customerName = document.getElementById('custName').value.trim();
     const phone = document.getElementById('custPhone').value.trim();
     const subCity = document.getElementById('subCity').value;
-    const loc = document.getElementById('locationInput').value.trim();
-    const pay = document.getElementById('paymentMethod').value;
+    const location = document.getElementById('locationInput').value.trim();
+    const payment = document.getElementById('paymentMethod').value;
 
-    if (!name || !phone || !loc) {
-      alert('Please fill in your Name, Phone Number, and Delivery Location.');
+    if (!customerName || !phone || !location || location === 'Locating GPS...') {
+      showStatusCard('error', 'Please fill in your Name, Ethiopian Phone Number, and Delivery Location.');
       return;
     }
 
-    const orderNum = 'AM-WEB-' + Math.floor(1000 + Math.random() * 9000);
-    const lines = entries.map(([sku, qty]) => {
-      const p = PRODUCTS.find(x => x.sku === sku);
-      return `• ${p.en} (${p.sku}) × ${qty} ${p.unit} = ${(qty * p.price).toLocaleString()} ETB`;
-    }).join('\n');
-
-    const total = document.getElementById('sumTotal').textContent;
-    const ticket = [
-      `🛒 ADDI MART WEB ORDER #${orderNum}`,
-      `Customer: ${name} (${phone})`,
-      `Sub-City: ${subCity}`,
-      `Location: ${loc}`,
-      `Payment: ${pay}`,
-      ``,
-      lines,
-      ``,
-      `TOTAL: ${total} ETB`
-    ].join('\n');
-
-    const preview = document.getElementById('ticketPreview');
-    preview.textContent = ticket;
-    preview.style.display = 'block';
-
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(ticket).catch(() => {});
+    if (!activeClientOrderRef) {
+      activeClientOrderRef = newOrderRef_();
     }
 
-    const tgBtn = document.getElementById('telegramSendBtn');
-    tgBtn.href = `https://t.me/AddiMartMekelle_bot?start=order`;
-    tgBtn.textContent = `2. Ticket Copied! Open @AddiMartMekelle_bot`;
+    const cleanCart = {};
+    entries.forEach(([sku, qty]) => {
+      cleanCart[sku] = Math.floor(Number(qty));
+    });
+
+    const payload = {
+      action: 'CREATE_ORDER',
+      clientOrderRef: activeClientOrderRef,
+      customerName: customerName,
+      phone: phone,
+      subCity: subCity,
+      location: location,
+      payment: payment,
+      cart: cleanCart
+    };
+
+    if (tgWebApp && tgWebApp.initData) {
+      payload.initData = tgWebApp.initData;
+    }
+
+    const btn = document.getElementById('placeOrderBtn');
+    isSubmitting = true;
+    btn.disabled = true;
+    btn.textContent = '⏳ Submitting Order...';
+    document.getElementById('orderStatusCard').className = 'status-card';
+
+    try {
+      // text/plain avoids CORS preflight OPTIONS requests on Google Apps Script
+      const res = await fetch(WEB_APP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (data && data.ok) {
+        const payInstr = data.payment === 'Telebirr'
+          ? `Send <strong>${Number(data.total).toLocaleString()} ETB</strong> to Telebirr <strong>${data.telebirr}</strong>, then send your screenshot to <strong>@AddiMartMekelle_bot</strong>.`
+          : data.payment === 'CBE Transfer'
+            ? `Transfer <strong>${Number(data.total).toLocaleString()} ETB</strong> to CBE <strong>${data.cbe}</strong>, then send your screenshot to <strong>@AddiMartMekelle_bot</strong>.`
+            : `Pay <strong>${Number(data.total).toLocaleString()} ETB</strong> in cash when our Bajaj rider arrives.`;
+
+        showStatusCard('success',
+          `<strong>✅ Order Confirmed: #${data.orderId}</strong><br/>` +
+          `Total: <strong>${Number(data.total).toLocaleString()} ETB</strong> (${data.payment})<br/><br/>` +
+          `${payInstr}` +
+          `<a class="btn-telegram" href="https://t.me/AddiMartMekelle_bot" target="_blank" rel="noopener">Open @AddiMartMekelle_bot</a>`
+        );
+
+        // Clear cart and reset reference after confirmed commit
+        cart = {};
+        activeClientOrderRef = null;
+        saveCart();
+        renderCatalog();
+        renderCartItems();
+        syncLiveCatalog();
+        return;
+      }
+
+      if (data && data.code === 'COMMIT_UNCERTAIN') {
+        commitUncertainLocked = true;
+        showStatusCard('uncertain',
+          '<strong>⚠️ Network Timeout During Confirmation</strong><br/>' +
+          'Your order may have already been recorded. Do not submit again—message <strong>@AddiMartMekelle_bot</strong> with ref <code>' + activeClientOrderRef + '</code>.'
+        );
+        return;
+      }
+
+      showStatusCard('error', '⚠️ ' + ((data && data.error) ? data.error : 'Could not place order. Please check your details and try again.'));
+    } catch (err) {
+      // Keep activeClientOrderRef intact so tapping Retry is safely idempotent
+      showStatusCard('error', '⚠️ Network error while reaching Addi Mart server. Check your internet connection and tap Place Order Now to retry safely.');
+    } finally {
+      isSubmitting = false;
+      btn.disabled = false;
+      btn.textContent = '✅ Place Order Now';
+    }
   }
 
   renderCategories();
   renderBundles();
   renderCatalog();
   updateTotals();
+  syncLiveCatalog();
 </script>
 </body>
-</html>
+</html>      
