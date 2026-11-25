@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Addi Mart | ዓዲ ማርት — Mekelle Neighborhood Grocery</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,15 +14,14 @@
       --primary-dark: #134417;
       --primary-light: #E8F5E9;
       --accent: #EF6C00;
-      --accent-dark: #D85E00;
-      --accent-light: #FFF3E0;
+      --accent-light: #FFF7ED;
       --bg: #FAF9F6;
       --surface: #FFFFFF;
       --text: #1F2937;
       --muted: #6B7280;
       --border: #E5E7EB;
       --radius: 14px;
-      --shadow: 0 4px 16px rgba(17, 24, 39, 0.06);
+      --shadow: 0 3px 12px rgba(17, 24, 39, 0.05);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,226 +29,354 @@
       font-family: 'Open Sans', 'Noto Sans Ethiopic', sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.5;
-      padding-bottom: 92px;
+      line-height: 1.45;
+      padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
     }
-    h1, h2, h3, .brand-title {
-      font-family: 'Montserrat', 'Noto Sans Ethiopic', sans-serif;
-    }
+    body.drawer-open { overflow: hidden; }
+    h1, h2, h3, .brand-title { font-family: 'Montserrat', 'Noto Sans Ethiopic', sans-serif; }
 
     body.lang-en .ti-only { display: none !important; }
     body.lang-ti .en-only { display: none !important; }
 
+    :focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Compact Header */
     header {
       position: sticky;
       top: 0;
       z-index: 40;
       background: var(--primary);
       color: #fff;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
     }
     .header-inner {
       max-width: 1120px;
       margin: 0 auto;
-      padding: 12px 16px;
+      padding: 9px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
+      gap: 8px;
     }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
     .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
       background: #fff;
       color: var(--primary);
       display: grid;
       place-items: center;
       font-weight: 800;
-      font-size: 20px;
-    }
-    .brand-title {
       font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.3px;
+      flex-shrink: 0;
     }
-    .brand-sub {
-      font-size: 11px;
-      opacity: 0.9;
-    }
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .brand-title { font-size: 15px; font-weight: 800; letter-spacing: 0.2px; white-space: nowrap; }
+    .brand-sub { font-size: 11px; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
     .lang-switch {
       display: flex;
       background: rgba(255,255,255,0.16);
       border-radius: 999px;
-      padding: 3px;
+      padding: 2px;
     }
     .lang-btn {
       border: none;
       background: transparent;
       color: #fff;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      padding: 5px 10px;
+      min-height: 30px;
+      padding: 3px 8px;
       border-radius: 999px;
       cursor: pointer;
     }
-    .lang-btn.active {
-      background: #fff;
-      color: var(--primary);
-    }
+    .lang-btn.active { background: #fff; color: var(--primary); }
     .cart-pill {
-      background: var(--accent);
+      background: rgba(255,255,255,0.18);
       color: #fff;
-      border: none;
+      border: 1px solid rgba(255,255,255,0.32);
       border-radius: 999px;
-      padding: 8px 14px;
+      min-height: 34px;
+      padding: 5px 11px;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
-    .hero {
-      background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
-      color: #fff;
-      padding: 22px 16px;
-    }
-    .hero-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 18px;
-      align-items: center;
-    }
-    @media (max-width: 768px) {
-      .hero-inner { grid-template-columns: 1fr; }
-    }
-    .hero-badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.16);
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .hero h1 {
-      font-size: 23px;
-      line-height: 1.25;
-      margin-bottom: 8px;
-    }
-    .hero p {
-      font-size: 14px;
-      opacity: 0.94;
-    }
-    .promo-strip {
-      background: rgba(255,255,255,0.12);
-      border: 1px dashed rgba(255,255,255,0.45);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 13px;
-    }
-
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 18px 16px;
-    }
-
-    .sync-banner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    /* Compact Delivery Bar on First Screen */
+    .delivery-strip {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 9px 14px;
-      margin-bottom: 16px;
-      font-size: 12px;
-      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 14px;
     }
-    .sync-dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #16A34A;
-      margin-right: 6px;
+    .delivery-strip-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .deliver-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 240px;
+    }
+    .deliver-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      white-space: nowrap;
+    }
+    .deliver-select {
+      padding: 6px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #F9FAFB;
+      color: var(--text);
+      min-height: 36px;
+      flex: 1;
+      max-width: 310px;
+    }
+    .deliver-select.needs-choice {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+    .eta-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 4px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
     }
 
-    .controls {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 20px;
+    .container { max-width: 1120px; margin: 0 auto; padding: 12px 14px; }
+
+    /* Quiet Status & Action Banners */
+    .quiet-notice {
+      background: #FFFBEB;
+      border: 1px solid #FCD34D;
+      color: #92400E;
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      display: none;
     }
+    .quiet-notice.visible { display: block; }
+
+    .alert-banner {
+      background: var(--accent-light);
+      border: 1.5px solid #FDBA74;
+      color: #9A3412;
+      border-radius: 12px;
+      padding: 11px 13px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      display: none;
+    }
+    .alert-banner.visible { display: block; }
+    .alert-banner.recovery { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
+    .alert-banner.reorder { background: var(--primary-light); border-color: #86EFAC; color: var(--primary-dark); }
+
+    /* Search & Categories */
+    .controls { display: flex; flex-direction: column; gap: 9px; margin-bottom: 14px; }
+    .search-wrap { position: relative; display: flex; align-items: center; }
     .search-box {
       width: 100%;
-      padding: 12px 16px;
+      padding: 10px 38px 10px 13px;
       border: 1.5px solid var(--border);
-      border-radius: 12px;
-      font-size: 15px;
+      border-radius: 11px;
+      font-size: 14px;
       background: var(--surface);
-      outline: none;
+      min-height: 42px;
     }
-    .search-box:focus { border-color: var(--primary); }
-    .cat-pills {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
+    .search-box:focus { border-color: var(--primary); outline: none; }
+    .search-clear {
+      position: absolute;
+      right: 7px;
+      background: #F3F4F6;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      display: none;
     }
+    .search-clear.visible { display: grid; place-items: center; }
+
+    .cat-pills { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 2px; }
     .cat-pill {
       white-space: nowrap;
       border: 1px solid var(--border);
       background: var(--surface);
       color: var(--text);
-      padding: 7px 14px;
+      min-height: 36px;
+      padding: 6px 13px;
       border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
     }
-    .cat-pill.active {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
+    .cat-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
     .section-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 800;
       color: var(--primary-dark);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
+
+    /* Standardized Grocery Cards */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .card.sold-out { opacity: 0.62; }
+    .card-media {
+      position: relative;
+      height: 84px;
+      border-radius: 10px;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .pack-pill {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      background: rgba(17, 24, 39, 0.78);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+    .stock-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: #DCFCE7;
+      color: #166534;
+    }
+    .stock-badge.low { background: #FEF3C7; color: #92400E; }
+    .stock-badge.out { background: #FEE2E2; color: #991B1B; }
+
+    .item-name { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .item-price-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 4px;
+      margin-top: 2px;
+    }
+    .item-price { font-size: 16px; font-weight: 800; color: var(--primary); }
+    .item-unit { font-size: 12px; font-weight: 600; color: var(--muted); }
+
+    .btn-add {
+      width: 100%;
+      min-height: 38px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn-add:hover:not(:disabled) { background: var(--primary-dark); }
+    .btn-add:disabled { background: #9CA3AF; cursor: not-allowed; }
+
+    .qty-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--primary-light);
+      border-radius: 10px;
+      padding: 3px;
+    }
+    .qty-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+    .qty-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .qty-val { font-weight: 800; font-size: 13px; color: var(--primary-dark); }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 24px 16px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    /* Bundles */
     .bundles-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 14px;
-      margin-bottom: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
     }
     .bundle-card {
-      background: linear-gradient(135deg, #FFF8F0 0%, #FFFFFF 100%);
-      border: 1.5px solid #FDBA74;
+      background: var(--surface);
+      border: 1px solid #FDBA74;
       border-radius: var(--radius);
-      padding: 16px;
+      padding: 13px;
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
@@ -260,122 +387,14 @@
       display: inline-block;
       background: var(--accent);
       color: #fff;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      padding: 3px 8px;
+      padding: 2px 8px;
       border-radius: 6px;
       width: fit-content;
     }
 
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 14px;
-    }
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
-    }
-    .card.sold-out { opacity: 0.62; }
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .emoji-icon {
-      font-size: 30px;
-      background: var(--primary-light);
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-    }
-    .stock-badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: #DCFCE7;
-      color: #166534;
-    }
-    .stock-badge.low {
-      background: #FEF3C7;
-      color: #92400E;
-    }
-    .stock-badge.out {
-      background: #FEE2E2;
-      color: #991B1B;
-    }
-    .item-cat {
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    .item-name {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-      margin-top: 2px;
-    }
-    .item-price {
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--primary);
-    }
-    .item-unit {
-      font-size: 12px;
-      font-weight: 400;
-      color: var(--muted);
-    }
-    .btn-add {
-      width: 100%;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 10px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .btn-add:hover:not(:disabled) { background: var(--primary-dark); }
-    .btn-add:disabled { background: #9CA3AF; cursor: not-allowed; }
-    .qty-stepper {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--primary-light);
-      border-radius: 10px;
-      padding: 4px;
-    }
-    .qty-btn {
-      width: 34px;
-      height: 34px;
-      border: none;
-      border-radius: 8px;
-      background: var(--primary);
-      color: #fff;
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .qty-val {
-      font-weight: 800;
-      font-size: 15px;
-      color: var(--primary-dark);
-    }
-
+    /* Sticky Bottom Bar (Web only; hidden when Telegram MainButton is active) */
     .sticky-checkout {
       position: fixed;
       bottom: 0;
@@ -383,10 +402,13 @@
       right: 0;
       background: var(--surface);
       border-top: 1px solid var(--border);
-      padding: 12px 16px;
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
       z-index: 35;
       box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
     }
+    body.has-tg-mainbutton .sticky-checkout { display: none; }
+    body.has-tg-mainbutton { padding-bottom: 20px; }
+
     .sticky-inner {
       max-width: 1120px;
       margin: 0 auto;
@@ -395,23 +417,41 @@
       justify-content: space-between;
       gap: 12px;
     }
+
+    /* Primary CTA is Deep Green; Orange reserved for alerts/offers */
     .btn-primary {
-      background: var(--accent);
+      background: var(--primary);
       color: #fff;
       border: none;
       border-radius: 10px;
-      padding: 11px 18px;
+      min-height: 42px;
+      padding: 10px 16px;
       font-weight: 700;
       font-size: 14px;
       cursor: pointer;
     }
-    .btn-primary:hover:not(:disabled) { background: var(--accent-dark); }
-    .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
 
+    .btn-secondary {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border: 1px solid #A7F3D0;
+      border-radius: 10px;
+      min-height: 38px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-secondary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* Two-Step Order Drawer */
     .backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(17, 24, 39, 0.55);
+      background: rgba(17, 24, 39, 0.58);
       z-index: 50;
       display: none;
       justify-content: flex-end;
@@ -423,67 +463,94 @@
       background: var(--surface);
       height: 100%;
       overflow-y: auto;
-      padding: 18px;
+      padding: 15px 15px calc(24px + env(safe-area-inset-bottom, 0px));
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
     }
     .drawer-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 10px;
+      padding-bottom: 9px;
+      gap: 8px;
+    }
+    .step-pills {
+      display: flex;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .step-pill {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #F3F4F6;
+      color: var(--muted);
+    }
+    .step-pill.active {
+      background: var(--primary-light);
+      color: var(--primary-dark);
     }
     .close-btn {
       background: #F3F4F6;
       border: none;
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      font-size: 18px;
+      font-size: 17px;
       cursor: pointer;
+      flex-shrink: 0;
     }
+
     .cart-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-row-main {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border);
     }
-    .form-group {
+    .item-sub-row {
       display: flex;
-      flex-direction: column;
-      gap: 5px;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
     }
-    .form-group label {
-      font-size: 12px;
-      font-weight: 700;
-      color: #374151;
+    .item-sub-select {
+      font-size: 11px;
+      padding: 3px 7px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #F9FAFB;
+      color: var(--text);
     }
+
+    .form-row-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 12px; font-weight: 700; color: #374151; }
     .form-control {
-      padding: 10px 12px;
+      padding: 9px 11px;
       border: 1.5px solid var(--border);
       border-radius: 10px;
       font-size: 14px;
       width: 100%;
+      background: #fff;
+      min-height: 40px;
     }
-    .gps-row {
-      display: flex;
-      gap: 8px;
-    }
-    .btn-secondary {
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      border: 1px solid #A7F3D0;
-      border-radius: 10px;
-      padding: 9px 12px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-    }
+    .form-control:disabled { background: #F3F4F6; color: #6B7280; }
+    .gps-row { display: flex; gap: 8px; }
+
     .pay-card {
       background: #F9FAFB;
       border: 1px solid var(--border);
@@ -491,57 +558,36 @@
       padding: 10px 12px;
       font-size: 12px;
     }
-    .copy-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 4px;
-    }
-    .summary-box {
-      background: var(--primary-light);
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 13px;
-    }
-    .summary-line {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
+    .copy-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 4px; }
+
+    .summary-box { background: var(--primary-light); border-radius: 12px; padding: 11px 12px; font-size: 13px; }
+    .summary-line { display: flex; justify-content: space-between; margin-bottom: 4px; }
     .summary-total {
       display: flex;
       justify-content: space-between;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
       color: var(--primary-dark);
       border-top: 1px solid #BBF7D0;
       padding-top: 6px;
       margin-top: 6px;
     }
+
+    /* Hide redundant drawer primary button when Telegram MainButton is shown */
+    body.has-tg-mainbutton .drawer-primary-cta { display: none !important; }
+
     .status-card {
       border-radius: 12px;
-      padding: 14px;
+      padding: 13px;
       font-size: 13px;
       display: none;
+      line-height: 1.5;
     }
-    .status-card.success {
-      display: block;
-      background: #ECFDF5;
-      border: 1.5px solid #10B981;
-      color: #065F46;
-    }
-    .status-card.error {
-      display: block;
-      background: #FEF2F2;
-      border: 1.5px solid #EF4444;
-      color: #991B1B;
-    }
-    .status-card.uncertain {
-      display: block;
-      background: #FFFBEB;
-      border: 1.5px solid #F59E0B;
-      color: #92400E;
-    }
+    .status-card.success { display: block; background: #ECFDF5; border: 1.5px solid #10B981; color: #065F46; }
+    .status-card.awaiting { display: block; background: var(--accent-light); border: 1.5px solid #F97316; color: #9A3412; }
+    .status-card.error { display: block; background: #FEF2F2; border: 1.5px solid #EF4444; color: #991B1B; }
+    .status-card.uncertain { display: block; background: #FFFBEB; border: 1.5px solid #F59E0B; color: #92400E; }
+
     .btn-telegram {
       display: flex;
       align-items: center;
@@ -552,547 +598,1494 @@
       color: #fff;
       text-decoration: none;
       border: none;
-      border-radius: 12px;
-      padding: 12px;
+      border-radius: 11px;
+      min-height: 42px;
+      padding: 10px 14px;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
       margin-top: 10px;
     }
+
     footer {
       max-width: 1120px;
-      margin: 24px auto 0;
-      padding: 18px 16px;
+      margin: 18px auto 0;
+      padding: 14px;
       border-top: 1px solid var(--border);
       font-size: 12px;
       color: var(--muted);
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .card { min-width: 0; padding: 10px; }
+      .card-media { height: 74px; }
+      .item-name { font-size: 13px; }
+      .item-price { font-size: 15px; }
+    }
+    @media (max-width: 420px) {
+      .form-row-2col { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body class="lang-both">
 
-<header>
+<header id="appHeader">
   <div class="header-inner">
     <div class="brand">
-      <div class="brand-logo">ዓ</div>
-      <div>
+      <div class="brand-logo" aria-hidden="true">ዓ</div>
+      <div style="min-width:0;">
         <div class="brand-title">ADDI MART | ዓዲ ማርት</div>
         <div class="brand-sub">
-          <span class="en-only">Mekelle Neighborhood Grocery • Fast Bajaj Delivery</span>
+          <span class="en-only">Mekelle Neighborhood Grocery</span>
           <span class="ti-only"> • ናይ ኣስቤዛ ድኳን ኣብ መቐለ</span>
         </div>
       </div>
     </div>
     <div class="header-actions">
       <div class="lang-switch" role="group" aria-label="Language switcher">
-        <button class="lang-btn active" onclick="setLang('both', this)">EN/ትግ</button>
-        <button class="lang-btn" onclick="setLang('en', this)">EN</button>
-        <button class="lang-btn" onclick="setLang('ti', this)">ትግርኛ</button>
+        <button type="button" class="lang-btn active" data-lang="both">EN/ትግ</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+        <button type="button" class="lang-btn" data-lang="ti">ትግርኛ</button>
       </div>
-      <button class="cart-pill" onclick="openCart()">
+      <button type="button" id="headerCartBtn" class="cart-pill" aria-label="Open shopping basket">
         🛒 <span id="headerCartCount">0</span> • <span id="headerCartTotal">0</span> ETB
       </button>
     </div>
   </div>
 </header>
 
-<section class="hero">
-  <div class="hero-inner">
-    <div>
-      <span class="hero-badge">📍 Mekelle • Ayder, Hawelti, Kedamay Weyane, Adi Haki, Semien, Hadnet</span>
-      <h1>
-        <span class="en-only">Fresh Everyday Staples Delivered to Your Gate</span>
-        <span class="ti-only"><br/>ንጹህን ትኩስን ኣስቤዛ ኣብ ገዛኹም ነብጽሕ</span>
-      </h1>
-      <p>
-        <span class="en-only">Live stock & ETB prices synced with @AddiMartMekelle_bot — 30–50 min Bajaj delivery across Mekelle.</span>
-        <span class="ti-only"> ግልጺ ዋጋታትን ቅልጡፍ ናይ ባጃጅ ምብጻሕን ብቴሌግራም።</span>
-      </p>
+<!-- First-screen Delivery Area & Fee Selector -->
+<div id="appDeliveryBar" class="delivery-strip">
+  <div class="delivery-strip-inner">
+    <div class="deliver-control">
+      <label for="homeSubCity" class="deliver-label">
+        📍 <span class="en-only">Deliver to:</span><span class="ti-only">መብጽሒ:</span>
+      </label>
+      <select id="homeSubCity" class="deliver-select needs-choice">
+        <option value="">Select sub-city / ክፍለ ከተማ ምረጹ</option>
+      </select>
     </div>
-    <div class="promo-strip">
-      <div style="margin-bottom:6px;">
-        ⚡ <strong>Instant Mini App Checkout:</strong> Orders deduct stock automatically and send live confirmation in Telegram.
-      </div>
-      <div>
-        🛵 <strong>Flat Bajaj Delivery:</strong> 40 ETB (Hawelti, Kedamay Weyane, Adi Haki) • 50 ETB (Ayder, Semien, Hadnet).
-      </div>
+    <div class="eta-tag">
+      🛵 <span class="en-only">30–50 min Bajaj</span><span class="ti-only">30–50 ደቒቕ ባጃጅ</span>
     </div>
   </div>
-</section>
+</div>
 
-<main class="container">
-  <div class="sync-banner">
-    <span><span class="sync-dot" id="syncDot"></span><span id="syncStatusText">Showing catalog • Syncing live inventory...</span></span>
-    <span id="authModeBadge" style="font-weight:700;color:var(--primary);">Web Storefront</span>
-  </div>
+<main id="appMain" class="container">
+  <!-- Quiet connectivity notice (shown only if offline/fallback) -->
+  <div id="quietSyncNotice" class="quiet-notice" role="status" aria-live="polite"></div>
 
+  <!-- Order recovery & stock notices -->
+  <div id="recoveryBanner" class="alert-banner recovery" role="alert"></div>
+  <div id="reconcileBanner" class="alert-banner" role="status" aria-live="polite"></div>
+  <div id="reorderBanner" class="alert-banner reorder"></div>
+
+  <!-- Search & Categories right above products -->
   <div class="controls">
-    <input
-      type="search"
-      id="searchInput"
-      class="search-box"
-      placeholder="🔎 Search teff, cooking oil, berbere, shiro, eggs... / ጣፍ፣ ዘይቲ፣ በርበረ፣ ሽሮ ድለዩ..."
-      oninput="renderCatalog()"
-    />
-    <div class="cat-pills" id="categoryPills"></div>
+    <label for="searchInput" style="position:absolute;left:-9999px;">Search groceries</label>
+    <div class="search-wrap">
+      <input
+        type="search"
+        id="searchInput"
+        class="search-box"
+        placeholder="🔎 Search teff, oil, berbere, shiro, eggs... / ጣፍ፣ ዘይቲ፣ በርበረ፣ ሽሮ ድለዩ..."
+      />
+      <button type="button" id="clearSearchBtn" class="search-clear" aria-label="Clear search">✕</button>
+    </div>
+    <div class="cat-pills" id="categoryPills" role="group" aria-label="Product categories"></div>
   </div>
+
+  <div class="section-title">
+    <span>🛍️ <span class="en-only">Everyday Groceries</span> <span class="ti-only">መዓልታዊ ኣስቤዛ</span></span>
+    <span style="font-size:12px;color:var(--muted);font-weight:600;" id="catalogCount"></span>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
 
   <div class="section-title">
     <span>🧺 <span class="en-only">Household Combo Bundles</span> <span class="ti-only">ናይ ስድራቤት ፓኬጃት</span></span>
   </div>
   <div class="bundles-grid" id="bundlesGrid"></div>
-
-  <div class="section-title">
-    <span>🛍️ <span class="en-only">Everyday Groceries</span> <span class="ti-only">መዓልታዊ ኣስቤዛ</span></span>
-    <span style="font-size:12px;color:var(--muted);font-weight:600;" id="catalogCount">16 items</span>
-  </div>
-  <div class="product-grid" id="productGrid"></div>
 </main>
 
-<footer>
-  <div><strong>Addi Mart (ዓዲ ማርት)</strong> — Mekelle, Tigray, Ethiopia • Open Daily 7:00 AM – 9:00 PM</div>
-  <div>Telebirr: <strong>+251955005400</strong> • CBE: <strong>1000034736425</strong> • Bot: <strong>@AddiMartMekelle_bot</strong></div>
+<footer id="appFooter">
+  <div><strong>Addi Mart (ዓዲ ማርት)</strong> — Mekelle, Tigray • Open Daily 7:00 AM – 9:00 PM</div>
+  <div>Telegram Support: <strong>@AddiMartMekelle_bot</strong></div>
 </footer>
 
-<div class="sticky-checkout">
+<div id="appSticky" class="sticky-checkout">
   <div class="sticky-inner">
     <div>
-      <div style="font-size:12px;color:var(--muted);font-weight:600;">
-        <span id="stickyCount">0 items</span> in cart
-      </div>
-      <div style="font-size:17px;font-weight:800;color:var(--primary-dark);">
-        Subtotal: <span id="stickySubtotal">0</span> ETB
-      </div>
+      <div style="font-size:12px;color:var(--muted);font-weight:600;" id="stickyCountLine"></div>
+      <div style="font-size:16px;font-weight:800;color:var(--primary-dark);" id="stickyTotalLine"></div>
     </div>
-    <button class="btn-primary" onclick="openCart()">
-      Review & Checkout →
+    <button type="button" id="stickyOpenCartBtn" class="btn-primary">
+      <span class="en-only">Review Basket →</span>
+      <span class="ti-only">ዘንቢል ርኣዩ →</span>
     </button>
   </div>
 </div>
 
-<div class="backdrop" id="cartBackdrop" onclick="closeCartOnBackdrop(event)">
-  <aside class="drawer" aria-label="Shopping cart and checkout">
+<!-- Two-Step Checkout & Order Status Drawer -->
+<div class="backdrop" id="cartBackdrop" role="dialog" aria-modal="true" aria-labelledby="drawerHeading">
+  <aside class="drawer" id="drawerPanel">
     <div class="drawer-header">
-      <h2>🛒 <span class="en-only">Your Order</span> <span class="ti-only">ትእዛዝኩም</span></h2>
-      <button class="close-btn" onclick="closeCart()" aria-label="Close">✕</button>
-    </div>
-
-    <div id="cartItemsList"></div>
-
-    <div class="form-group">
-      <label>Customer Name / ሽም ዓሚል *</label>
-      <input type="text" id="custName" class="form-control" maxlength="80" placeholder="e.g. Selamawit / ሰላማዊት" oninput="resetOrderRef()" />
-    </div>
-
-    <div class="form-group">
-      <label>Phone Number / ቁጽሪ ስልኪ *</label>
-      <input type="tel" id="custPhone" class="form-control" placeholder="0914... or +251914..." oninput="resetOrderRef()" />
-    </div>
-
-    <div class="form-group">
-      <label>Mekelle Sub-City / ክፍለ ከተማ *</label>
-      <select id="subCity" class="form-control" onchange="resetOrderRef(); updateTotals()">
-        <option value="Hawelti" data-fee="40">Hawelti / ሓወልቲ (40 ETB)</option>
-        <option value="Kedamay Weyane" data-fee="40">Kedamay Weyane / ቀዳማይ ወያነ (40 ETB)</option>
-        <option value="Adi Haki" data-fee="40">Adi Haki / ዓዲ ሓቂ (40 ETB)</option>
-        <option value="Ayder" data-fee="50">Ayder / ዓይደር (50 ETB)</option>
-        <option value="Semien" data-fee="50">Semien / ሰሜን (50 ETB)</option>
-        <option value="Hadnet" data-fee="50">Hadnet / ሓድነት (50 ETB)</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Delivery Location Pin or Landmark / ኣድራሻ *</label>
-      <div class="gps-row">
-        <input type="text" id="locationInput" class="form-control" maxlength="300" placeholder="Nearby landmark or GPS link" oninput="resetOrderRef()" />
-        <button type="button" class="btn-secondary" onclick="pinGPS()">📍 Pin GPS</button>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>Payment Method / ኣገባብ ክፍሊት *</label>
-      <select id="paymentMethod" class="form-control" onchange="resetOrderRef(); togglePayDetails()">
-        <option value="Telebirr">Telebirr (ቴሌብር)</option>
-        <option value="CBE Transfer">CBE Transfer (ንግድ ባንክ)</option>
-        <option value="Cash">Cash on Delivery (ብጥረ ገንዘብ)</option>
-      </select>
-    </div>
-
-    <div class="pay-card" id="payInfoBox">
-      <div id="telebirrBox">
-        <strong>Telebirr Account (Addi Mart):</strong>
-        <div class="copy-row">
-          <span id="telebirrNum">+251955005400</span>
-          <button type="button" class="btn-secondary" onclick="copyText('+251955005400', this)">Copy</button>
+      <div>
+        <h2 id="drawerHeading" style="font-size:17px;"></h2>
+        <div class="step-pills" id="stepPillsRow" style="margin-top:4px;">
+          <span class="step-pill active" id="pillStep1">1. <span class="en-only">Basket</span><span class="ti-only">ዘንቢል</span></span>
+          <span class="step-pill" id="pillStep2">2. <span class="en-only">Delivery & Pay</span><span class="ti-only">ኣድራሻን ክፍሊትን</span></span>
         </div>
       </div>
-      <div id="cbeBox" style="display:none;">
-        <strong>CBE Account (Addi Mart):</strong>
-        <div class="copy-row">
-          <span id="cbeNum">1000034736425</span>
-          <button type="button" class="btn-secondary" onclick="copyText('1000034736425', this)">Copy</button>
+      <button type="button" id="closeDrawerBtn" class="close-btn" aria-label="Close order drawer">✕</button>
+    </div>
+
+    <!-- Recovery & Check Order Status always at the TOP when unresolved -->
+    <div id="orderStatusCard" class="status-card" role="alert" aria-live="assertive"></div>
+    <div id="drawerReconcileBox" class="alert-banner" role="alert"></div>
+
+    <!-- STEP 1: REVIEW BASKET -->
+    <div id="step1Container" style="display:flex;flex-direction:column;gap:12px;">
+      <div id="cartItemsList"></div>
+
+      <div class="form-group">
+        <label for="subPref">
+          <span class="en-only">Default if an item runs out</span>
+          <span class="ti-only"> • ኣቕሓ እንተተወዲኡ</span>
+        </label>
+        <select id="subPref" class="form-control">
+          <option value="Call me first">Call me first / ቅድሚ ምቕያር ደውሉለይ</option>
+          <option value="Skip unavailable item">Skip unavailable item / ዘየለ ኣቕሓ ኣውጽእዎ</option>
+        </select>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-line">
+          <span><span class="en-only">Items subtotal</span><span class="ti-only"> / ድምር ኣቑሑት</span></span>
+          <span><strong id="step1Subtotal">0</strong> ETB</span>
+        </div>
+        <div class="summary-line">
+          <span><span class="en-only">Bajaj delivery</span><span class="ti-only"> / መብጽሒ ባጃጅ</span></span>
+          <span id="step1DeliveryLabel">Select sub-city</span>
+        </div>
+        <div class="summary-total">
+          <span><span class="en-only">Estimated total</span><span class="ti-only"> / ጠቕላላ</span></span>
+          <span id="step1TotalLabel">0 ETB</span>
         </div>
       </div>
-      <div id="cashBox" style="display:none;">
-        <strong>Cash on Delivery:</strong> Pay your Bajaj rider upon delivery at your compound gate.
+
+      <button type="button" id="toStep2Btn" class="btn-primary drawer-primary-cta" style="width:100%;">
+        <span class="en-only">Continue to Delivery & Payment →</span>
+        <span class="ti-only">ናብ ኣድራሻን ክፍሊትን ቀጽል →</span>
+      </button>
+    </div>
+
+    <!-- STEP 2: DELIVERY & PAYMENT -->
+    <div id="step2Container" style="display:none;flex-direction:column;gap:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <button type="button" id="backToStep1Btn" class="btn-secondary">
+          ← <span class="en-only">Back to Basket</span><span class="ti-only">ናብ ዘንቢል ተመለስ</span>
+        </button>
+        <span style="font-size:12px;color:var(--muted);font-weight:700;" id="step2ItemCount"></span>
       </div>
+
+      <div class="form-row-2col">
+        <div class="form-group">
+          <label for="custName"><span class="en-only">Your Name *</span><span class="ti-only"> / ሽም *</span></label>
+          <input type="text" id="custName" class="form-control" maxlength="80" autocomplete="name" placeholder="Selamawit / ሰላማዊት" />
+        </div>
+
+        <div class="form-group">
+          <label for="custPhone"><span class="en-only">Phone *</span><span class="ti-only"> / ቁጽሪ ስልኪ *</span></label>
+          <input type="tel" id="custPhone" class="form-control" autocomplete="tel" placeholder="0914... / +2519..." />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="subCity"><span class="en-only">Mekelle Sub-City *</span><span class="ti-only"> / ክፍለ ከተማ *</span></label>
+        <select id="subCity" class="form-control">
+          <option value="">Select sub-city / ክፍለ ከተማ ምረጹ</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="locationInput"><span class="en-only">Landmark or GPS Pin *</span><span class="ti-only"> / ኣድራሻ ወይ GPS *</span></label>
+        <div class="gps-row">
+          <input type="text" id="locationInput" class="form-control" maxlength="300" placeholder="Nearby landmark or GPS link / ቀረባ ምልክት" />
+          <button type="button" id="pinGpsBtn" class="btn-secondary">📍 <span class="en-only">Pin GPS</span><span class="ti-only">GPS</span></button>
+        </div>
+        <small id="gpsStatusMsg" style="font-size:11px;color:var(--muted);" aria-live="polite"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="paymentMethod"><span class="en-only">Payment Method *</span><span class="ti-only"> / ኣገባብ ክፍሊት *</span></label>
+        <select id="paymentMethod" class="form-control">
+          <option value="Telebirr">Telebirr / ቴሌብር</option>
+          <option value="CBE Transfer">CBE Transfer / ንግድ ባንክ</option>
+          <option value="Cash">Cash on Delivery / ኣብ ምብጻሕ ብጥረ ገንዘብ</option>
+        </select>
+      </div>
+
+      <div class="pay-card" id="payInfoBox">
+        <div id="telebirrBox">
+          <strong>Telebirr / ቴሌብር (Addi Mart):</strong>
+          <div class="copy-row">
+            <span id="telebirrDisplay">+251955005400 (Addi Mart)</span>
+            <button type="button" id="copyTelebirrBtn" class="btn-secondary">Copy / ቅዳሕ</button>
+          </div>
+        </div>
+        <div id="cbeBox" style="display:none;">
+          <strong>CBE / ንግድ ባንክ (Addi Mart):</strong>
+          <div class="copy-row">
+            <span id="cbeDisplay">1000034736425 (Addi Mart)</span>
+            <button type="button" id="copyCbeBtn" class="btn-secondary">Copy / ቅዳሕ</button>
+          </div>
+        </div>
+        <div id="cashBox" style="display:none;">
+          <span class="en-only"><strong>Pay on delivery:</strong> Pay your Bajaj rider in cash at your gate.</span>
+          <span class="ti-only"><strong>ኣብ ምብጻሕ ይኽፈል:</strong> ባጃጅ ምስ በጽሐ ብጥረ ገንዘብ ይኽፈል።</span>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;">
+          <input type="checkbox" id="rememberDetailsChk" />
+          <span><span class="en-only">Save details</span><span class="ti-only"> / ኣድራሻይ ዓቅብ</span></span>
+        </label>
+        <button type="button" id="clearDetailsBtn" style="background:none;border:none;color:var(--muted);text-decoration:underline;font-size:12px;cursor:pointer;">
+          <span class="en-only">Clear saved</span><span class="ti-only">ኣጽሪ</span>
+        </button>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-line">
+          <span><span class="en-only">Items subtotal</span><span class="ti-only"> / ድምር ኣቑሑት</span></span>
+          <span><strong id="sumSubtotal">0</strong> ETB</span>
+        </div>
+        <div class="summary-line">
+          <span><span class="en-only">Bajaj delivery</span><span class="ti-only"> / መብጽሒ ባጃጅ</span></span>
+          <span id="sumDeliveryLabel">Select sub-city</span>
+        </div>
+        <div class="summary-total">
+          <span><span class="en-only">Total payable</span><span class="ti-only"> / ጠቕላላ ክፍሊት</span></span>
+          <span id="sumTotalLabel">0 ETB</span>
+        </div>
+      </div>
+
+      <button type="button" id="placeOrderBtn" class="btn-primary drawer-primary-cta" style="width:100%;font-size:15px;"></button>
     </div>
-
-    <div class="summary-box">
-      <div class="summary-line"><span>Items Subtotal</span><span><strong id="sumSubtotal">0</strong> ETB</span></div>
-      <div class="summary-line"><span>Bajaj Delivery Fee</span><span><strong id="sumDelivery">40</strong> ETB</span></div>
-      <div class="summary-total"><span>Total Payable</span><span><span id="sumTotal">0</span> ETB</span></div>
-    </div>
-
-    <button type="button" id="placeOrderBtn" class="btn-primary" style="width:100%;padding:13px;font-size:15px;" onclick="submitOrder()">
-      ✅ Place Order Now
-    </button>
-
-    <div id="orderStatusCard" class="status-card"></div>
   </aside>
 </div>
 
 <script>
-  // ==========================================================================
-  // BACKEND CONFIGURATION (Code.gs v9.0 Web App /exec URL)
-  // ==========================================================================
+(function () {
+  'use strict';
+
   const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx-sO3593Vq_NVXXbZGLG9DhIxQINH68NSe7UneYSuz6Useh2u8sWqwy7uzHzXqFSuR4Q/exec';
+  const STORAGE_KEYS = {
+    CART: 'addi_mart_cart_v3',
+    ITEM_SUBS: 'addi_mart_item_subs_v5',
+    PENDING: 'addi_mart_pending_checkout_v3',
+    PROFILE: 'addi_mart_profile_v3',
+    LAST_ORDER: 'addi_mart_last_order_v3',
+    LANG: 'addi_mart_lang_v5'
+  };
+
+  const SUBCITY_META = [
+    { key: 'Hawelti', en: 'Hawelti', ti: 'ሓወልቲ', defaultFee: 40 },
+    { key: 'Kedamay Weyane', en: 'Kedamay Weyane', ti: 'ቀዳማይ ወያነ', defaultFee: 40 },
+    { key: 'Adi Haki', en: 'Adi Haki', ti: 'ዓዲ ሓቂ', defaultFee: 40 },
+    { key: 'Ayder', en: 'Ayder', ti: 'ዓይደር', defaultFee: 50 },
+    { key: 'Semien', en: 'Semien', ti: 'ሰሜን', defaultFee: 50 },
+    { key: 'Hadnet', en: 'Hadnet', ti: 'ሓድነት', defaultFee: 50 }
+  ];
+  const VALID_SUBCITIES = SUBCITY_META.map(s => s.key);
+  const VALID_PAYMENTS = ['Telebirr', 'CBE Transfer', 'Cash'];
+
+  const CATEGORY_TRANSLATIONS = {
+    'All': { en: 'All', ti: 'ኩሉ' },
+    'Grains & Flour': { en: 'Grains & Flour', ti: 'እኽልን ሓሪጭን' },
+    'Oils & Sweeteners': { en: 'Oils & Sugar', ti: 'ዘይትን ሽኮርን' },
+    'Spices & Legumes': { en: 'Spices & Shiro', ti: 'ቅመማትን ሽሮን' },
+    'Fresh Produce': { en: 'Vegetables', ti: 'ኣሕምልቲ' },
+    'Dairy & Eggs': { en: 'Dairy & Eggs', ti: 'ጸባን እንቋቑሖን' },
+    'Household & Beverage': { en: 'Coffee & Home', ti: 'ቡንን ናይ ገዛን' }
+  };
 
   const FALLBACK_PRODUCTS = [
-    { sku: 'AM-GR-001', cat: 'Grains & Flour', en: 'White Teff', ti: 'ጻዕዳ ጣፍ', unit: 'kg', price: 118, stock: 65, emoji: '🌾' },
-    { sku: 'AM-GR-002', cat: 'Grains & Flour', en: 'Red Teff', ti: 'ቀይሕ ጣፍ', unit: 'kg', price: 105, stock: 60, emoji: '🌾' },
-    { sku: 'AM-GR-003', cat: 'Grains & Flour', en: 'Wheat Flour', ti: 'ሓሪጭ ስርናይ', unit: 'kg', price: 78, stock: 170, emoji: '🥖' },
-    { sku: 'AM-GR-004', cat: 'Grains & Flour', en: 'Sorghum / Mashila', ti: 'መሸላ', unit: 'kg', price: 64, stock: 80, emoji: '🌿' },
-    { sku: 'AM-OL-001', cat: 'Oils & Sweeteners', en: 'Sunflower Cooking Oil 5L', ti: 'ዘይቲ', unit: 'Bottle (5L)', price: 1040, stock: 12, emoji: '🛢️' },
-    { sku: 'AM-OL-002', cat: 'Oils & Sweeteners', en: 'Refined Sugar', ti: 'ሽኮር', unit: 'kg', price: 98, stock: 90, emoji: '🍬' },
-    { sku: 'AM-SP-001', cat: 'Spices & Legumes', en: 'Mekelle Berbere', ti: 'በርበረ', unit: 'kg', price: 450, stock: 57, emoji: '🌶️' },
-    { sku: 'AM-SP-002', cat: 'Spices & Legumes', en: 'Roasted Shiro Powder', ti: 'ሽሮ', unit: 'kg', price: 198, stock: 36, emoji: '🍲' },
-    { sku: 'AM-SP-003', cat: 'Spices & Legumes', en: 'Split Red Lentils', ti: 'ምስር ክክ', unit: 'kg', price: 155, stock: 60, emoji: '🫘' },
-    { sku: 'AM-PR-001', cat: 'Fresh Produce', en: 'Fresh Tomatoes', ti: 'ኮሚደረ', unit: 'kg', price: 45, stock: 7, emoji: '🍅' },
-    { sku: 'AM-PR-002', cat: 'Fresh Produce', en: 'Red Onions', ti: 'ቀይሕ ሽጉርቲ', unit: 'kg', price: 62, stock: 70, emoji: '🧅' },
-    { sku: 'AM-PR-003', cat: 'Fresh Produce', en: 'Potatoes', ti: 'ድንሽ', unit: 'kg', price: 38, stock: 70, emoji: '🥔' },
-    { sku: 'AM-DY-001', cat: 'Dairy & Eggs', en: 'Farm Eggs (Tray of 30)', ti: 'እንቋቑሖ', unit: 'Tray (30)', price: 365, stock: 34, emoji: '🥚' },
-    { sku: 'AM-DY-002', cat: 'Dairy & Eggs', en: 'Pasteurized Milk 1L', ti: 'ጸባ', unit: 'Liter', price: 80, stock: 33, emoji: '🥛' },
-    { sku: 'AM-HH-001', cat: 'Household & Beverage', en: 'Ethiopian Coffee Beans', ti: 'ቡን', unit: 'kg', price: 520, stock: 25, emoji: '☕' },
-    { sku: 'AM-HH-002', cat: 'Household & Beverage', en: 'Laundry Bar Soap', ti: 'ሳሙና', unit: 'Piece', price: 52, stock: 60, emoji: '🧼' }
+    { sku: 'AM-GR-001', cat: 'Grains & Flour', en: 'White Teff', ti: 'ጻዕዳ ጣፍ', unit: '1 kg', price: 118, stock: 65, emoji: '🌾', aliases: 'tef taff white' },
+    { sku: 'AM-GR-002', cat: 'Grains & Flour', en: 'Red Teff', ti: 'ቀይሕ ጣፍ', unit: '1 kg', price: 105, stock: 60, emoji: '🌾', aliases: 'tef taff red keyih' },
+    { sku: 'AM-GR-003', cat: 'Grains & Flour', en: 'Wheat Flour', ti: 'ሓሪጭ ስርናይ', unit: '1 kg', price: 78, stock: 170, emoji: '🥖', aliases: 'harich sirnay fino' },
+    { sku: 'AM-GR-004', cat: 'Grains & Flour', en: 'Sorghum / Mashila', ti: 'መሸላ', unit: '1 kg', price: 64, stock: 80, emoji: '🌿', aliases: 'meshela' },
+    { sku: 'AM-OL-001', cat: 'Oils & Sweeteners', en: 'Sunflower Cooking Oil', ti: 'ዘይቲ መግቢ', unit: '5 L Bottle', price: 1040, stock: 12, emoji: '🛢️', aliases: 'zeyti cooking oil' },
+    { sku: 'AM-OL-002', cat: 'Oils & Sweeteners', en: 'Refined Sugar', ti: 'ሽኮር', unit: '1 kg', price: 98, stock: 90, emoji: '🍬', aliases: 'shikor sukar' },
+    { sku: 'AM-SP-001', cat: 'Spices & Legumes', en: 'Mekelle Berbere', ti: 'በርበረ', unit: '1 kg', price: 450, stock: 57, emoji: '🌶️', aliases: 'berberi pepper' },
+    { sku: 'AM-SP-002', cat: 'Spices & Legumes', en: 'Roasted Shiro Powder', ti: 'ሽሮ', unit: '1 kg', price: 198, stock: 36, emoji: '🍲', aliases: 'shiro mitin' },
+    { sku: 'AM-SP-003', cat: 'Spices & Legumes', en: 'Split Red Lentils', ti: 'ምስር ክክ', unit: '1 kg', price: 155, stock: 60, emoji: '🫘', aliases: 'misir kik' },
+    { sku: 'AM-PR-001', cat: 'Fresh Produce', en: 'Fresh Tomatoes', ti: 'ኮሚደረ', unit: '1 kg', price: 45, stock: 7, emoji: '🍅', aliases: 'komidere timatim' },
+    { sku: 'AM-PR-002', cat: 'Fresh Produce', en: 'Red Onions', ti: 'ቀይሕ ሽጉርቲ', unit: '1 kg', price: 62, stock: 70, emoji: '🧅', aliases: 'shigurti shinkurt' },
+    { sku: 'AM-PR-003', cat: 'Fresh Produce', en: 'Potatoes', ti: 'ድንሽ', unit: '1 kg', price: 38, stock: 70, emoji: '🥔', aliases: 'dinish dinich' },
+    { sku: 'AM-DY-001', cat: 'Dairy & Eggs', en: 'Farm Eggs', ti: 'እንቋቑሖ', unit: 'Tray of 30', price: 365, stock: 34, emoji: '🥚', aliases: 'enkuakho inkulal' },
+    { sku: 'AM-DY-002', cat: 'Dairy & Eggs', en: 'Pasteurized Milk', ti: 'ጸባ', unit: '1 L', price: 80, stock: 33, emoji: '🥛', aliases: 'tseba wetet' },
+    { sku: 'AM-HH-001', cat: 'Household & Beverage', en: 'Ethiopian Coffee Beans', ti: 'ቡን', unit: '1 kg', price: 520, stock: 25, emoji: '☕', aliases: 'bun buna' },
+    { sku: 'AM-HH-002', cat: 'Household & Beverage', en: 'Laundry Bar Soap', ti: 'ሳሙና', unit: '1 Piece', price: 52, stock: 60, emoji: '🧼', aliases: 'samuna' }
   ];
 
   const BUNDLES = [
     {
       id: 'BND-1',
-      tag: 'POPULAR PACK',
+      tagEn: 'FAMILY PACK',
+      tagTi: 'ናይ ስድራቤት ፓኬጅ',
       en: 'Family Pantry Starter Bundle',
-      ti: 'ናይ ስድራቤት ቀንዲ ፓኬጅ',
-      desc: '5kg White Teff + 5L Cooking Oil + 2kg Sugar + 1kg Berbere',
+      ti: 'ቀንዲ ናይ ስድራቤት ኣስቤዛ',
+      descEn: '5kg White Teff + 5L Cooking Oil + 2kg Sugar + 1kg Berbere',
+      descTi: '5 ኪሎ ጻዕዳ ጣፍ + 5 ሊትሮ ዘይቲ + 2 ኪሎ ሽኮር + 1 ኪሎ በርበረ',
       items: { 'AM-GR-001': 5, 'AM-OL-001': 1, 'AM-OL-002': 2, 'AM-SP-001': 1 }
     },
     {
       id: 'BND-2',
-      tag: 'WEEKEND FAVORITE',
+      tagEn: 'KITCHEN FAVORITE',
+      tagTi: 'ተፈታዊ ፓኬጅ',
       en: 'Coffee & Shiro Kitchen Pack',
       ti: 'ናይ ቡንን ሽሮን ፓኬጅ',
-      desc: '1kg Coffee Beans + 2kg Shiro Powder + 1 Tray Eggs (30) + 2kg Onions',
+      descEn: '1kg Coffee Beans + 2kg Shiro + 30 Eggs + 2kg Red Onions',
+      descTi: '1 ኪሎ ቡን + 2 ኪሎ ሽሮ + 30 እንቋቑሖ + 2 ኪሎ ቀይሕ ሽጉርቲ',
       items: { 'AM-HH-001': 1, 'AM-SP-002': 2, 'AM-DY-001': 1, 'AM-PR-002': 2 }
     }
   ];
 
-  let PRODUCTS = FALLBACK_PRODUCTS.map(p => ({ ...p }));
-  let cart = JSON.parse(localStorage.getItem('addi_mart_cart') || '{}');
-  let activeCategory = 'All';
-  let activeClientOrderRef = null;
-  let commitUncertainLocked = false;
-  let isSubmitting = false;
-
-  // Telegram Mini App SDK initialization
-  const tgWebApp = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
-  if (tgWebApp) {
-    tgWebApp.ready();
-    tgWebApp.expand();
-    const u = tgWebApp.initDataUnsafe && tgWebApp.initDataUnsafe.user;
-    if (u && u.first_name) {
-      const fullName = [u.first_name, u.last_name || ''].join(' ').trim();
-      document.getElementById('custName').value = fullName;
+  const SafeStore = {
+    get(key) {
+      try {
+        const raw = window.localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    },
+    set(key, val) {
+      try {
+        const serialized = JSON.stringify(val);
+        window.localStorage.setItem(key, serialized);
+        return window.localStorage.getItem(key) === serialized;
+      } catch (e) {
+        return false;
+      }
+    },
+    remove(key) {
+      try {
+        window.localStorage.removeItem(key);
+        return window.localStorage.getItem(key) === null;
+      } catch (e) {
+        return false;
+      }
     }
-    if (tgWebApp.initData) {
-      document.getElementById('authModeBadge').textContent = '✓ Verified Telegram Mini App';
+  };
+
+  function sanitizeCartObject(raw) {
+    const clean = Object.create(null);
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return clean;
+    Object.keys(raw).forEach(sku => {
+      if (!Object.prototype.hasOwnProperty.call(raw, sku)) return;
+      if (!/^[A-Za-z0-9._-]{1,35}$/.test(sku)) return;
+      const qty = raw[sku];
+      if (typeof qty === 'number' && Number.isInteger(qty) && qty >= 1 && qty <= 100) {
+        clean[sku] = qty;
+      }
+    });
+    return clean;
+  }
+
+  function sanitizeLinePrices(raw, cartObj) {
+    const prices = Object.create(null);
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+    const skus = Object.keys(cartObj);
+    for (let i = 0; i < skus.length; i++) {
+      const sku = skus[i];
+      const val = Number(raw[sku]);
+      if (!Number.isFinite(val) || val <= 0) return null;
+      prices[sku] = val;
+    }
+    return prices;
+  }
+
+  function validateConfirmedOrderShape(data) {
+    if (!data || data.ok !== true) return false;
+    if (typeof data.orderId !== 'string' || !data.orderId.trim()) return false;
+    if (!Number.isFinite(Number(data.total)) || Number(data.total) <= 0) return false;
+    if (!VALID_PAYMENTS.includes(String(data.payment || ''))) return false;
+    return true;
+  }
+
+  function loadPendingCheckout() {
+    const raw = SafeStore.get(STORAGE_KEYS.PENDING);
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+    if (typeof raw.clientOrderRef !== 'string' || !/^[A-Za-z0-9._:-]{8,80}$/.test(raw.clientOrderRef)) {
+      return null;
+    }
+
+    const allowedStates = ['submitting', 'unknown', 'retryable', 'confirmed'];
+    const state = allowedStates.includes(raw.state) ? raw.state : 'unknown';
+    const createdAt = Number(raw.createdAt);
+    const hasValidTimestamp = Number.isFinite(createdAt) && createdAt > 0;
+
+    if (state === 'confirmed') {
+      return validateConfirmedOrderShape(raw.confirmedOrder)
+        ? { clientOrderRef: raw.clientOrderRef, state: 'confirmed', confirmedOrder: raw.confirmedOrder, createdAt: hasValidTimestamp ? createdAt : Date.now() }
+        : null;
+    }
+
+    const snap = raw.snapshot;
+    const cleanCart = snap && typeof snap === 'object' ? sanitizeCartObject(snap.cart) : Object.create(null);
+    const hasValidCart = Object.keys(cleanCart).length > 0;
+    const cleanPrices = hasValidCart && snap ? sanitizeLinePrices(snap.linePrices, cleanCart) : null;
+    const deliveryFee = snap ? Number(snap.deliveryFee) : NaN;
+    const reviewedTotal = snap ? Number(snap.reviewedTotal) : NaN;
+
+    const isComplete = Boolean(
+      hasValidTimestamp &&
+      snap &&
+      typeof snap.customerName === 'string' && snap.customerName.trim() &&
+      typeof snap.phone === 'string' && snap.phone.trim() &&
+      VALID_SUBCITIES.includes(snap.subCity) &&
+      typeof snap.location === 'string' && snap.location.trim() &&
+      VALID_PAYMENTS.includes(snap.payment) &&
+      hasValidCart &&
+      cleanPrices &&
+      Number.isFinite(deliveryFee) && deliveryFee >= 0 &&
+      Number.isFinite(reviewedTotal) && reviewedTotal > 0
+    );
+
+    if (!isComplete) {
+      return {
+        clientOrderRef: raw.clientOrderRef,
+        state: 'unknown',
+        corrupted: true,
+        createdAt: hasValidTimestamp ? createdAt : Date.now(),
+        snapshot: {
+          customerName: (snap && typeof snap.customerName === 'string') ? snap.customerName : '',
+          phone: (snap && typeof snap.phone === 'string') ? snap.phone : '',
+          subCity: (snap && VALID_SUBCITIES.includes(snap.subCity)) ? snap.subCity : '',
+          location: (snap && typeof snap.location === 'string') ? snap.location : '',
+          payment: (snap && VALID_PAYMENTS.includes(snap.payment)) ? snap.payment : 'Telebirr',
+          subPref: (snap && typeof snap.subPref === 'string') ? snap.subPref : 'Call me first',
+          cart: cleanCart,
+          linePrices: cleanPrices || Object.create(null),
+          deliveryFee: Number.isFinite(deliveryFee) && deliveryFee >= 0 ? deliveryFee : 0,
+          reviewedTotal: Number.isFinite(reviewedTotal) && reviewedTotal > 0 ? reviewedTotal : 0
+        }
+      };
+    }
+
+    return {
+      clientOrderRef: raw.clientOrderRef,
+      state: state,
+      corrupted: false,
+      createdAt: createdAt,
+      snapshot: {
+        customerName: snap.customerName.trim(),
+        phone: snap.phone.trim(),
+        subCity: snap.subCity,
+        location: snap.location.trim(),
+        payment: snap.payment,
+        subPref: typeof snap.subPref === 'string' ? snap.subPref : 'Call me first',
+        cart: cleanCart,
+        linePrices: cleanPrices,
+        deliveryFee: deliveryFee,
+        reviewedTotal: reviewedTotal
+      }
+    };
+  }
+
+  let PRODUCTS = FALLBACK_PRODUCTS.map(p => ({ ...p }));
+  let liveFees = Object.create(null);
+  SUBCITY_META.forEach(s => { liveFees[s.key] = s.defaultFee; });
+
+  let liveCatalogLoaded = false;
+  let paymentConfig = {
+    telebirr: '+251955005400 (Addi Mart)',
+    cbe: '1000034736425 (Addi Mart)'
+  };
+
+  let cart = sanitizeCartObject(SafeStore.get(STORAGE_KEYS.CART));
+  let itemSubOverrides = SafeStore.get(STORAGE_KEYS.ITEM_SUBS) || Object.create(null);
+  let pendingCheckout = loadPendingCheckout();
+  let unacknowledgedStockChanges = [];
+  let activeCategory = 'All';
+  let selectedSubCity = '';
+  let drawerStep = 1;
+  let lastFocusedBeforeDrawer = null;
+  let isCheckingStatus = false;
+  let gpsRequestSeq = 0;
+  let userEditedLocationAfterGps = false;
+
+  const tgWebApp = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+
+  function showNativeNotice(message) {
+    if (tgWebApp && typeof tgWebApp.showAlert === 'function') {
+      try {
+        tgWebApp.showAlert(String(message));
+        return;
+      } catch (e) {}
+    }
+    window.alert(String(message));
+  }
+
+  function showNativeConfirm(message, onConfirm) {
+    if (tgWebApp && typeof tgWebApp.showConfirm === 'function') {
+      try {
+        tgWebApp.showConfirm(String(message), confirmed => {
+          if (confirmed) onConfirm();
+        });
+        return;
+      } catch (e) {}
+    }
+    if (window.confirm(String(message))) onConfirm();
+  }
+
+  function persistPendingRecord(record) {
+    if (!record) {
+      pendingCheckout = null;
+      const removed = SafeStore.remove(STORAGE_KEYS.PENDING);
+      syncLockUiState();
+      return removed;
+    }
+    const ok = SafeStore.set(STORAGE_KEYS.PENDING, record);
+    if (ok) {
+      pendingCheckout = record;
+      syncLockUiState();
+    }
+    return ok;
+  }
+
+  if (tgWebApp) {
+    try {
+      tgWebApp.ready();
+      tgWebApp.expand();
+      if (tgWebApp.BackButton) {
+        tgWebApp.BackButton.onClick(() => {
+          const isOpen = document.getElementById('cartBackdrop').classList.contains('open');
+          if (!isOpen) return;
+          if (drawerStep === 2 && !isCheckoutLocked()) {
+            setDrawerStep(1);
+          } else {
+            closeCart();
+          }
+        });
+      }
+      if (tgWebApp.LocationManager && !tgWebApp.LocationManager.isInited) {
+        tgWebApp.LocationManager.init();
+      }
+    } catch (e) {}
+  }
+
+  function isCheckoutLocked() {
+    return Boolean(
+      pendingCheckout &&
+      (pendingCheckout.state === 'submitting' || pendingCheckout.state === 'unknown' || pendingCheckout.state === 'retryable')
+    );
+  }
+
+  function getActiveDeliveryFee() {
+    if (isCheckoutLocked() && pendingCheckout.snapshot.subCity) {
+      return Number(pendingCheckout.snapshot.deliveryFee || 0);
+    }
+    if (!selectedSubCity || !Object.prototype.hasOwnProperty.call(liveFees, selectedSubCity)) {
+      return null;
+    }
+    return Number(liveFees[selectedSubCity]);
+  }
+
+  /* Synchronize both Homepage & Checkout Sub-City dropdowns with live fees */
+  function populateSubCitySelectors() {
+    const homeSel = document.getElementById('homeSubCity');
+    const drawerSel = document.getElementById('subCity');
+    const current = isCheckoutLocked() ? (pendingCheckout.snapshot.subCity || '') : selectedSubCity;
+
+    [homeSel, drawerSel].forEach(sel => {
+      clearNode(sel);
+      const placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.textContent = 'Select sub-city / ክፍለ ከተማ ምረጹ';
+      sel.appendChild(placeholder);
+
+      SUBCITY_META.forEach(sc => {
+        const fee = liveFees[sc.key];
+        const opt = document.createElement('option');
+        opt.value = sc.key;
+        opt.textContent = sc.en + ' / ' + sc.ti + ' — ' + fee + ' ETB';
+        sel.appendChild(opt);
+      });
+      sel.value = VALID_SUBCITIES.includes(current) ? current : '';
+    });
+
+    homeSel.classList.toggle('needs-choice', !homeSel.value);
+  }
+
+  function setSelectedSubCity(val) {
+    if (isCheckoutLocked()) return;
+    selectedSubCity = VALID_SUBCITIES.includes(val) ? val : '';
+    populateSubCitySelectors();
+    updateTotals();
+    if (document.getElementById('rememberDetailsChk').checked) {
+      persistProfileIfOptedIn();
     }
   }
 
-  function newOrderRef_() {
+  function syncTelegramMainButton(count, subtotal, fee) {
+    if (!tgWebApp || !tgWebApp.MainButton) return;
+    try {
+      const mb = tgWebApp.MainButton;
+      const drawerOpen = document.getElementById('cartBackdrop').classList.contains('open');
+      const locked = isCheckoutLocked();
+
+      if (locked) {
+        document.body.classList.add('has-tg-mainbutton');
+        mb.setText(drawerOpen ? 'Check Order Status' : 'Check Order Status');
+        mb.color = '#1B5E20';
+        mb.show();
+        mb.enable();
+        return;
+      }
+
+      if (count <= 0) {
+        document.body.classList.remove('has-tg-mainbutton');
+        mb.hide();
+        return;
+      }
+
+      document.body.classList.add('has-tg-mainbutton');
+      mb.color = '#1B5E20';
+
+      if (!drawerOpen) {
+        mb.setText('Review Basket (' + count + ') • ' + subtotal.toLocaleString() + ' ETB');
+      } else if (drawerStep === 1) {
+        mb.setText('Continue to Delivery & Payment →');
+      } else {
+        const totalText = fee === null
+          ? 'Place Order • Select Area'
+          : ('Place Order • ' + (subtotal + fee).toLocaleString() + ' ETB');
+        mb.setText(totalText);
+      }
+      mb.show();
+      mb.enable();
+    } catch (e) {}
+  }
+
+  if (tgWebApp && tgWebApp.MainButton) {
+    try {
+      tgWebApp.MainButton.onClick(() => {
+        const drawerOpen = document.getElementById('cartBackdrop').classList.contains('open');
+        if (isCheckoutLocked()) {
+          if (!drawerOpen) openCart();
+          else verifyPendingOrderStatus();
+          return;
+        }
+        if (!drawerOpen) {
+          openCart();
+        } else if (drawerStep === 1) {
+          goToStep2();
+        } else {
+          submitOrder();
+        }
+      });
+    } catch (e) {}
+  }
+
+  function updateTelegramChrome() {
+    if (!tgWebApp) return;
+    try {
+      const hasCart = Object.keys(cart).length > 0;
+      if (hasCart || isCheckoutLocked()) {
+        if (tgWebApp.enableClosingConfirmation) tgWebApp.enableClosingConfirmation();
+      } else {
+        if (tgWebApp.disableClosingConfirmation) tgWebApp.disableClosingConfirmation();
+      }
+    } catch (e) {}
+  }
+
+  function hapticLight() {
+    try {
+      if (tgWebApp && tgWebApp.HapticFeedback && tgWebApp.HapticFeedback.impactOccurred) {
+        tgWebApp.HapticFeedback.impactOccurred('light');
+      }
+    } catch (e) {}
+  }
+
+  function saveCart() {
+    SafeStore.set(STORAGE_KEYS.CART, cart);
+    SafeStore.set(STORAGE_KEYS.ITEM_SUBS, itemSubOverrides);
+    updateTotals();
+    updateTelegramChrome();
+  }
+
+  function generateOrderRef() {
     const prefix = (tgWebApp && tgWebApp.initData) ? 'TMA' : 'WEB';
     const rand = Math.random().toString(36).substring(2, 8).toUpperCase();
     return prefix + '-' + Date.now() + '-' + rand;
   }
 
-  // Keep the exact same clientOrderRef across retries until the user modifies cart/fields
-  function resetOrderRef() {
-    if (!commitUncertainLocked) {
-      activeClientOrderRef = null;
+  function extractCopyAccount(str) {
+    const match = String(str || '').match(/^([+\d]+)/);
+    return match ? match[1] : String(str || '').trim();
+  }
+
+  function applyPaymentConfig() {
+    document.getElementById('telebirrDisplay').textContent = paymentConfig.telebirr;
+    document.getElementById('cbeDisplay').textContent = paymentConfig.cbe;
+  }
+
+  function applySavedLanguage() {
+    const saved = SafeStore.get(STORAGE_KEYS.LANG);
+    const lang = ['both', 'en', 'ti'].includes(saved) ? saved : 'both';
+    document.body.classList.remove('lang-both', 'lang-en', 'lang-ti');
+    document.body.classList.add('lang-' + lang);
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+  }
+
+  function loadSavedProfile() {
+    const profile = SafeStore.get(STORAGE_KEYS.PROFILE);
+    if (profile && typeof profile === 'object') {
+      document.getElementById('rememberDetailsChk').checked = true;
+      if (typeof profile.customerName === 'string') document.getElementById('custName').value = profile.customerName.slice(0, 80);
+      if (typeof profile.phone === 'string') document.getElementById('custPhone').value = profile.phone.slice(0, 25);
+      if (typeof profile.subCity === 'string' && VALID_SUBCITIES.includes(profile.subCity)) {
+        selectedSubCity = profile.subCity;
+      }
+      if (typeof profile.location === 'string') document.getElementById('locationInput').value = profile.location.slice(0, 300);
+      if (typeof profile.payment === 'string' && VALID_PAYMENTS.includes(profile.payment)) {
+        document.getElementById('paymentMethod').value = profile.payment;
+      }
+      if (typeof profile.subPref === 'string') {
+        document.getElementById('subPref').value = profile.subPref;
+      }
+      togglePayDetails();
+    } else if (tgWebApp && tgWebApp.initDataUnsafe && tgWebApp.initDataUnsafe.user) {
+      const u = tgWebApp.initDataUnsafe.user;
+      if (u.first_name) {
+        document.getElementById('custName').value = [u.first_name, u.last_name || ''].join(' ').trim().slice(0, 80);
+      }
+    }
+  }
+
+  function persistProfileIfOptedIn() {
+    if (!document.getElementById('rememberDetailsChk').checked) {
+      SafeStore.remove(STORAGE_KEYS.PROFILE);
+      return;
+    }
+    SafeStore.set(STORAGE_KEYS.PROFILE, {
+      customerName: document.getElementById('custName').value.trim().slice(0, 80),
+      phone: document.getElementById('custPhone').value.trim().slice(0, 25),
+      subCity: selectedSubCity,
+      location: document.getElementById('locationInput').value.trim().slice(0, 300),
+      payment: document.getElementById('paymentMethod').value,
+      subPref: document.getElementById('subPref').value
+    });
+  }
+
+  async function fetchJsonWithTimeout(url, options, timeoutMs) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { ...options, signal: controller.signal });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return await res.json();
+    } finally {
+      clearTimeout(timer);
     }
   }
 
   async function syncLiveCatalog() {
-    const statusEl = document.getElementById('syncStatusText');
-    const dotEl = document.getElementById('syncDot');
+    const quietNotice = document.getElementById('quietSyncNotice');
     try {
-      const res = await fetch(WEB_APP_URL + '?action=catalog', { method: 'GET' });
-      const data = await res.json();
-      if (!data || !data.ok || !Array.isArray(data.products)) {
+      const data = await fetchJsonWithTimeout(WEB_APP_URL + '?action=catalog', { method: 'GET' }, 15000);
+      if (!data || data.ok !== true || !Array.isArray(data.products) || data.products.length === 0) {
         throw new Error('Invalid catalog payload');
       }
 
       const fallbackMap = Object.create(null);
       FALLBACK_PRODUCTS.forEach(p => { fallbackMap[p.sku] = p; });
 
-      const liveSkus = new Set();
-      const merged = [];
+      const seenSkus = new Set();
+      const validated = [];
 
-      data.products.forEach(lp => {
-        liveSkus.add(lp.sku);
-        const fb = fallbackMap[lp.sku];
-        if (fb) {
-          merged.push({
-            ...fb,
-            cat: lp.category || fb.cat,
-            unit: lp.unit || fb.unit,
-            price: Number(lp.price) || fb.price,
-            stock: Math.max(0, Math.floor(Number(lp.stock) || 0))
-          });
-        } else {
-          const parts = String(lp.name || lp.sku).split('/');
-          merged.push({
-            sku: lp.sku,
-            cat: lp.category || 'Other',
-            en: parts[0].trim(),
-            ti: parts[1] ? parts[1].trim() : parts[0].trim(),
-            unit: lp.unit || 'unit',
-            price: Number(lp.price) || 0,
-            stock: Math.max(0, Math.floor(Number(lp.stock) || 0)),
-            emoji: '🛒'
-          });
+      for (let i = 0; i < data.products.length; i++) {
+        const lp = data.products[i];
+        if (!lp || typeof lp !== 'object') throw new Error('Malformed product entry');
+        const sku = String(lp.sku || '').trim();
+        if (!/^[A-Za-z0-9._-]{1,35}$/.test(sku) || seenSkus.has(sku)) {
+          throw new Error('Duplicate or invalid SKU in live catalog');
         }
-      });
-
-      // Keep any fallback items not returned by live catalog marked as 0 stock
-      FALLBACK_PRODUCTS.forEach(fb => {
-        if (!liveSkus.has(fb.sku)) {
-          merged.push({ ...fb, stock: 0 });
+        const price = Number(lp.price);
+        const rawStock = Number(lp.stock);
+        const rawName = String(lp.name || '').trim();
+        if (!rawName || !Number.isFinite(price) || price <= 0 || !Number.isFinite(rawStock) || rawStock < 0) {
+          throw new Error('Invalid product price, stock, or name');
         }
-      });
 
-      PRODUCTS = merged;
-
-      // Clamp any saved cart items to current live stock
-      Object.keys(cart).forEach(sku => {
-        const p = PRODUCTS.find(x => x.sku === sku);
-        if (!p || p.stock <= 0) delete cart[sku];
-        else if (cart[sku] > p.stock) cart[sku] = p.stock;
-      });
-      saveCart();
-
-      if (data.subCities) {
-        const subSel = document.getElementById('subCity');
-        Array.from(subSel.options).forEach(opt => {
-          if (data.subCities[opt.value] !== undefined) {
-            opt.dataset.fee = String(data.subCities[opt.value]);
-          }
+        seenSkus.add(sku);
+        const fb = fallbackMap[sku];
+        const parts = rawName.split('/');
+        validated.push({
+          sku: sku,
+          cat: String(lp.category || (fb ? fb.cat : 'Other')).trim(),
+          en: parts[0].trim(),
+          ti: parts[1] ? parts[1].trim() : (fb ? fb.ti : parts[0].trim()),
+          unit: String(lp.unit || (fb ? fb.unit : '1 unit')).trim(),
+          price: price,
+          stock: Math.floor(rawStock),
+          emoji: fb ? fb.emoji : '🛒',
+          imageUrl: typeof lp.imageUrl === 'string' && lp.imageUrl.startsWith('https://') ? lp.imageUrl : '',
+          aliases: fb ? fb.aliases : ''
         });
       }
 
+      FALLBACK_PRODUCTS.forEach(fb => {
+        if (!seenSkus.has(fb.sku)) {
+          validated.push({ ...fb, stock: 0 });
+        }
+      });
+
+      validated.sort((a, b) => (b.stock > 0 ? 1 : 0) - (a.stock > 0 ? 1 : 0));
+      PRODUCTS = validated;
+      liveCatalogLoaded = true;
+
+      if (typeof data.telebirr === 'string' && data.telebirr.trim()) paymentConfig.telebirr = data.telebirr.trim();
+      if (typeof data.cbe === 'string' && data.cbe.trim()) paymentConfig.cbe = data.cbe.trim();
+      applyPaymentConfig();
+
+      if (data.subCities && typeof data.subCities === 'object') {
+        VALID_SUBCITIES.forEach(sc => {
+          const fee = Number(data.subCities[sc]);
+          if (Number.isFinite(fee) && fee >= 0) liveFees[sc] = fee;
+        });
+      }
+      populateSubCitySelectors();
+
+      reconcileDraftCartWithLiveStock();
       renderCategories();
-      renderBundles();
       renderCatalog();
+      renderBundles();
       renderCartItems();
       updateTotals();
+      renderReorderBanner();
 
-      dotEl.style.background = '#16A34A';
-      statusEl.textContent = 'Live inventory & prices synced (' + data.products.length + ' items in stock)';
+      quietNotice.classList.remove('visible');
     } catch (err) {
-      dotEl.style.background = '#F59E0B';
-      statusEl.textContent = 'Offline catalog mode • Prices verified at checkout';
+      quietNotice.textContent = '⚠️ Offline snapshot shown — live stock & fees will be confirmed at checkout / ኣብ ናይ መወዳእታ ትእዛዝ ዋጋ ክረጋገጽ እዩ።';
+      quietNotice.classList.add('visible');
     }
   }
 
-  function setLang(mode, btn) {
-    document.body.className = 'lang-' + mode;
-    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+  function reconcileDraftCartWithLiveStock() {
+    if (isCheckoutLocked()) return;
+    const changes = [];
+    Object.keys(cart).forEach(sku => {
+      const p = PRODUCTS.find(x => x.sku === sku);
+      const requested = cart[sku];
+      if (!p || p.stock <= 0) {
+        changes.push((p ? p.en : sku) + ' (removed / ተወዲኡ)');
+        delete cart[sku];
+        delete itemSubOverrides[sku];
+      } else if (requested > p.stock) {
+        changes.push(p.en + ' (' + requested + ' → ' + p.stock + ')');
+        cart[sku] = p.stock;
+      }
+    });
+
+    if (changes.length) {
+      unacknowledgedStockChanges = changes;
+      saveCart();
+    }
+    renderReconciliationNotices();
   }
 
-  function saveCart() {
-    localStorage.setItem('addi_mart_cart', JSON.stringify(cart));
-    updateTotals();
+  function renderReconciliationNotices() {
+    const topBanner = document.getElementById('reconcileBanner');
+    const drawerBox = document.getElementById('drawerReconcileBox');
+    clearNode(topBanner);
+    clearNode(drawerBox);
+    topBanner.classList.remove('visible');
+    drawerBox.classList.remove('visible');
+
+    if (!unacknowledgedStockChanges.length || isCheckoutLocked()) return;
+
+    [topBanner, drawerBox].forEach(container => {
+      const strong = document.createElement('strong');
+      strong.textContent = '⚠️ Basket updated for live stock / ዘንቢል ተመሓይሹ: ';
+      const msg = document.createElement('span');
+      msg.textContent = unacknowledgedStockChanges.join('; ') + '. ';
+      const ackBtn = document.createElement('button');
+      ackBtn.type = 'button';
+      ackBtn.className = 'btn-secondary';
+      ackBtn.style.marginTop = '6px';
+      ackBtn.textContent = 'OK, Review Basket / ሕራይ';
+      ackBtn.addEventListener('click', () => {
+        unacknowledgedStockChanges = [];
+        renderReconciliationNotices();
+      });
+      container.appendChild(strong);
+      container.appendChild(msg);
+      container.appendChild(document.createElement('br'));
+      container.appendChild(ackBtn);
+      container.classList.add('visible');
+    });
+  }
+
+  function clearNode(el) {
+    while (el.firstChild) el.removeChild(el.firstChild);
+  }
+
+  function renderCategories() {
+    const container = document.getElementById('categoryPills');
+    clearNode(container);
+    const cats = ['All', ...new Set(PRODUCTS.map(p => p.cat))];
+    cats.forEach(cat => {
+      const tr = CATEGORY_TRANSLATIONS[cat] || { en: cat, ti: cat };
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cat-pill' + (cat === activeCategory ? ' active' : '');
+      btn.setAttribute('aria-pressed', cat === activeCategory ? 'true' : 'false');
+
+      const enSpan = document.createElement('span');
+      enSpan.className = 'en-only';
+      enSpan.textContent = tr.en;
+      const tiSpan = document.createElement('span');
+      tiSpan.className = 'ti-only';
+      tiSpan.textContent = (tr.en === tr.ti) ? tr.ti : (' / ' + tr.ti);
+
+      btn.appendChild(enSpan);
+      btn.appendChild(tiSpan);
+
+      btn.addEventListener('click', () => {
+        activeCategory = cat;
+        renderCategories();
+        renderCatalog();
+      });
+      container.appendChild(btn);
+    });
+  }
+
+  function renderCatalog() {
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    document.getElementById('clearSearchBtn').classList.toggle('visible', q.length > 0);
+
+    const filtered = PRODUCTS.filter(p => {
+      const matchCat = activeCategory === 'All' || p.cat === activeCategory;
+      const hay = [p.sku, p.cat, p.en, p.ti, p.unit, p.aliases || ''].join(' ').toLowerCase();
+      return matchCat && (!q || hay.includes(q));
+    });
+
+    document.getElementById('catalogCount').textContent = filtered.length + ' items / ኣቑሑት';
+    const grid = document.getElementById('productGrid');
+    clearNode(grid);
+    const locked = isCheckoutLocked();
+
+    if (filtered.length === 0) {
+      const emptyBox = document.createElement('div');
+      emptyBox.className = 'empty-state';
+      const msg = document.createElement('p');
+      msg.style.fontWeight = '700';
+      msg.style.marginBottom = '10px';
+      msg.textContent = 'No products found / ዝተረኽበ ኣቕሓ የለን';
+      const resetBtn = document.createElement('button');
+      resetBtn.type = 'button';
+      resetBtn.className = 'btn-secondary';
+      resetBtn.textContent = 'Clear filters / መጻረዪ ኣጽሪ';
+      resetBtn.addEventListener('click', () => {
+        document.getElementById('searchInput').value = '';
+        activeCategory = 'All';
+        renderCategories();
+        renderCatalog();
+      });
+      emptyBox.appendChild(msg);
+      emptyBox.appendChild(resetBtn);
+      grid.appendChild(emptyBox);
+      return;
+    }
+
+    filtered.forEach(p => {
+      const qty = cart[p.sku] || 0;
+      const isOut = p.stock <= 0;
+      const isLow = p.stock > 0 && p.stock <= 12;
+
+      const card = document.createElement('article');
+      card.className = 'card' + (isOut ? ' sold-out' : '');
+
+      const topBlock = document.createElement('div');
+      const media = document.createElement('div');
+      media.className = 'card-media';
+
+      if (p.imageUrl) {
+        const img = document.createElement('img');
+        img.src = p.imageUrl;
+        img.alt = p.en;
+        img.loading = 'lazy';
+        media.appendChild(img);
+      } else {
+        const iconSpan = document.createElement('span');
+        iconSpan.style.fontSize = '34px';
+        iconSpan.setAttribute('aria-hidden', 'true');
+        iconSpan.textContent = p.emoji;
+        media.appendChild(iconSpan);
+      }
+
+      const packBadge = document.createElement('span');
+      packBadge.className = 'pack-pill';
+      packBadge.textContent = p.unit;
+      media.appendChild(packBadge);
+
+      if (isOut || isLow) {
+        const badge = document.createElement('span');
+        badge.className = 'stock-badge ' + (isOut ? 'out' : 'low');
+        badge.textContent = isOut ? 'Out / ተወዲኡ' : ('Low: ' + p.stock);
+        media.appendChild(badge);
+      }
+
+      const title = document.createElement('h3');
+      title.className = 'item-name';
+      title.style.marginTop = '8px';
+      const enSpan = document.createElement('span');
+      enSpan.className = 'en-only';
+      enSpan.textContent = p.en;
+      const tiSpan = document.createElement('span');
+      tiSpan.className = 'ti-only';
+      tiSpan.textContent = ' (' + p.ti + ')';
+      title.appendChild(enSpan);
+      title.appendChild(tiSpan);
+
+      topBlock.appendChild(media);
+      topBlock.appendChild(title);
+
+      const bottomBlock = document.createElement('div');
+      const priceRow = document.createElement('div');
+      priceRow.className = 'item-price-row';
+      priceRow.style.marginBottom = '8px';
+
+      const priceEl = document.createElement('span');
+      priceEl.className = 'item-price';
+      priceEl.textContent = p.price.toLocaleString() + ' ETB';
+
+      const unitEl = document.createElement('span');
+      unitEl.className = 'item-unit';
+      unitEl.textContent = '/ ' + p.unit;
+
+      priceRow.appendChild(priceEl);
+      priceRow.appendChild(unitEl);
+      bottomBlock.appendChild(priceRow);
+
+      if (isOut) {
+        const outBtn = document.createElement('button');
+        outBtn.type = 'button';
+        outBtn.className = 'btn-add';
+        outBtn.disabled = true;
+        outBtn.textContent = 'Out of Stock / ተወዲኡ';
+        bottomBlock.appendChild(outBtn);
+      } else if (qty === 0) {
+        const addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.className = 'btn-add';
+        addBtn.disabled = locked;
+        addBtn.textContent = '+ Add / ወስኽ';
+        addBtn.setAttribute('aria-label', 'Add ' + p.en + ' to basket');
+        addBtn.addEventListener('click', () => changeQty(p.sku, 1));
+        bottomBlock.appendChild(addBtn);
+      } else {
+        const stepper = document.createElement('div');
+        stepper.className = 'qty-stepper';
+
+        const decBtn = document.createElement('button');
+        decBtn.type = 'button';
+        decBtn.className = 'qty-btn';
+        decBtn.disabled = locked;
+        decBtn.textContent = '−';
+        decBtn.setAttribute('aria-label', 'Decrease ' + p.en);
+        decBtn.addEventListener('click', () => changeQty(p.sku, -1));
+
+        const valSpan = document.createElement('span');
+        valSpan.className = 'qty-val';
+        valSpan.textContent = qty + ' × ' + p.unit;
+
+        const incBtn = document.createElement('button');
+        incBtn.type = 'button';
+        incBtn.className = 'qty-btn';
+        incBtn.disabled = locked || qty >= Math.min(p.stock, 100);
+        incBtn.textContent = '+';
+        incBtn.setAttribute('aria-label', 'Increase ' + p.en);
+        incBtn.addEventListener('click', () => changeQty(p.sku, 1));
+
+        stepper.appendChild(decBtn);
+        stepper.appendChild(valSpan);
+        stepper.appendChild(incBtn);
+        bottomBlock.appendChild(stepper);
+      }
+
+      card.appendChild(topBlock);
+      card.appendChild(bottomBlock);
+      grid.appendChild(card);
+    });
+  }
+
+  function renderBundles() {
+    const grid = document.getElementById('bundlesGrid');
+    clearNode(grid);
+    const locked = isCheckoutLocked();
+
+    BUNDLES.forEach(b => {
+      const card = document.createElement('div');
+      card.className = 'bundle-card';
+
+      const top = document.createElement('div');
+      const tag = document.createElement('span');
+      tag.className = 'bundle-tag';
+      tag.textContent = b.tagEn + ' • ' + b.tagTi;
+
+      const h3 = document.createElement('h3');
+      h3.style.fontSize = '15px';
+      h3.style.marginTop = '7px';
+      const en = document.createElement('span');
+      en.className = 'en-only';
+      en.textContent = b.en;
+      const ti = document.createElement('span');
+      ti.className = 'ti-only';
+      ti.textContent = ' (' + b.ti + ')';
+      h3.appendChild(en);
+      h3.appendChild(ti);
+
+      const desc = document.createElement('p');
+      desc.style.fontSize = '12px';
+      desc.style.color = 'var(--muted)';
+      desc.style.marginTop = '4px';
+      const dEn = document.createElement('span');
+      dEn.className = 'en-only';
+      dEn.textContent = b.descEn;
+      const dTi = document.createElement('span');
+      dTi.className = 'ti-only';
+      dTi.textContent = ' / ' + b.descTi;
+      desc.appendChild(dEn);
+      desc.appendChild(dTi);
+
+      top.appendChild(tag);
+      top.appendChild(h3);
+      top.appendChild(desc);
+
+      let bundleTotal = 0;
+      let allAvailable = true;
+      Object.entries(b.items).forEach(([sku, reqQty]) => {
+        const p = PRODUCTS.find(x => x.sku === sku);
+        if (!p || p.stock < reqQty) allAvailable = false;
+        if (p) bundleTotal += p.price * reqQty;
+      });
+
+      const bottom = document.createElement('div');
+      bottom.style.display = 'flex';
+      bottom.style.justifyContent = 'space-between';
+      bottom.style.alignItems = 'center';
+
+      const priceEl = document.createElement('strong');
+      priceEl.style.fontSize = '15px';
+      priceEl.style.color = 'var(--primary)';
+      priceEl.textContent = bundleTotal.toLocaleString() + ' ETB';
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn-primary';
+      btn.style.minHeight = '36px';
+      btn.style.padding = '7px 12px';
+      btn.style.fontSize = '12px';
+      btn.disabled = locked || !allAvailable;
+      btn.textContent = allAvailable ? '+ Add Pack / ፓኬጅ ወስኽ' : 'Item Out / ተወዲኡ';
+      btn.addEventListener('click', () => addBundle(b));
+
+      bottom.appendChild(priceEl);
+      bottom.appendChild(btn);
+
+      card.appendChild(top);
+      card.appendChild(bottom);
+      grid.appendChild(card);
+    });
   }
 
   function changeQty(sku, delta) {
+    if (isCheckoutLocked()) return;
     const p = PRODUCTS.find(x => x.sku === sku);
     if (!p) return;
+    const oldQty = cart[sku] || 0;
     const maxAllowed = Math.min(p.stock, 100);
-    const next = Math.max(0, Math.min(maxAllowed, (cart[sku] || 0) + delta));
-    if (next === 0) delete cart[sku];
-    else cart[sku] = next;
-    resetOrderRef();
+    const nextQty = Math.max(0, Math.min(maxAllowed, oldQty + delta));
+    if (nextQty === oldQty) return;
+
+    if (nextQty === 0) {
+      delete cart[sku];
+      delete itemSubOverrides[sku];
+    } else {
+      cart[sku] = nextQty;
+    }
+
+    hapticLight();
     saveCart();
     renderCatalog();
     renderCartItems();
   }
 
-  function addBundle(bundleId) {
-    const b = BUNDLES.find(x => x.id === bundleId);
-    if (!b) return;
-    Object.entries(b.items).forEach(([sku, qty]) => {
+  function addBundle(bundle) {
+    if (isCheckoutLocked()) return;
+    const shortages = [];
+    Object.entries(bundle.items).forEach(([sku, addQty]) => {
       const p = PRODUCTS.find(x => x.sku === sku);
-      if (p && p.stock > 0) {
-        cart[sku] = Math.min(Math.min(p.stock, 100), (cart[sku] || 0) + qty);
+      const current = cart[sku] || 0;
+      if (!p || current + addQty > Math.min(p.stock, 100)) {
+        shortages.push(p ? p.en : sku);
       }
     });
-    resetOrderRef();
+
+    if (shortages.length) {
+      showNativeNotice('Insufficient stock for / እኹል ክምችት የለን: ' + shortages.join(', '));
+      return;
+    }
+
+    Object.entries(bundle.items).forEach(([sku, addQty]) => {
+      cart[sku] = (cart[sku] || 0) + addQty;
+    });
+
+    hapticLight();
     saveCart();
     renderCatalog();
     openCart();
   }
 
-  function renderCategories() {
-    const cats = ['All', ...new Set(PRODUCTS.map(p => p.cat))];
-    document.getElementById('categoryPills').innerHTML = cats.map(c =>
-      `<button class="cat-pill ${c === activeCategory ? 'active' : ''}" onclick="selectCategory('${c}')">${c}</button>`
-    ).join('');
-  }
-
-  function selectCategory(cat) {
-    activeCategory = cat;
-    renderCategories();
-    renderCatalog();
-  }
-
-  function renderBundles() {
-    document.getElementById('bundlesGrid').innerHTML = BUNDLES.map(b => {
-      const total = Object.entries(b.items).reduce((sum, [sku, q]) => {
-        const p = PRODUCTS.find(x => x.sku === sku);
-        return sum + (p ? p.price * q : 0);
-      }, 0);
-      return `
-        <div class="bundle-card">
-          <div>
-            <span class="bundle-tag">${b.tag}</span>
-            <h3 style="font-size:16px;margin-top:8px;">
-              <span class="en-only">${b.en}</span>
-              <span class="ti-only"> (${b.ti})</span>
-            </h3>
-            <p style="font-size:13px;color:var(--muted);margin-top:4px;">${b.desc}</p>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
-            <strong style="font-size:16px;color:var(--primary);">${total.toLocaleString()} ETB</strong>
-            <button class="btn-primary" style="padding:8px 14px;font-size:13px;" onclick="addBundle('${b.id}')">+ Add Bundle</button>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function renderCatalog() {
-    const q = document.getElementById('searchInput').value.trim().toLowerCase();
-    const filtered = PRODUCTS.filter(p => {
-      const matchCat = activeCategory === 'All' || p.cat === activeCategory;
-      const matchQ = !q || [p.sku, p.cat, p.en, p.ti, p.unit].join(' ').toLowerCase().includes(q);
-      return matchCat && matchQ;
-    });
-    document.getElementById('catalogCount').textContent = filtered.length + ' items';
-
-    document.getElementById('productGrid').innerHTML = filtered.map(p => {
-      const qty = cart[p.sku] || 0;
-      const isOut = p.stock <= 0;
-      const isLow = p.stock > 0 && p.stock <= 12;
-      const badgeClass = isOut ? 'out' : (isLow ? 'low' : '');
-      const badgeText = isOut ? 'Out of stock' : `${isLow ? 'Low: ' : ''}${p.stock} ${p.unit}`;
-
-      return `
-        <article class="card ${isOut ? 'sold-out' : ''}">
-          <div>
-            <div class="card-top">
-              <div class="emoji-icon">${p.emoji}</div>
-              <span class="stock-badge ${badgeClass}">${badgeText}</span>
-            </div>
-            <div class="item-cat" style="margin-top:10px;">${p.cat}</div>
-            <h3 class="item-name">
-              <span class="en-only">${p.en}</span>
-              <span class="ti-only"> (${p.ti})</span>
-            </h3>
-          </div>
-          <div>
-            <div class="item-price" style="margin-bottom:8px;">
-              ${p.price.toLocaleString()} ETB <span class="item-unit">/ ${p.unit}</span>
-            </div>
-            ${isOut
-              ? `<button class="btn-add" disabled>Out of Stock</button>`
-              : (qty === 0
-                ? `<button class="btn-add" onclick="changeQty('${p.sku}', 1)">+ Add to Cart</button>`
-                : `<div class="qty-stepper">
-                     <button class="qty-btn" onclick="changeQty('${p.sku}', -1)">−</button>
-                     <span class="qty-val">${qty} ${p.unit}</span>
-                     <button class="qty-btn" onclick="changeQty('${p.sku}', 1)">+</button>
-                   </div>`)
-            }
-          </div>
-        </article>
-      `;
-    }).join('');
-  }
-
   function renderCartItems() {
-    const entries = Object.entries(cart);
     const box = document.getElementById('cartItemsList');
+    clearNode(box);
+
+    const locked = isCheckoutLocked();
+    const displayCart = locked ? pendingCheckout.snapshot.cart : cart;
+    const frozenPrices = locked ? pendingCheckout.snapshot.linePrices : null;
+    const entries = Object.entries(displayCart);
+
     if (!entries.length) {
-      box.innerHTML = '<p style="color:var(--muted);font-size:14px;padding:12px 0;">Your cart is empty. Add groceries from the catalog.</p>';
+      const empty = document.createElement('p');
+      empty.style.color = 'var(--muted)';
+      empty.style.fontSize = '14px';
+      empty.style.padding = '12px 0';
+      empty.textContent = locked
+        ? 'Order reference preserved above / መለለዪ ትእዛዝ ኣብ ላዕሊ ተዓቂቡ ኣሎ።'
+        : 'Your basket is empty / ዘንቢልኩም ባዶ እዩ።';
+      box.appendChild(empty);
       return;
     }
-    box.innerHTML = entries.map(([sku, qty]) => {
+
+    entries.forEach(([sku, qty]) => {
       const p = PRODUCTS.find(x => x.sku === sku);
-      if (!p) return '';
-      return `
-        <div class="cart-row">
-          <div>
-            <div style="font-weight:700;font-size:14px;">${p.en} (${p.ti})</div>
-            <div style="font-size:12px;color:var(--muted);">${qty} × ${p.price.toLocaleString()} ETB = <strong>${(qty * p.price).toLocaleString()} ETB</strong></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <button class="qty-btn" style="width:28px;height:28px;font-size:15px;" onclick="changeQty('${sku}', -1)">−</button>
-            <strong style="min-width:20px;text-align:center;">${qty}</strong>
-            <button class="qty-btn" style="width:28px;height:28px;font-size:15px;" onclick="changeQty('${sku}', 1)">+</button>
-          </div>
-        </div>
-      `;
-    }).join('');
+      const unitPrice = (frozenPrices && Number.isFinite(frozenPrices[sku]))
+        ? frozenPrices[sku]
+        : (p ? p.price : 0);
+      const labelEn = p ? p.en : sku;
+      const labelTi = p ? p.ti : '';
+
+      const row = document.createElement('div');
+      row.className = 'cart-row';
+
+      const mainLine = document.createElement('div');
+      mainLine.className = 'cart-row-main';
+
+      const info = document.createElement('div');
+      const nameDiv = document.createElement('div');
+      nameDiv.style.fontWeight = '700';
+      nameDiv.style.fontSize = '14px';
+      nameDiv.textContent = labelTi ? (labelEn + ' (' + labelTi + ')') : labelEn;
+
+      const calcDiv = document.createElement('div');
+      calcDiv.style.fontSize = '12px';
+      calcDiv.style.color = 'var(--muted)';
+      calcDiv.textContent = qty + ' × ' + unitPrice.toLocaleString() + ' ETB = ' + (qty * unitPrice).toLocaleString() + ' ETB';
+
+      info.appendChild(nameDiv);
+      info.appendChild(calcDiv);
+
+      const controls = document.createElement('div');
+      controls.style.display = 'flex';
+      controls.style.alignItems = 'center';
+      controls.style.gap = '6px';
+
+      const decBtn = document.createElement('button');
+      decBtn.type = 'button';
+      decBtn.className = 'qty-btn';
+      decBtn.disabled = locked;
+      decBtn.textContent = '−';
+      decBtn.setAttribute('aria-label', 'Decrease ' + labelEn);
+      decBtn.addEventListener('click', () => changeQty(sku, -1));
+
+      const qtyStrong = document.createElement('strong');
+      qtyStrong.style.minWidth = '22px';
+      qtyStrong.style.textAlign = 'center';
+      qtyStrong.textContent = String(qty);
+
+      const incBtn = document.createElement('button');
+      incBtn.type = 'button';
+      incBtn.className = 'qty-btn';
+      incBtn.disabled = locked || (p && qty >= Math.min(p.stock, 100));
+      incBtn.textContent = '+';
+      incBtn.setAttribute('aria-label', 'Increase ' + labelEn);
+      incBtn.addEventListener('click', () => changeQty(sku, 1));
+
+      controls.appendChild(decBtn);
+      controls.appendChild(qtyStrong);
+      controls.appendChild(incBtn);
+
+      mainLine.appendChild(info);
+      mainLine.appendChild(controls);
+      row.appendChild(mainLine);
+
+      // Optional item-level substitution preference
+      if (!locked) {
+        const subRow = document.createElement('div');
+        subRow.className = 'item-sub-row';
+        const subLbl = document.createElement('span');
+        subLbl.textContent = 'If out / እንተተወዲኡ:';
+        const subSel = document.createElement('select');
+        subSel.className = 'item-sub-select';
+        [
+          { v: '', t: 'Use order default / ሓፈሻዊ ምርጫ' },
+          { v: 'Call me first', t: 'Call me first / ደውሉለይ' },
+          { v: 'Skip this item', t: 'Skip this item / ኣውጽእዎ' }
+        ].forEach(o => {
+          const opt = document.createElement('option');
+          opt.value = o.v;
+          opt.textContent = o.t;
+          subSel.appendChild(opt);
+        });
+        subSel.value = itemSubOverrides[sku] || '';
+        subSel.addEventListener('change', () => {
+          if (subSel.value) itemSubOverrides[sku] = subSel.value;
+          else delete itemSubOverrides[sku];
+          SafeStore.set(STORAGE_KEYS.ITEM_SUBS, itemSubOverrides);
+        });
+        subRow.appendChild(subLbl);
+        subRow.appendChild(subSel);
+        row.appendChild(subRow);
+      }
+
+      box.appendChild(row);
+    });
   }
 
   function updateTotals() {
+    const locked = isCheckoutLocked();
+    const activeCart = locked ? pendingCheckout.snapshot.cart : cart;
+    const frozenPrices = locked ? pendingCheckout.snapshot.linePrices : null;
     let count = 0;
     let subtotal = 0;
-    Object.entries(cart).forEach(([sku, qty]) => {
+
+    Object.entries(activeCart).forEach(([sku, qty]) => {
       const p = PRODUCTS.find(x => x.sku === sku);
-      if (p) {
-        count += qty;
-        subtotal += qty * p.price;
-      }
+      const unitPrice = (frozenPrices && Number.isFinite(frozenPrices[sku]))
+        ? frozenPrices[sku]
+        : (p ? p.price : 0);
+      count += qty;
+      subtotal += qty * unitPrice;
     });
 
-    const subSel = document.getElementById('subCity');
-    const baseFee = Number(subSel.options[subSel.selectedIndex].dataset.fee || 40);
-    const deliveryFee = subtotal === 0 ? 0 : baseFee;
-    const total = subtotal + deliveryFee;
+    const activeFee = subtotal === 0 ? 0 : getActiveDeliveryFee();
 
-    document.getElementById('headerCartCount').textContent = count;
+    document.getElementById('headerCartCount').textContent = String(count);
     document.getElementById('headerCartTotal').textContent = subtotal.toLocaleString();
-    document.getElementById('stickyCount').textContent = count + (count === 1 ? ' item' : ' items');
-    document.getElementById('stickySubtotal').textContent = subtotal.toLocaleString();
+    document.getElementById('step2ItemCount').textContent = count + ' items / ኣቑሑት';
 
+    // Sticky bar displays exact total if sub-city chosen, or subtotal + area prompt
+    document.getElementById('stickyCountLine').textContent = selectedSubCity
+      ? (count + ' items • ' + selectedSubCity + ' (' + (activeFee || 0) + ' ETB delivery)')
+      : (count + ' items • Select sub-city for delivery fee');
+    document.getElementById('stickyTotalLine').textContent = activeFee === null
+      ? ('Subtotal: ' + subtotal.toLocaleString() + ' ETB')
+      : ('Total: ' + (subtotal + activeFee).toLocaleString() + ' ETB');
+
+    // Step 1 Summary
+    document.getElementById('step1Subtotal').textContent = subtotal.toLocaleString();
+    document.getElementById('step1DeliveryLabel').textContent = activeFee === null
+      ? 'Select area / ክፍለ ከተማ ምረጹ'
+      : (activeFee.toLocaleString() + ' ETB');
+    document.getElementById('step1TotalLabel').textContent = activeFee === null
+      ? (subtotal.toLocaleString() + ' ETB + delivery')
+      : ((subtotal + activeFee).toLocaleString() + ' ETB');
+
+    // Step 2 Summary & Place Order CTA
     document.getElementById('sumSubtotal').textContent = subtotal.toLocaleString();
-    document.getElementById('sumDelivery').textContent = deliveryFee.toLocaleString();
-    document.getElementById('sumTotal').textContent = total.toLocaleString();
+    document.getElementById('sumDeliveryLabel').textContent = activeFee === null
+      ? 'Select sub-city / ምረጹ'
+      : (activeFee.toLocaleString() + ' ETB');
+    document.getElementById('sumTotalLabel').textContent = activeFee === null
+      ? (subtotal.toLocaleString() + ' ETB + delivery')
+      : ((subtotal + activeFee).toLocaleString() + ' ETB');
+
+    if (!locked) {
+      const placeBtn = document.getElementById('placeOrderBtn');
+      placeBtn.textContent = activeFee === null
+        ? '✅ Place Order / ትእዛዝ ኣረጋግጽ'
+        : ('✅ Place Order • ' + (subtotal + activeFee).toLocaleString() + ' ETB');
+    }
+
+    syncTelegramMainButton(count, subtotal, activeFee);
+  }
+
+  function setDrawerStep(step) {
+    drawerStep = isCheckoutLocked() ? 2 : (step === 2 ? 2 : 1);
+    const s1 = document.getElementById('step1Container');
+    const s2 = document.getElementById('step2Container');
+    const p1 = document.getElementById('pillStep1');
+    const p2 = document.getElementById('pillStep2');
+    const heading = document.getElementById('drawerHeading');
+
+    clearNode(heading);
+    const enH = document.createElement('span');
+    enH.className = 'en-only';
+    const tiH = document.createElement('span');
+    tiH.className = 'ti-only';
+
+    if (drawerStep === 1) {
+      s1.style.display = 'flex';
+      s2.style.display = 'none';
+      p1.classList.add('active');
+      p2.classList.remove('active');
+      enH.textContent = '🛒 Review Basket';
+      tiH.textContent = ' / ዘንቢል ርኣዩ';
+    } else {
+      s1.style.display = 'none';
+      s2.style.display = 'flex';
+      p1.classList.remove('active');
+      p2.classList.add('active');
+      enH.textContent = isCheckoutLocked() ? '🔍 Order Status' : '🛵 Delivery & Payment';
+      tiH.textContent = isCheckoutLocked() ? ' / ኩነታት ትእዛዝ' : ' / ኣድራሻን ክፍሊትን';
+    }
+    heading.appendChild(enH);
+    heading.appendChild(tiH);
+    updateTotals();
+  }
+
+  function goToStep2() {
+    if (isCheckoutLocked()) {
+      setDrawerStep(2);
+      return;
+    }
+    if (unacknowledgedStockChanges.length) {
+      renderReconciliationNotices();
+      showNativeNotice('Please tap "OK, Review Basket" on the stock update notice first / ቅድም ዝተመሓየሸ ዘንቢል ኣረጋግጹ።');
+      return;
+    }
+    if (Object.keys(cart).length === 0) {
+      showNativeNotice('Your basket is empty / ዘንቢልኩም ባዶ እዩ።');
+      return;
+    }
+    setDrawerStep(2);
   }
 
   function togglePayDetails() {
@@ -1102,169 +2095,743 @@
     document.getElementById('cashBox').style.display = m === 'Cash' ? 'block' : 'none';
   }
 
-  function copyText(val, btn) {
-    navigator.clipboard.writeText(val);
-    const old = btn.textContent;
-    btn.textContent = 'Copied!';
-    setTimeout(() => (btn.textContent = old), 1500);
+  async function copyDisplayValue(rawValue, btn) {
+    const clean = extractCopyAccount(rawValue);
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(clean);
+        const old = btn.textContent;
+        btn.textContent = 'Copied! / ተቐዲሑ';
+        setTimeout(() => { btn.textContent = old; }, 1600);
+        return;
+      }
+    } catch (e) {}
+    window.prompt('Copy / ቅዳሕ:', clean);
   }
 
   function pinGPS() {
+    if (isCheckoutLocked()) return;
     const inp = document.getElementById('locationInput');
-    if (!navigator.geolocation) {
-      alert('GPS not supported on this browser. Please type your landmark.');
+    const status = document.getElementById('gpsStatusMsg');
+    const btn = document.getElementById('pinGpsBtn');
+    const reqId = ++gpsRequestSeq;
+    userEditedLocationAfterGps = false;
+
+    const applyGpsCoords = (lat, lng) => {
+      if (reqId !== gpsRequestSeq || isCheckoutLocked() || userEditedLocationAfterGps) return;
+      inp.value = 'https://maps.google.com/?q=' + lat.toFixed(6) + ',' + lng.toFixed(6);
+      status.textContent = 'GPS captured / GPS ተታሒዙ ኣሎ።';
+    };
+
+    if (tgWebApp && tgWebApp.LocationManager && tgWebApp.LocationManager.isInited) {
+      status.textContent = 'Requesting Telegram GPS...';
+      btn.disabled = true;
+      tgWebApp.LocationManager.getLocation(loc => {
+        if (reqId === gpsRequestSeq && !isCheckoutLocked()) btn.disabled = false;
+        if (loc && Number.isFinite(loc.latitude) && Number.isFinite(loc.longitude)) {
+          applyGpsCoords(loc.latitude, loc.longitude);
+        } else if (reqId === gpsRequestSeq) {
+          status.textContent = 'GPS unavailable. Type your nearby landmark / ቀረባ ምልክት ጽሓፉ።';
+        }
+      });
       return;
     }
-    inp.value = 'Locating GPS...';
+
+    if (!navigator.geolocation) {
+      status.textContent = 'Type your nearby landmark / ቀረባ ምልክት ጽሓፉ።';
+      return;
+    }
+
+    status.textContent = 'Locating GPS...';
+    btn.disabled = true;
     navigator.geolocation.getCurrentPosition(
       pos => {
-        inp.value = `https://maps.google.com/?q=${pos.coords.latitude.toFixed(6)},${pos.coords.longitude.toFixed(6)}`;
-        resetOrderRef();
+        if (reqId === gpsRequestSeq && !isCheckoutLocked()) btn.disabled = false;
+        applyGpsCoords(pos.coords.latitude, pos.coords.longitude);
       },
       () => {
-        inp.value = '';
-        alert('Could not get GPS signal. Please type your nearest landmark.');
-      }
+        if (reqId === gpsRequestSeq && !isCheckoutLocked()) btn.disabled = false;
+        if (reqId === gpsRequestSeq) {
+          status.textContent = 'Could not lock GPS. Type your nearby landmark / ቀረባ ምልክት ጽሓፉ።';
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );
   }
 
+  function setBackgroundInert(isInert) {
+    ['appHeader', 'appDeliveryBar', 'appMain', 'appFooter', 'appSticky'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        if (isInert) el.setAttribute('inert', '');
+        else el.removeAttribute('inert');
+      }
+    });
+  }
+
   function openCart() {
+    lastFocusedBeforeDrawer = document.activeElement;
     renderCartItems();
+    renderReconciliationNotices();
+    syncLockUiState();
+    setDrawerStep(isCheckoutLocked() ? 2 : 1);
+
+    const backdrop = document.getElementById('cartBackdrop');
+    backdrop.classList.add('open');
+    document.body.classList.add('drawer-open');
+    setBackgroundInert(true);
+    if (tgWebApp && tgWebApp.BackButton) {
+      try { tgWebApp.BackButton.show(); } catch (e) {}
+    }
     updateTotals();
-    document.getElementById('cartBackdrop').classList.add('open');
+    document.getElementById('closeDrawerBtn').focus();
   }
 
   function closeCart() {
-    document.getElementById('cartBackdrop').classList.remove('open');
+    const backdrop = document.getElementById('cartBackdrop');
+    backdrop.classList.remove('open');
+    document.body.classList.remove('drawer-open');
+    setBackgroundInert(false);
+    if (tgWebApp && tgWebApp.BackButton) {
+      try { tgWebApp.BackButton.hide(); } catch (e) {}
+    }
+    updateTotals();
+    if (lastFocusedBeforeDrawer && typeof lastFocusedBeforeDrawer.focus === 'function') {
+      lastFocusedBeforeDrawer.focus();
+    }
   }
 
-  function closeCartOnBackdrop(e) {
-    if (e.target.id === 'cartBackdrop') closeCart();
+  function syncLockUiState() {
+    const locked = isCheckoutLocked();
+    const isCorruptedMissingPhone = Boolean(locked && pendingCheckout.corrupted && !pendingCheckout.snapshot.phone && !(tgWebApp && tgWebApp.initData));
+    const formIds = ['homeSubCity', 'custName', 'subCity', 'locationInput', 'pinGpsBtn', 'subPref', 'paymentMethod', 'rememberDetailsChk', 'clearDetailsBtn', 'backToStep1Btn'];
+    formIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = locked;
+    });
+    const phoneEl = document.getElementById('custPhone');
+    if (phoneEl) phoneEl.disabled = locked && !isCorruptedMissingPhone;
+
+    const placeBtn = document.getElementById('placeOrderBtn');
+    const recoveryBanner = document.getElementById('recoveryBanner');
+    clearNode(recoveryBanner);
+    recoveryBanner.classList.remove('visible');
+
+    if (locked) {
+      placeBtn.disabled = true;
+      placeBtn.textContent = '⏳ Awaiting Confirmation / ትእዛዝ ይረጋገጽ ኣሎ...';
+
+      const snap = pendingCheckout.snapshot;
+      document.getElementById('custName').value = snap.customerName || '';
+      if (!isCorruptedMissingPhone) {
+        document.getElementById('custPhone').value = snap.phone || '';
+      }
+      populateSubCitySelectors();
+      document.getElementById('locationInput').value = snap.location || '';
+      document.getElementById('subPref').value = snap.subPref || 'Call me first';
+      document.getElementById('paymentMethod').value = snap.payment || 'Telebirr';
+      togglePayDetails();
+
+      const bTitle = document.createElement('strong');
+      bTitle.textContent = '⚠️ Pending Order Check (' + pendingCheckout.clientOrderRef + ')';
+      const bText = document.createElement('div');
+      bText.style.marginTop = '4px';
+      bText.textContent = 'Your previous submission needs verification before starting a new basket / ዝሓለፈ ትእዛዝኩም መረጋገጺ ይደሊ ኣሎ።';
+      const bBtn = document.createElement('button');
+      bBtn.type = 'button';
+      bBtn.className = 'btn-secondary';
+      bBtn.style.marginTop = '8px';
+      bBtn.textContent = '🔍 Check Order Status / ኩነታት ትእዛዝ ርኣዩ';
+      bBtn.addEventListener('click', openCart);
+      recoveryBanner.appendChild(bTitle);
+      recoveryBanner.appendChild(bText);
+      recoveryBanner.appendChild(bBtn);
+      recoveryBanner.classList.add('visible');
+
+      renderRecoveryCardInDrawer();
+    } else {
+      placeBtn.disabled = false;
+      populateSubCitySelectors();
+    }
+
+    renderCatalog();
+    renderBundles();
+    renderCartItems();
+    updateTotals();
+    updateTelegramChrome();
   }
 
-  function showStatusCard(type, htmlContent) {
+  function renderRecoveryCardInDrawer() {
+    if (!pendingCheckout || !isCheckoutLocked()) return;
     const card = document.getElementById('orderStatusCard');
-    card.className = 'status-card ' + type;
-    card.innerHTML = htmlContent;
+    clearNode(card);
+    card.className = 'status-card uncertain';
+
+    const isCorrupted = Boolean(pendingCheckout.corrupted);
+    const isRetryable = pendingCheckout.state === 'retryable' && !isCorrupted;
+
+    const title = document.createElement('strong');
+    title.textContent = isCorrupted
+      ? '⚠️ Incomplete Saved Checkout / ዘይተማልአ መዝገብ'
+      : (isRetryable
+          ? '⚠️ Order Not Yet Recorded / ትእዛዝ ገና ኣይተመዝገበን'
+          : '⚠️ Check Order Status / ኩነታት ትእዛዝ ኣረጋግጽ');
+
+    const desc = document.createElement('p');
+    desc.style.marginTop = '6px';
+    desc.textContent = isCorrupted
+      ? 'Enter your phone number below (if outside Telegram) and tap Check Order Status to verify this reference / ቁጽሪ ስልክኹም ኣእቲኹም ኩነታት ትእዛዝ ኣረጋግጹ:'
+      : (isRetryable
+          ? 'The server confirmed no duplicate was recorded yet. Tap Retry Same Order to submit safely / እቲ ትእዛዝ ስለዘይተመዝገበ እንደገና ክትልእኽዎ ትኽእሉ ኢኹም:'
+          : 'Your connection dropped before confirmation arrived. Check order status first so you do not pay twice / ድርብ ክፍሊት ንምክልኻል ቅድም ኩነታት ትእዛዝ ኣረጋግጹ:');
+
+    const refBox = document.createElement('div');
+    refBox.style.marginTop = '7px';
+    refBox.style.fontFamily = 'monospace';
+    refBox.style.fontWeight = '700';
+    refBox.textContent = 'Ref: ' + pendingCheckout.clientOrderRef;
+
+    const btnRow = document.createElement('div');
+    btnRow.style.display = 'flex';
+    btnRow.style.gap = '8px';
+    btnRow.style.flexWrap = 'wrap';
+    btnRow.style.marginTop = '10px';
+
+    if (isRetryable) {
+      const retryBtn = document.createElement('button');
+      retryBtn.type = 'button';
+      retryBtn.className = 'btn-primary';
+      retryBtn.style.flex = '1';
+      retryBtn.textContent = '🔄 Retry Same Order / እንደገና ለኣኽ';
+      retryBtn.addEventListener('click', () => dispatchPendingSnapshot(pendingCheckout));
+      btnRow.appendChild(retryBtn);
+    }
+
+    const checkBtn = document.createElement('button');
+    checkBtn.type = 'button';
+    checkBtn.className = isRetryable ? 'btn-secondary' : 'btn-primary';
+    if (!isRetryable) checkBtn.style.flex = '1';
+    checkBtn.disabled = isCheckingStatus;
+    checkBtn.textContent = isCheckingStatus ? '⏳ Checking...' : '🔍 Check Order Status / ኣረጋግጽ';
+    checkBtn.addEventListener('click', verifyPendingOrderStatus);
+
+    const copyRefBtn = document.createElement('button');
+    copyRefBtn.type = 'button';
+    copyRefBtn.className = 'btn-secondary';
+    copyRefBtn.textContent = 'Copy Ref';
+    copyRefBtn.addEventListener('click', () => copyDisplayValue(pendingCheckout.clientOrderRef, copyRefBtn));
+
+    btnRow.appendChild(checkBtn);
+    btnRow.appendChild(copyRefBtn);
+
+    if (isCorrupted) {
+      const discardBtn = document.createElement('button');
+      discardBtn.type = 'button';
+      discardBtn.className = 'btn-secondary';
+      discardBtn.textContent = 'Discard / ኣወግድ';
+      discardBtn.addEventListener('click', () => {
+        showNativeConfirm('Discard this incomplete reference only after verifying you did not place it?', () => {
+          persistPendingRecord(null);
+          clearNode(card);
+          card.className = 'status-card';
+          setDrawerStep(1);
+        });
+      });
+      btnRow.appendChild(discardBtn);
+    }
+
+    card.appendChild(title);
+    card.appendChild(desc);
+    card.appendChild(refBox);
+    card.appendChild(btnRow);
+  }
+
+  /* Distinct "Order received · Awaiting payment" vs "Pay on delivery" */
+  function renderConfirmedCard(orderData, storageClearFailed) {
+    const card = document.getElementById('orderStatusCard');
+    clearNode(card);
+
+    const isTransfer = orderData.payment === 'Telebirr' || orderData.payment === 'CBE Transfer';
+    card.className = isTransfer ? 'status-card awaiting' : 'status-card success';
+
+    const title = document.createElement('strong');
+    title.style.fontSize = '14px';
+    title.textContent = isTransfer
+      ? ('⏳ Order received · Awaiting payment (#' + String(orderData.orderId) + ') / ትእዛዝ ተቐቢልና · ክፍሊት ይጽበ ኣሎ')
+      : ('✅ Order received · Pay on delivery (#' + String(orderData.orderId) + ') / ትእዛዝ ተቐቢልና · ኣብ ምብጻሕ ይኽፈል');
+
+    const totalLine = document.createElement('div');
+    totalLine.style.marginTop = '6px';
+    totalLine.style.fontWeight = '700';
+    totalLine.textContent = 'Amount / ጠቕላላ ክፍሊት: ' + Number(orderData.total).toLocaleString() + ' ETB (' + String(orderData.payment) + ')';
+
+    card.appendChild(title);
+    card.appendChild(totalLine);
+
+    if (storageClearFailed) {
+      const warn = document.createElement('p');
+      warn.style.marginTop = '7px';
+      warn.style.fontWeight = '700';
+      warn.textContent = 'Note: If a status banner appears on reload, tap "Check Order Status" instead of ordering again.';
+      card.appendChild(warn);
+    }
+
+    if (isTransfer) {
+      const accountStr = orderData.payment === 'Telebirr'
+        ? String(orderData.telebirr || paymentConfig.telebirr)
+        : String(orderData.cbe || paymentConfig.cbe);
+
+      const acctBox = document.createElement('div');
+      acctBox.className = 'copy-row';
+      acctBox.style.background = '#FFFFFF';
+      acctBox.style.padding = '8px 10px';
+      acctBox.style.borderRadius = '9px';
+      acctBox.style.marginTop = '8px';
+
+      const acctSpan = document.createElement('strong');
+      acctSpan.textContent = accountStr;
+      const copyBtn = document.createElement('button');
+      copyBtn.type = 'button';
+      copyBtn.className = 'btn-secondary';
+      copyBtn.textContent = 'Copy / ቅዳሕ';
+      copyBtn.addEventListener('click', () => copyDisplayValue(accountStr, copyBtn));
+
+      acctBox.appendChild(acctSpan);
+      acctBox.appendChild(copyBtn);
+      card.appendChild(acctBox);
+
+      const instr = document.createElement('p');
+      instr.style.marginTop = '8px';
+      instr.textContent = 'Next step: Transfer ' + Number(orderData.total).toLocaleString() + ' ETB and share your payment screenshot in @AddiMartMekelle_bot so we can verify and dispatch your Bajaj / ቐጺልኩም ክፍሊት ፈጺምኩም ስክሪንሾት ኣብ @AddiMartMekelle_bot ስደዱልና።';
+      card.appendChild(instr);
+
+      const tgLink = document.createElement('a');
+      tgLink.className = 'btn-telegram';
+      tgLink.href = 'https://t.me/AddiMartMekelle_bot';
+      tgLink.target = '_blank';
+      tgLink.rel = 'noopener';
+      tgLink.textContent = '📤 Share Payment Proof in Telegram / መረጋገጺ ክፍሊት ስደዱ';
+      card.appendChild(tgLink);
+    } else {
+      const instr = document.createElement('p');
+      instr.style.marginTop = '8px';
+      instr.textContent = 'Next step: Keep ' + Number(orderData.total).toLocaleString() + ' ETB cash ready. Our Bajaj rider will call your phone upon arrival (30–50 mins) / ባጃጅ ምስ በጽሐ ብጥረ ገንዘብ ክትከፍሉ ኢኹም።';
+      card.appendChild(instr);
+
+      const tgLink = document.createElement('a');
+      tgLink.className = 'btn-telegram';
+      tgLink.href = 'https://t.me/AddiMartMekelle_bot';
+      tgLink.target = '_blank';
+      tgLink.rel = 'noopener';
+      tgLink.textContent = '💬 Open @AddiMartMekelle_bot';
+      card.appendChild(tgLink);
+    }
+  }
+
+  function renderErrorCard(message) {
+    const card = document.getElementById('orderStatusCard');
+    clearNode(card);
+    card.className = 'status-card error';
+    card.textContent = '⚠️ ' + String(message || 'Could not complete order / ትእዛዝ ኣይተሳኸዐን።');
+  }
+
+  function finalizeConfirmedOrder(orderData, snapshot) {
+    if (snapshot && snapshot.cart && Object.keys(snapshot.cart).length > 0) {
+      SafeStore.set(STORAGE_KEYS.LAST_ORDER, {
+        orderId: orderData.orderId,
+        total: Number(orderData.total),
+        cart: snapshot.cart,
+        savedAt: Date.now()
+      });
+    }
+    cart = Object.create(null);
+    itemSubOverrides = Object.create(null);
+    unacknowledgedStockChanges = [];
+    saveCart();
+    renderReconciliationNotices();
+
+    pendingCheckout = null;
+    const removed = SafeStore.remove(STORAGE_KEYS.PENDING);
+    if (!removed) {
+      SafeStore.set(STORAGE_KEYS.PENDING, {
+        clientOrderRef: orderData.orderId,
+        state: 'confirmed',
+        confirmedOrder: orderData,
+        createdAt: Date.now()
+      });
+    }
+    syncLockUiState();
+    renderConfirmedCard(orderData, !removed);
+    renderReorderBanner();
+    syncLiveCatalog();
+  }
+
+  async function verifyPendingOrderStatus() {
+    if (!pendingCheckout || isCheckingStatus) return;
+    const targetRecord = pendingCheckout;
+    const targetRef = targetRecord.clientOrderRef;
+    const lookupPhone = targetRecord.snapshot.phone || document.getElementById('custPhone').value.trim();
+
+    if (!(tgWebApp && tgWebApp.initData) && !lookupPhone) {
+      showNativeNotice('Please enter your phone number above to check this order / ቁጽሪ ስልክኹም ኣእትዉ።');
+      return;
+    }
+
+    isCheckingStatus = true;
+    renderRecoveryCardInDrawer();
+
+    try {
+      const checkPayload = {
+        action: 'CHECK_ORDER',
+        clientOrderRef: targetRef,
+        phone: lookupPhone
+      };
+      if (tgWebApp && tgWebApp.initData) {
+        checkPayload.initData = tgWebApp.initData;
+      }
+
+      const data = await fetchJsonWithTimeout(WEB_APP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(checkPayload)
+      }, 15000);
+
+      if (!pendingCheckout || pendingCheckout.clientOrderRef !== targetRef) return;
+
+      if (data && data.ok === true && data.state === 'COMMITTED' && validateConfirmedOrderShape(data.order)) {
+        finalizeConfirmedOrder(data.order, targetRecord.snapshot);
+        return;
+      }
+
+      if (data && data.ok === true && data.state === 'NOT_FOUND') {
+        persistPendingRecord({
+          ...targetRecord,
+          snapshot: { ...targetRecord.snapshot, phone: lookupPhone },
+          state: 'retryable'
+        });
+        return;
+      }
+
+      persistPendingRecord({
+        ...targetRecord,
+        snapshot: { ...targetRecord.snapshot, phone: lookupPhone },
+        state: 'unknown'
+      });
+    } catch (err) {
+      if (pendingCheckout && pendingCheckout.clientOrderRef === targetRef) {
+        renderRecoveryCardInDrawer();
+      }
+    } finally {
+      isCheckingStatus = false;
+      if (pendingCheckout && pendingCheckout.clientOrderRef === targetRef) {
+        renderRecoveryCardInDrawer();
+      }
+    }
+  }
+
+  async function dispatchPendingSnapshot(record) {
+    const targetRef = record.clientOrderRef;
+    const snapshot = record.snapshot;
+
+    if (!persistPendingRecord({ ...record, state: 'submitting' })) {
+      renderErrorCard('Browser storage is blocked. Please enable site storage before placing an order.');
+      return;
+    }
+
+    const payload = {
+      action: 'CREATE_ORDER',
+      clientOrderRef: targetRef,
+      customerName: snapshot.customerName,
+      phone: snapshot.phone,
+      subCity: snapshot.subCity,
+      location: snapshot.location,
+      payment: snapshot.payment,
+      cart: snapshot.cart,
+      expectedTotal: snapshot.reviewedTotal
+    };
+    if (tgWebApp && tgWebApp.initData) {
+      payload.initData = tgWebApp.initData;
+    }
+
+    try {
+      const data = await fetchJsonWithTimeout(WEB_APP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      }, 25000);
+
+      if (validateConfirmedOrderShape(data)) {
+        finalizeConfirmedOrder(data, snapshot);
+        return;
+      }
+
+      if (data && data.code === 'PRICE_CHANGED') {
+        persistPendingRecord(null);
+        await syncLiveCatalog();
+        renderErrorCard(data.error || 'Prices or delivery fee updated. Please review the revised total and submit again / ዋጋ ስለዝተመሓየሸ ሓድሽ ድምር ርኣዩ።');
+        return;
+      }
+
+      if (data && data.code === 'COMMIT_UNCERTAIN') {
+        persistPendingRecord({ ...record, state: 'unknown' });
+        return;
+      }
+
+      if (data && data.ok === false && typeof data.error === 'string') {
+        persistPendingRecord(null);
+        renderErrorCard(data.error);
+        return;
+      }
+
+      persistPendingRecord({ ...record, state: 'unknown' });
+    } catch (err) {
+      persistPendingRecord({ ...record, state: 'unknown' });
+    }
   }
 
   async function submitOrder() {
-    if (isSubmitting) return;
+    const latestStored = loadPendingCheckout();
+    if (latestStored && latestStored.state !== 'confirmed') {
+      pendingCheckout = latestStored;
+      syncLockUiState();
+      return;
+    }
 
-    if (commitUncertainLocked) {
-      showStatusCard('uncertain',
-        '<strong>⚠️ Previous Checkout Awaiting Verification</strong><br/>' +
-        'Do not place a duplicate order. Please contact <strong>@AddiMartMekelle_bot</strong> with reference <code>' + activeClientOrderRef + '</code>.'
-      );
+    if (isCheckoutLocked()) {
+      renderRecoveryCardInDrawer();
+      return;
+    }
+
+    if (unacknowledgedStockChanges.length) {
+      renderReconciliationNotices();
+      renderErrorCard('Please acknowledge the updated basket quantities first / ቅድም ዝተመሓየሸ ዘንቢል ኣረጋግጹ።');
       return;
     }
 
     const entries = Object.entries(cart);
     if (!entries.length) {
-      showStatusCard('error', 'Please add at least one product to your cart first.');
+      renderErrorCard('Your basket is empty / ዘንቢልኩም ባዶ እዩ።');
       return;
     }
 
     const customerName = document.getElementById('custName').value.trim();
     const phone = document.getElementById('custPhone').value.trim();
     const subCity = document.getElementById('subCity').value;
-    const location = document.getElementById('locationInput').value.trim();
+    const landmark = document.getElementById('locationInput').value.trim();
     const payment = document.getElementById('paymentMethod').value;
+    const defaultSub = document.getElementById('subPref').value;
 
-    if (!customerName || !phone || !location || location === 'Locating GPS...') {
-      showStatusCard('error', 'Please fill in your Name, Ethiopian Phone Number, and Delivery Location.');
+    if (!subCity || !VALID_SUBCITIES.includes(subCity)) {
+      renderErrorCard('Please select your Mekelle sub-city / ክፍለ ከተማኹም ምረጹ።');
+      document.getElementById('subCity').focus();
       return;
     }
 
-    if (!activeClientOrderRef) {
-      activeClientOrderRef = newOrderRef_();
+    if (!customerName || !phone || !landmark) {
+      renderErrorCard('Please enter your Name, Phone Number, and Delivery Landmark / ሽም፣ ስልኪ፣ ከምኡውን ኣድራሻ ኣእትዉ።');
+      return;
     }
 
-    const cleanCart = {};
+    persistProfileIfOptedIn();
+
+    const itemNotes = entries
+      .filter(([sku]) => itemSubOverrides[sku])
+      .map(([sku]) => sku + ':' + itemSubOverrides[sku]);
+    const fullLocation = landmark + ' [If out: ' + defaultSub + (itemNotes.length ? '; ' + itemNotes.join(', ') : '') + ']';
+
+    const fee = Number(liveFees[subCity]);
+    let reviewedSubtotal = 0;
+    const cleanCart = Object.create(null);
+    const linePrices = Object.create(null);
+
     entries.forEach(([sku, qty]) => {
-      cleanCart[sku] = Math.floor(Number(qty));
+      const p = PRODUCTS.find(x => x.sku === sku);
+      const unitPrice = p ? p.price : 0;
+      cleanCart[sku] = qty;
+      linePrices[sku] = unitPrice;
+      reviewedSubtotal += qty * unitPrice;
     });
 
-    const payload = {
-      action: 'CREATE_ORDER',
-      clientOrderRef: activeClientOrderRef,
-      customerName: customerName,
-      phone: phone,
-      subCity: subCity,
-      location: location,
-      payment: payment,
-      cart: cleanCart
+    const newRecord = {
+      clientOrderRef: generateOrderRef(),
+      state: 'submitting',
+      corrupted: false,
+      createdAt: Date.now(),
+      snapshot: {
+        customerName: customerName,
+        phone: phone,
+        subCity: subCity,
+        location: fullLocation,
+        payment: payment,
+        subPref: defaultSub,
+        cart: cleanCart,
+        linePrices: linePrices,
+        deliveryFee: fee,
+        reviewedTotal: reviewedSubtotal + fee
+      }
     };
 
-    if (tgWebApp && tgWebApp.initData) {
-      payload.initData = tgWebApp.initData;
-    }
-
-    const btn = document.getElementById('placeOrderBtn');
-    isSubmitting = true;
-    btn.disabled = true;
-    btn.textContent = '⏳ Submitting Order...';
-    document.getElementById('orderStatusCard').className = 'status-card';
-
-    try {
-      // text/plain avoids CORS preflight OPTIONS requests on Google Apps Script
-      const res = await fetch(WEB_APP_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
-      });
-
-      const data = await res.json();
-
-      if (data && data.ok) {
-        const payInstr = data.payment === 'Telebirr'
-          ? `Send <strong>${Number(data.total).toLocaleString()} ETB</strong> to Telebirr <strong>${data.telebirr}</strong>, then send your screenshot to <strong>@AddiMartMekelle_bot</strong>.`
-          : data.payment === 'CBE Transfer'
-            ? `Transfer <strong>${Number(data.total).toLocaleString()} ETB</strong> to CBE <strong>${data.cbe}</strong>, then send your screenshot to <strong>@AddiMartMekelle_bot</strong>.`
-            : `Pay <strong>${Number(data.total).toLocaleString()} ETB</strong> in cash when our Bajaj rider arrives.`;
-
-        showStatusCard('success',
-          `<strong>✅ Order Confirmed: #${data.orderId}</strong><br/>` +
-          `Total: <strong>${Number(data.total).toLocaleString()} ETB</strong> (${data.payment})<br/><br/>` +
-          `${payInstr}` +
-          `<a class="btn-telegram" href="https://t.me/AddiMartMekelle_bot" target="_blank" rel="noopener">Open @AddiMartMekelle_bot</a>`
-        );
-
-        // Clear cart and reset reference after confirmed commit
-        cart = {};
-        activeClientOrderRef = null;
-        saveCart();
-        renderCatalog();
-        renderCartItems();
-        syncLiveCatalog();
-        return;
-      }
-
-      if (data && data.code === 'COMMIT_UNCERTAIN') {
-        commitUncertainLocked = true;
-        showStatusCard('uncertain',
-          '<strong>⚠️ Network Timeout During Confirmation</strong><br/>' +
-          'Your order may have already been recorded. Do not submit again—message <strong>@AddiMartMekelle_bot</strong> with ref <code>' + activeClientOrderRef + '</code>.'
-        );
-        return;
-      }
-
-      showStatusCard('error', '⚠️ ' + ((data && data.error) ? data.error : 'Could not place order. Please check your details and try again.'));
-    } catch (err) {
-      // Keep activeClientOrderRef intact so tapping Retry is safely idempotent
-      showStatusCard('error', '⚠️ Network error while reaching Addi Mart server. Check your internet connection and tap Place Order Now to retry safely.');
-    } finally {
-      isSubmitting = false;
-      btn.disabled = false;
-      btn.textContent = '✅ Place Order Now';
-    }
+    await dispatchPendingSnapshot(newRecord);
   }
 
+  function renderReorderBanner() {
+    const banner = document.getElementById('reorderBanner');
+    clearNode(banner);
+    banner.classList.remove('visible');
+
+    if (isCheckoutLocked() || Object.keys(cart).length > 0) return;
+    const last = SafeStore.get(STORAGE_KEYS.LAST_ORDER);
+    if (!last || !last.cart || typeof last.cart !== 'object') return;
+
+    const validEntries = Object.entries(sanitizeCartObject(last.cart));
+    if (!validEntries.length) return;
+
+    const wrap = document.createElement('div');
+    wrap.style.display = 'flex';
+    wrap.style.justifyContent = 'space-between';
+    wrap.style.alignItems = 'center';
+    wrap.style.gap = '10px';
+    wrap.style.flexWrap = 'wrap';
+
+    const label = document.createElement('div');
+    const strong = document.createElement('strong');
+    strong.textContent = '🔄 Buy again / እንደገና እዘዝ' + (last.orderId ? ' (#' + last.orderId + ')' : '');
+    const sub = document.createElement('div');
+    sub.style.fontSize = '12px';
+    sub.textContent = liveCatalogLoaded
+      ? (validEntries.length + ' item(s) • Checked against live stock & prices')
+      : (validEntries.length + ' item(s) • Checking live stock...');
+    label.appendChild(strong);
+    label.appendChild(sub);
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn-primary';
+    btn.style.minHeight = '36px';
+    btn.style.padding = '7px 13px';
+    btn.style.fontSize = '12px';
+    btn.disabled = !liveCatalogLoaded;
+    btn.textContent = liveCatalogLoaded ? 'Load Basket / ዘንቢል ጽዓን' : 'Syncing...';
+    btn.addEventListener('click', () => {
+      cart = sanitizeCartObject(last.cart);
+      reconcileDraftCartWithLiveStock();
+      saveCart();
+      renderCatalog();
+      openCart();
+    });
+
+    wrap.appendChild(label);
+    wrap.appendChild(btn);
+    banner.appendChild(wrap);
+    banner.classList.add('visible');
+  }
+
+  /* Event Bindings */
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      SafeStore.set(STORAGE_KEYS.LANG, lang);
+      applySavedLanguage();
+    });
+  });
+
+  document.getElementById('homeSubCity').addEventListener('change', e => setSelectedSubCity(e.target.value));
+  document.getElementById('subCity').addEventListener('change', e => setSelectedSubCity(e.target.value));
+
+  document.getElementById('searchInput').addEventListener('input', renderCatalog);
+  document.getElementById('clearSearchBtn').addEventListener('click', () => {
+    const inp = document.getElementById('searchInput');
+    inp.value = '';
+    renderCatalog();
+    inp.focus();
+  });
+
+  document.getElementById('headerCartBtn').addEventListener('click', openCart);
+  document.getElementById('stickyOpenCartBtn').addEventListener('click', openCart);
+  document.getElementById('toStep2Btn').addEventListener('click', goToStep2);
+  document.getElementById('backToStep1Btn').addEventListener('click', () => setDrawerStep(1));
+  document.getElementById('closeDrawerBtn').addEventListener('click', closeCart);
+  document.getElementById('cartBackdrop').addEventListener('click', e => {
+    if (e.target.id === 'cartBackdrop') closeCart();
+  });
+
+  document.addEventListener('keydown', e => {
+    const backdrop = document.getElementById('cartBackdrop');
+    if (!backdrop.classList.contains('open')) return;
+    if (e.key === 'Escape') {
+      closeCart();
+      return;
+    }
+    if (e.key === 'Tab') {
+      const panel = document.getElementById('drawerPanel');
+      const focusables = Array.from(
+        panel.querySelectorAll('button:not([disabled]), input:not([disabled]), select:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])')
+      ).filter(el => el.offsetParent !== null);
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
+  document.getElementById('locationInput').addEventListener('input', () => {
+    userEditedLocationAfterGps = true;
+  });
+  document.getElementById('paymentMethod').addEventListener('change', togglePayDetails);
+  document.getElementById('pinGpsBtn').addEventListener('click', pinGPS);
+  document.getElementById('copyTelebirrBtn').addEventListener('click', function () {
+    copyDisplayValue(paymentConfig.telebirr, this);
+  });
+  document.getElementById('copyCbeBtn').addEventListener('click', function () {
+    copyDisplayValue(paymentConfig.cbe, this);
+  });
+  document.getElementById('rememberDetailsChk').addEventListener('change', persistProfileIfOptedIn);
+  document.getElementById('clearDetailsBtn').addEventListener('click', () => {
+    if (isCheckoutLocked()) return;
+    SafeStore.remove(STORAGE_KEYS.PROFILE);
+    document.getElementById('rememberDetailsChk').checked = false;
+    document.getElementById('custPhone').value = '';
+    document.getElementById('locationInput').value = '';
+  });
+  document.getElementById('placeOrderBtn').addEventListener('click', submitOrder);
+
+  window.addEventListener('storage', e => {
+    if (e.key === STORAGE_KEYS.PENDING) {
+      pendingCheckout = loadPendingCheckout();
+      syncLockUiState();
+    } else if (e.key === STORAGE_KEYS.CART && !isCheckoutLocked()) {
+      cart = sanitizeCartObject(SafeStore.get(STORAGE_KEYS.CART));
+      renderCatalog();
+      renderCartItems();
+      updateTotals();
+    }
+  });
+
+  applySavedLanguage();
+  loadSavedProfile();
+  populateSubCitySelectors();
+  applyPaymentConfig();
   renderCategories();
-  renderBundles();
   renderCatalog();
-  updateTotals();
+  renderBundles();
+
+  if (pendingCheckout && pendingCheckout.state === 'submitting') {
+    persistPendingRecord({ ...pendingCheckout, state: 'unknown' });
+  } else {
+    syncLockUiState();
+  }
+  renderReorderBanner();
   syncLiveCatalog();
+  if (isCheckoutLocked() && (pendingCheckout.snapshot.phone || (tgWebApp && tgWebApp.initData))) {
+    verifyPendingOrderStatus();
+  }
+})();
 </script>
 </body>
-</html>      
+</html>
