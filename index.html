@@ -2109,7 +2109,7 @@
     window.prompt('Copy / ቅዳሕ:', clean);
   }
 
-  function pinGPS() {
+function pinGPS() {
     if (isCheckoutLocked()) return;
     const inp = document.getElementById('locationInput');
     const status = document.getElementById('gpsStatusMsg');
@@ -2119,46 +2119,60 @@
 
     const applyGpsCoords = (lat, lng) => {
       if (reqId !== gpsRequestSeq || isCheckoutLocked() || userEditedLocationAfterGps) return;
+      btn.disabled = false;
       inp.value = 'https://maps.google.com/?q=' + lat.toFixed(6) + ',' + lng.toFixed(6);
       status.textContent = 'GPS captured / GPS ተታሒዙ ኣሎ።';
     };
 
-    if (tgWebApp && tgWebApp.LocationManager && tgWebApp.LocationManager.isInited) {
-      status.textContent = 'Requesting Telegram GPS...';
-      btn.disabled = true;
-      tgWebApp.LocationManager.getLocation(loc => {
-        if (reqId === gpsRequestSeq && !isCheckoutLocked()) btn.disabled = false;
-        if (loc && Number.isFinite(loc.latitude) && Number.isFinite(loc.longitude)) {
-          applyGpsCoords(loc.latitude, loc.longitude);
-        } else if (reqId === gpsRequestSeq) {
-          status.textContent = 'GPS unavailable. Type your nearby landmark / ቀረባ ምልክት ጽሓፉ።';
-        }
-      });
-      return;
-    }
+    const runBrowserGeolocation = () => {
+      if (!navigator.geolocation) {
+        btn.disabled = false;
+        status.textContent = 'GPS not supported on this device. Type your nearby landmark / ቀረባ ምልክት ጽሓፉ።';
+        return;
+      }
+      status.textContent = 'Requesting device GPS...';
+      navigator.geolocation.getCurrentPosition(
+        pos => applyGpsCoords(pos.coords.latitude, pos.coords.longitude),
+        err => {
+          if (reqId !== gpsRequestSeq || isCheckoutLocked()) return;
+          btn.disabled = false;
+          status.textContent = err && err.code === 1
+            ? 'Location permission blocked. Allow location or type landmark / ፍቓድ GPS ኣብርሁ ወይ ምልክት ጽሓፉ።'
+            : 'Could not lock GPS. Type your nearby landmark / ቀረባ ምልክት ጽሓፉ።';
+        },
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 }
+      );
+    };
 
-    if (!navigator.geolocation) {
-      status.textContent = 'Type your nearby landmark / ቀረባ ምልክት ጽሓፉ።';
-      return;
-    }
-
-    status.textContent = 'Locating GPS...';
     btn.disabled = true;
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        if (reqId === gpsRequestSeq && !isCheckoutLocked()) btn.disabled = false;
-        applyGpsCoords(pos.coords.latitude, pos.coords.longitude);
-      },
-      () => {
-        if (reqId === gpsRequestSeq && !isCheckoutLocked()) btn.disabled = false;
-        if (reqId === gpsRequestSeq) {
-          status.textContent = 'Could not lock GPS. Type your nearby landmark / ቀረባ ምልክት ጽሓፉ።';
-        }
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
-    );
-  }
+    const lm = tgWebApp && tgWebApp.LocationManager ? tgWebApp.LocationManager : null;
 
+    if (lm) {
+      const queryTelegramLocation = () => {
+        if (!lm.isLocationAvailable) {
+          runBrowserGeolocation();
+          return;
+        }
+        status.textContent = 'Requesting Telegram GPS...';
+        lm.getLocation(loc => {
+          if (loc && Number.isFinite(loc.latitude) && Number.isFinite(loc.longitude)) {
+            applyGpsCoords(loc.latitude, loc.longitude);
+          } else {
+            runBrowserGeolocation();
+          }
+        });
+      };
+
+      if (lm.isInited) {
+        queryTelegramLocation();
+      } else {
+        lm.init(queryTelegramLocation);
+      }
+      return;
+    }
+
+    runBrowserGeolocation();
+  }
   function setBackgroundInert(isInert) {
     ['appHeader', 'appDeliveryBar', 'appMain', 'appFooter', 'appSticky'].forEach(id => {
       const el = document.getElementById(id);
