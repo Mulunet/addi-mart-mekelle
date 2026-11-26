@@ -7,130 +7,191 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Noto+Sans+Ethiopic:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --primary: #1B5E20;
-      --primary-dark: #134417;
-      --primary-light: #E8F5E9;
-      --accent: #EF6C00;
-      --accent-light: #FFF7ED;
-      --bg: #FAF9F6;
+      --primary: #237A3A;
+      --primary-bright: #2E8B47;
+      --primary-dark: #144D24;
+      --primary-soft: #EAF6EE;
+      --primary-tint: #F3FAF5;
+      --accent: #E07A16;
+      --accent-dark: #9A4804;
+      --accent-soft: #FFF7ED;
+      --danger: #DC2626;
+      --danger-soft: #FEF2F2;
+      --bg: #F8F9F7;
       --surface: #FFFFFF;
-      --text: #1F2937;
-      --muted: #6B7280;
-      --border: #E5E7EB;
-      --radius: 14px;
-      --shadow: 0 3px 12px rgba(17, 24, 39, 0.05);
+      --text: #161C24;
+      /* WCAG 2.2 AA Compliant Contrast Tokens (>= 5.9:1 on #FFFFFF) */
+      --muted: #4B5563;
+      --subtle: #596573;
+      --border: #E2E8E2;
+      --radius-xl: 20px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --shadow-card: 0 6px 20px rgba(20, 45, 28, 0.05);
+      --shadow-float: 0 12px 32px rgba(20, 45, 28, 0.12);
+      --grad-green: linear-gradient(135deg, #2E8B47 0%, #144D24 100%);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
     body {
-      font-family: 'Open Sans', 'Noto Sans Ethiopic', sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Ethiopic', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.45;
-      padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
     }
     body.drawer-open { overflow: hidden; }
-    h1, h2, h3, .brand-title { font-family: 'Montserrat', 'Noto Sans Ethiopic', sans-serif; }
 
     body.lang-en .ti-only { display: none !important; }
     body.lang-ti .en-only { display: none !important; }
 
     :focus-visible {
-      outline: 3px solid var(--primary);
+      outline: 2.5px solid var(--primary);
       outline-offset: 2px;
     }
 
-    /* Compact Header */
+    /* Sticky Header + Integrated Delivery Context Bar */
     header {
       position: sticky;
       top: 0;
       z-index: 40;
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
     }
     .header-inner {
-      max-width: 1120px;
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 9px 14px;
+      padding: 9px 14px 7px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 10px;
     }
-    .brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
     .brand-logo {
-      width: 34px;
-      height: 34px;
-      border-radius: 9px;
-      background: #fff;
-      color: var(--primary);
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--grad-green);
+      color: #fff;
       display: grid;
       place-items: center;
       font-weight: 800;
-      font-size: 18px;
+      font-size: 19px;
       flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(46, 125, 50, 0.25);
     }
-    .brand-title { font-size: 15px; font-weight: 800; letter-spacing: 0.2px; white-space: nowrap; }
-    .brand-sub { font-size: 11px; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .brand-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+    }
+    .brand-sub {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
     .lang-switch {
       display: flex;
-      background: rgba(255,255,255,0.16);
+      background: var(--bg);
+      border: 1px solid var(--border);
       border-radius: 999px;
       padding: 2px;
     }
     .lang-btn {
       border: none;
       background: transparent;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-      min-height: 30px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      cursor: pointer;
-    }
-    .lang-btn.active { background: #fff; color: var(--primary); }
-    .cart-pill {
-      background: rgba(255,255,255,0.18);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.32);
-      border-radius: 999px;
-      min-height: 34px;
-      padding: 5px 11px;
-      font-weight: 700;
+      color: var(--muted);
       font-size: 12px;
+      font-weight: 700;
+      min-height: 32px;
+      padding: 4px 11px;
+      border-radius: 999px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      transition: all 0.18s ease;
+    }
+    .lang-btn.active {
+      background: var(--surface);
+      color: var(--primary-dark);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
 
-    /* Compact Delivery Bar on First Screen */
-    .delivery-strip {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 8px 14px;
+    /* Circular Cart Icon Button with Animated Counter Badge */
+    .cart-icon-btn {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: var(--primary-soft);
+      border: 1px solid #C5E2CD;
+      color: var(--primary-dark);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.18s ease;
     }
-    .delivery-strip-inner {
-      max-width: 1120px;
+    .cart-icon-btn:active { transform: scale(0.95); }
+    .cart-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: var(--primary-dark);
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      border: 2px solid #fff;
+    }
+    .cart-badge.pop {
+      animation: badgePop 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes badgePop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.32); }
+      100% { transform: scale(1); }
+    }
+
+    /* Sticky Header Delivery Context Strip */
+    .header-deliver-strip {
+      max-width: 1080px;
       margin: 0 auto;
+      padding: 5px 14px 8px;
+      border-top: 1px solid rgba(226, 232, 226, 0.65);
+    }
+    .deliver-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 8px;
+      background: var(--primary-tint);
+      border: 1px solid #D5EAD7;
+      border-radius: 12px;
+      padding: 4px 10px;
     }
-    .deliver-control {
+    .deliver-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex: 1;
-      min-width: 240px;
+      min-width: 0;
     }
     .deliver-label {
       font-size: 12px;
@@ -139,278 +200,460 @@
       white-space: nowrap;
     }
     .deliver-select {
-      padding: 6px 10px;
-      border: 1.5px solid var(--border);
-      border-radius: 9px;
+      border: none;
+      background: transparent;
+      font-family: inherit;
       font-size: 13px;
-      font-weight: 600;
-      background: #F9FAFB;
+      font-weight: 700;
       color: var(--text);
-      min-height: 36px;
+      min-height: 34px;
+      padding: 4px 6px;
+      border-radius: 8px;
       flex: 1;
-      max-width: 310px;
+      min-width: 0;
+      cursor: pointer;
     }
     .deliver-select.needs-choice {
-      border-color: var(--accent);
-      background: var(--accent-light);
+      color: var(--accent-dark);
+      background: var(--accent-soft);
     }
-    .eta-tag {
+    .eta-pill {
       font-size: 11px;
       font-weight: 700;
-      color: var(--primary);
-      background: var(--primary-light);
+      color: var(--primary-dark);
+      background: var(--surface);
+      border: 1px solid #D5EAD7;
       padding: 4px 9px;
       border-radius: 999px;
       white-space: nowrap;
     }
 
-    .container { max-width: 1120px; margin: 0 auto; padding: 12px 14px; }
+    /* Main Container */
+    .container { max-width: 1080px; margin: 0 auto; padding: 12px 14px; }
 
-    /* Quiet Status & Action Banners */
-    .quiet-notice {
-      background: #FFFBEB;
-      border: 1px solid #FCD34D;
-      color: #92400E;
-      border-radius: 10px;
-      padding: 8px 12px;
-      margin-bottom: 10px;
-      font-size: 12px;
-      display: none;
+    /* Pill Search Input */
+    .search-wrap { position: relative; display: flex; align-items: center; margin-bottom: 13px; }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      color: var(--subtle);
+      pointer-events: none;
+      display: grid;
+      place-items: center;
     }
-    .quiet-notice.visible { display: block; }
-
-    .alert-banner {
-      background: var(--accent-light);
-      border: 1.5px solid #FDBA74;
-      color: #9A3412;
-      border-radius: 12px;
-      padding: 11px 13px;
-      margin-bottom: 12px;
-      font-size: 13px;
-      display: none;
-    }
-    .alert-banner.visible { display: block; }
-    .alert-banner.recovery { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
-    .alert-banner.reorder { background: var(--primary-light); border-color: #86EFAC; color: var(--primary-dark); }
-
-    /* Search & Categories */
-    .controls { display: flex; flex-direction: column; gap: 9px; margin-bottom: 14px; }
-    .search-wrap { position: relative; display: flex; align-items: center; }
     .search-box {
       width: 100%;
-      padding: 10px 38px 10px 13px;
-      border: 1.5px solid var(--border);
-      border-radius: 11px;
+      min-height: 44px;
+      padding: 10px 42px 10px 40px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-family: inherit;
       font-size: 14px;
       background: var(--surface);
-      min-height: 42px;
+      color: var(--text);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.025);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
     }
-    .search-box:focus { border-color: var(--primary); outline: none; }
+    .search-box::placeholder { color: var(--subtle); opacity: 1; }
+    .search-box:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+      outline: none;
+    }
     .search-clear {
       position: absolute;
-      right: 7px;
-      background: #F3F4F6;
-      border: none;
-      width: 28px;
-      height: 28px;
+      right: 6px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       font-size: 13px;
+      font-weight: 700;
       color: var(--muted);
       cursor: pointer;
       display: none;
     }
     .search-clear.visible { display: grid; place-items: center; }
 
-    .cat-pills { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 2px; }
+    /* Soft Sage Promo Banner */
+    .promo-card {
+      background: linear-gradient(130deg, #E3F3E8 0%, #F1F9F3 58%, #FFF6EC 100%);
+      border: 1px solid #D1E9D8;
+      border-radius: var(--radius-xl);
+      padding: 15px 16px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .promo-eyebrow {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary-dark);
+      background: rgba(255,255,255,0.92);
+      padding: 3px 9px;
+      border-radius: 999px;
+      margin-bottom: 5px;
+    }
+    .promo-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.25;
+    }
+    .promo-sub {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-top: 3px;
+    }
+    .promo-art {
+      width: 68px;
+      height: 68px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    /* Quiet Status & Action Banners */
+    .quiet-notice {
+      background: var(--accent-soft);
+      border: 1px solid #FDE68A;
+      color: var(--accent-dark);
+      border-radius: 12px;
+      padding: 9px 12px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      display: none;
+    }
+    .quiet-notice.visible { display: block; }
+
+    .alert-banner {
+      background: var(--accent-soft);
+      border: 1.5px solid #FCD34D;
+      color: var(--accent-dark);
+      border-radius: 14px;
+      padding: 11px 13px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      display: none;
+    }
+    .alert-banner.visible { display: block; }
+    .alert-banner.recovery { background: #FEF2F2; border-color: #FCA5A5; color: #991B1B; }
+    .alert-banner.reorder { background: var(--primary-soft); border-color: #BBF7D0; color: var(--primary-dark); }
+
+    /* Category Pills with Right-Edge Fade Affordance */
+    .cat-pills-wrap {
+      position: relative;
+      margin-bottom: 14px;
+    }
+    .cat-pills {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding: 2px 24px 4px 0;
+      scrollbar-width: none;
+      -webkit-mask-image: linear-gradient(to right, #000 90%, transparent 100%);
+      mask-image: linear-gradient(to right, #000 90%, transparent 100%);
+    }
+    .cat-pills::-webkit-scrollbar { display: none; }
     .cat-pill {
       white-space: nowrap;
       border: 1px solid var(--border);
       background: var(--surface);
-      color: var(--text);
+      color: var(--muted);
       min-height: 36px;
-      padding: 6px 13px;
+      padding: 7px 14px;
       border-radius: 999px;
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
+      transition: all 0.16s ease;
     }
-    .cat-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .cat-pill.active {
+      background: var(--primary-dark);
+      color: #fff;
+      border-color: var(--primary-dark);
+      box-shadow: 0 3px 10px rgba(20, 77, 36, 0.22);
+    }
 
-    .section-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--primary-dark);
-      margin-bottom: 10px;
+    .section-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
+    .section-meta {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-dark);
     }
 
-    /* Standardized Grocery Cards */
+    /* Smooth Product Grid & Left-Aligned Cards */
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
       gap: 12px;
-      margin-bottom: 22px;
+      margin-bottom: 24px;
     }
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: var(--radius-xl);
       padding: 12px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-card);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 8px;
+      gap: 9px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
-    .card.sold-out { opacity: 0.62; }
+    .card:hover { box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08); }
+    .card.sold-out { opacity: 0.65; }
+
+    .card-tap-area {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      gap: 5px;
+      width: 100%;
+    }
     .card-media {
       position: relative;
-      height: 84px;
-      border-radius: 10px;
-      background: var(--primary-light);
+      width: 100%;
+      height: 106px;
+      border-radius: 14px;
+      background: var(--primary-tint);
+      border: 1px solid rgba(20, 77, 36, 0.07);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      margin-bottom: 2px;
     }
     .card-media img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.25s ease;
     }
-    .pack-pill {
-      position: absolute;
-      bottom: 6px;
-      left: 6px;
-      background: rgba(17, 24, 39, 0.78);
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 6px;
+    .card:hover .card-media img {
+      transform: scale(1.04);
     }
+    .card-media svg {
+      width: 56px;
+      height: 56px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.08));
+    }
+
     .stock-badge {
       position: absolute;
       top: 6px;
       right: 6px;
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 700;
-      padding: 2px 7px;
+      padding: 2px 8px;
       border-radius: 999px;
-      background: #DCFCE7;
-      color: #166534;
+      background: rgba(255, 247, 237, 0.96);
+      color: var(--accent-dark);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
-    .stock-badge.low { background: #FEF3C7; color: #92400E; }
-    .stock-badge.out { background: #FEE2E2; color: #991B1B; }
-
-    .item-name { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.3; }
-    .item-price-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 4px;
-      margin-top: 2px;
-    }
-    .item-price { font-size: 16px; font-weight: 800; color: var(--primary); }
-    .item-unit { font-size: 12px; font-weight: 600; color: var(--muted); }
-
-    .btn-add {
-      width: 100%;
-      min-height: 38px;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 8px;
+    .stock-badge.out { background: rgba(254, 226, 226, 0.96); color: #991B1B; }
+    .item-name {
+      font-size: 14px;
       font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
+      color: var(--text);
+      line-height: 1.3;
+      min-height: 2.6em;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      width: 100%;
     }
-    .btn-add:hover:not(:disabled) { background: var(--primary-dark); }
-    .btn-add:disabled { background: #9CA3AF; cursor: not-allowed; }
+    .item-pack {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--subtle);
+    }
+    .item-price {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      letter-spacing: -0.2px;
+    }
+    .item-price small {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+    }
 
-    .qty-stepper {
+    /* Full-Width Bottom Card Action (>= 40px Touch Height) */
+    .btn-card-plus {
+      width: 100%;
+      height: 40px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      border: 1px solid #CBE5D1;
+      border-radius: 12px;
+      font-size: 19px;
+      font-weight: 800;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+    .btn-card-plus:hover:not(:disabled) { background: #DCEEE0; }
+    .btn-card-plus:active:not(:disabled) { transform: scale(0.97); }
+    .btn-card-plus:disabled {
+      background: #F3F4F6;
+      border-color: #E5E7EB;
+      color: var(--muted);
+      font-size: 11.5px;
+      cursor: not-allowed;
+    }
+
+    .card-stepper {
+      width: 100%;
+      height: 40px;
+      background: var(--grad-green);
+      color: #fff;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--primary-light);
-      border-radius: 10px;
-      padding: 3px;
+      padding: 0 4px;
+      box-shadow: 0 3px 10px rgba(20, 77, 36, 0.22);
     }
-    .qty-btn {
+    .card-step-btn {
       width: 36px;
-      height: 36px;
+      height: 34px;
       border: none;
-      border-radius: 8px;
-      background: var(--primary);
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.2);
       color: #fff;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       cursor: pointer;
       display: grid;
       place-items: center;
     }
-    .qty-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-    .qty-val { font-weight: 800; font-size: 13px; color: var(--primary-dark); }
+    .card-step-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .card-step-val {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #fff;
+      min-width: 24px;
+      text-align: center;
+    }
 
     .empty-state {
       grid-column: 1 / -1;
       background: var(--surface);
       border: 1px dashed var(--border);
-      border-radius: var(--radius);
-      padding: 24px 16px;
+      border-radius: var(--radius-xl);
+      padding: 28px 16px;
       text-align: center;
       color: var(--muted);
     }
 
-    /* Bundles */
+    /* Household Combo Bundles */
     .bundles-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
     .bundle-card {
       background: var(--surface);
-      border: 1px solid #FDBA74;
-      border-radius: var(--radius);
-      padding: 13px;
-      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 15px;
+      box-shadow: var(--shadow-card);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
     }
     .bundle-tag {
       display: inline-block;
-      background: var(--accent);
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 6px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      border: 1px solid #FDE68A;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
       width: fit-content;
     }
 
-    /* Sticky Bottom Bar (Web only; hidden when Telegram MainButton is active) */
+    /* Buttons */
+    .btn-primary {
+      background: var(--grad-green);
+      color: #fff;
+      border: none;
+      border-radius: 13px;
+      min-height: 44px;
+      padding: 10px 16px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(20, 77, 36, 0.24);
+      transition: transform 0.1s ease, opacity 0.15s ease;
+    }
+    .btn-primary:active:not(:disabled) { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
+
+    .btn-secondary {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      border: 1px solid #C5E2CD;
+      border-radius: 11px;
+      min-height: 38px;
+      padding: 7px 12px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Sticky Bottom Bar (Web only; hidden when Telegram MainButton is shown) */
     .sticky-checkout {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: var(--surface);
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(12px);
       border-top: 1px solid var(--border);
       padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
       z-index: 35;
-      box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+      box-shadow: 0 -6px 20px rgba(0,0,0,0.06);
     }
     body.has-tg-mainbutton .sticky-checkout { display: none; }
-    body.has-tg-mainbutton { padding-bottom: 20px; }
+    body.has-tg-mainbutton { padding-bottom: 24px; }
 
     .sticky-inner {
-      max-width: 1120px;
+      max-width: 1080px;
       margin: 0 auto;
       display: flex;
       align-items: center;
@@ -418,175 +661,319 @@
       gap: 12px;
     }
 
-    /* Primary CTA is Deep Green; Orange reserved for alerts/offers */
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      min-height: 42px;
-      padding: 10px 16px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
-    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
-
-    .btn-secondary {
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      border: 1px solid #A7F3D0;
-      border-radius: 10px;
-      min-height: 38px;
-      padding: 7px 12px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .btn-secondary:disabled { opacity: 0.55; cursor: not-allowed; }
-
-    /* Two-Step Order Drawer */
+    /* Two-Step Checkout Drawer with Sticky Header & Sticky Footer */
     .backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(17, 24, 39, 0.58);
+      background: rgba(15, 23, 42, 0.54);
+      backdrop-filter: blur(3px);
       z-index: 50;
       display: none;
       justify-content: flex-end;
     }
     .backdrop.open { display: flex; }
+
     .drawer {
       width: 100%;
       max-width: 460px;
       background: var(--surface);
       height: 100%;
-      overflow-y: auto;
-      padding: 15px 15px calc(24px + env(safe-area-inset-bottom, 0px));
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      overflow: hidden;
     }
     .drawer-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 9px;
+      padding: 14px 16px 10px;
       gap: 8px;
+      flex-shrink: 0;
+      background: var(--surface);
     }
-    .step-pills {
+    .drawer-scroll-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 16px 18px;
       display: flex;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: 700;
+      flex-direction: column;
+      gap: 13px;
     }
-    .step-pill {
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: #F3F4F6;
-      color: var(--muted);
+    .drawer-sticky-footer {
+      flex-shrink: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .step-pill.active {
-      background: var(--primary-light);
-      color: var(--primary-dark);
-    }
-    .close-btn {
-      background: #F3F4F6;
-      border: none;
-      width: 36px;
-      height: 36px;
+    .step-pills { display: flex; gap: 6px; font-size: 11px; font-weight: 700; margin-top: 4px; }
+    .step-pill { padding: 3px 9px; border-radius: 999px; background: var(--bg); color: var(--muted); }
+    .step-pill.active { background: var(--primary-soft); color: var(--primary-dark); }
+
+    .icon-circle-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      font-size: 17px;
+      font-size: 16px;
+      color: var(--text);
       cursor: pointer;
+      display: grid;
+      place-items: center;
       flex-shrink: 0;
     }
 
+    /* Product Detail Bottom Sheet */
+    .detail-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.54);
+      backdrop-filter: blur(3px);
+      z-index: 55;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .detail-backdrop.open { display: flex; }
+    .detail-sheet {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border-radius: 26px 26px 0 0;
+      padding: 16px 18px calc(22px + env(safe-area-inset-bottom, 0px));
+      box-shadow: var(--shadow-float);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      animation: slideUp 0.2s ease-out;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(24px); opacity: 0.7; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .detail-showcase {
+      background: var(--primary-tint);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      height: 185px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .detail-showcase img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .detail-showcase svg { width: 96px; height: 96px; }
+    .detail-facts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+    }
+    .fact-label { font-size: 11px; color: var(--muted); font-weight: 600; }
+    .fact-val { font-size: 12.5px; color: var(--text); font-weight: 800; margin-top: 2px; }
+
+    /* Cart Rows & Checkout Form */
     .cart-row {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      padding: 9px 0;
+      gap: 7px;
+      padding: 10px 0;
       border-bottom: 1px solid var(--border);
     }
-    .cart-row-main {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
+    .cart-row-main { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .qty-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 10px;
+      background: var(--primary-dark);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
     }
-    .item-sub-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: var(--muted);
-    }
+    .qty-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .item-sub-row { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); font-weight: 600; }
     .item-sub-select {
-      font-size: 11px;
-      padding: 3px 7px;
+      font-family: inherit;
+      font-size: 11.5px;
+      min-height: 32px;
+      padding: 4px 8px;
       border: 1px solid var(--border);
-      border-radius: 6px;
-      background: #F9FAFB;
+      border-radius: 8px;
+      background: var(--bg);
       color: var(--text);
     }
 
-    .form-row-2col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    .form-row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .form-group { display: flex; flex-direction: column; gap: 4px; }
-    .form-group label { font-size: 12px; font-weight: 700; color: #374151; }
+    .form-group label { font-size: 12px; font-weight: 700; color: var(--text); }
     .form-control {
-      padding: 9px 11px;
+      padding: 10px 12px;
       border: 1.5px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
+      font-family: inherit;
       font-size: 14px;
       width: 100%;
       background: #fff;
-      min-height: 40px;
+      color: var(--text);
+      min-height: 44px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
-    .form-control:disabled { background: #F3F4F6; color: #6B7280; }
+    .form-control:focus { border-color: var(--primary); outline: none; }
+    .form-control:disabled { background: var(--bg); color: var(--muted); }
+    .form-control.input-error {
+      border-color: var(--danger);
+      background: var(--danger-soft);
+    }
+    .field-error {
+      display: none;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #B91C1C;
+      margin-top: 2px;
+    }
+    .field-error.visible { display: block; }
+
     .gps-row { display: flex; gap: 8px; }
+    .landmark-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .landmark-chip {
+      background: var(--primary-tint);
+      border: 1px solid #C5E2CD;
+      color: var(--primary-dark);
+      border-radius: 999px;
+      min-height: 34px;
+      padding: 5px 11px;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .landmark-chip:hover:not(:disabled) { background: var(--primary-soft); }
+    .landmark-chip:disabled { opacity: 0.5; cursor: not-allowed; }
+    .gps-badge-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 6px;
+      padding: 5px 8px 5px 11px;
+      background: var(--primary-soft);
+      border: 1px solid #BBF7D0;
+      border-radius: 11px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .gps-badge-bar.visible { display: flex; }
+    .gps-badge-bar.outside {
+      background: var(--accent-soft);
+      border-color: #FCD34D;
+      color: var(--accent-dark);
+    }
+    .gps-clear-btn {
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      color: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      min-width: 36px;
+      min-height: 36px;
+      display: grid;
+      place-items: center;
+    }
+
+    /* Visual Payment Selector Radio Cards */
+    .pay-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .pay-choice-card {
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      border-radius: 13px;
+      min-height: 66px;
+      padding: 8px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: center;
+      transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    }
+    .pay-choice-card:disabled { opacity: 0.55; cursor: not-allowed; }
+    .pay-choice-card.selected {
+      border-color: var(--primary-dark);
+      background: var(--primary-tint);
+      box-shadow: 0 3px 10px rgba(20, 77, 36, 0.12);
+    }
+    .pay-choice-label {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.15;
+    }
 
     .pay-card {
-      background: #F9FAFB;
+      background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
+      border-radius: 12px;
+      padding: 11px 12px;
       font-size: 12px;
     }
-    .copy-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 4px; }
+    .copy-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 5px; }
 
-    .summary-box { background: var(--primary-light); border-radius: 12px; padding: 11px 12px; font-size: 13px; }
-    .summary-line { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .summary-box { background: var(--primary-tint); border: 1px solid #C5E2CD; border-radius: 14px; padding: 10px 12px; font-size: 13px; }
+    .summary-line { display: flex; justify-content: space-between; margin-bottom: 4px; color: var(--text); }
     .summary-total {
       display: flex;
       justify-content: space-between;
-      font-size: 15px;
+      font-size: 15.5px;
       font-weight: 800;
       color: var(--primary-dark);
-      border-top: 1px solid #BBF7D0;
+      border-top: 1px solid #B7DEC0;
       padding-top: 6px;
-      margin-top: 6px;
+      margin-top: 5px;
     }
 
-    /* Hide redundant drawer primary button when Telegram MainButton is shown */
     body.has-tg-mainbutton .drawer-primary-cta { display: none !important; }
 
     .status-card {
-      border-radius: 12px;
-      padding: 13px;
+      border-radius: 14px;
+      padding: 14px;
       font-size: 13px;
       display: none;
       line-height: 1.5;
     }
     .status-card.success { display: block; background: #ECFDF5; border: 1.5px solid #10B981; color: #065F46; }
-    .status-card.awaiting { display: block; background: var(--accent-light); border: 1.5px solid #F97316; color: #9A3412; }
+    .status-card.awaiting { display: block; background: var(--accent-soft); border: 1.5px solid #F59E0B; color: var(--accent-dark); }
     .status-card.error { display: block; background: #FEF2F2; border: 1.5px solid #EF4444; color: #991B1B; }
-    .status-card.uncertain { display: block; background: #FFFBEB; border: 1.5px solid #F59E0B; color: #92400E; }
+    .status-card.uncertain { display: block; background: #FFFBEB; border: 1.5px solid #F59E0B; color: var(--accent-dark); }
 
     .btn-telegram {
       display: flex;
@@ -594,12 +981,12 @@
       justify-content: center;
       gap: 8px;
       width: 100%;
-      background: #0088CC;
+      background: #0077B5;
       color: #fff;
       text-decoration: none;
       border: none;
-      border-radius: 11px;
-      min-height: 42px;
+      border-radius: 12px;
+      min-height: 44px;
       padding: 10px 14px;
       font-weight: 700;
       font-size: 13px;
@@ -607,17 +994,203 @@
       margin-top: 10px;
     }
 
+    /* Non-blocking In-App Toast & Confirmation Modal */
+    .toast-pill {
+      position: fixed;
+      top: 98px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-12px);
+      background: #161C24;
+      color: #FFFFFF;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 700;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+      z-index: 90;
+      max-width: calc(100vw - 28px);
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .toast-pill.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .confirm-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(3px);
+      z-index: 95;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .confirm-overlay.open { display: flex; }
+    .confirm-dialog {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      max-width: 360px;
+      width: 100%;
+      box-shadow: var(--shadow-float);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
     footer {
-      max-width: 1120px;
-      margin: 18px auto 0;
-      padding: 14px;
+      max-width: 1080px;
+      margin: 24px auto 0;
+      padding: 0 14px 12px;
+    }
+    .footer-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .footer-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--primary-soft);
+      border: 1px solid #C5E2CD;
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 16px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .footer-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+    }
+    .footer-status-pill.closed {
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .footer-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .footer-chip {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      min-height: 40px;
+      padding: 7px 12px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .footer-chip:hover {
+      background: var(--primary-tint);
+      border-color: #C5E2CD;
+    }
+    .footer-chip.highlight {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      border-color: #C5E2CD;
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 10px;
       border-top: 1px solid var(--border);
       font-size: 12px;
       color: var(--muted);
+    }
+    .pay-badges {
       display: flex;
-      justify-content: space-between;
+      align-items: center;
+      gap: 5px;
       flex-wrap: wrap;
-      gap: 8px;
+    }
+    .pay-badge {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .pay-brand-header {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 6px;
+    }
+    .pay-logo-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    .pay-logo-img {
+      height: 26px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+    .footer-logo-img {
+      height: 18px;
+      width: auto;
+      display: block;
+      object-fit: contain;
     }
 
     @media (max-width: 600px) {
@@ -626,110 +1199,247 @@
         gap: 10px;
       }
       .card { min-width: 0; padding: 10px; }
-      .card-media { height: 74px; }
-      .item-name { font-size: 13px; }
-      .item-price { font-size: 15px; }
+      .card-media { height: 96px; }
     }
-    @media (max-width: 420px) {
+    @media (max-width: 440px) {
       .form-row-2col { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-<body class="lang-both">
+<body class="lang-en">
 
 <header id="appHeader">
   <div class="header-inner">
     <div class="brand">
       <div class="brand-logo" aria-hidden="true">ዓ</div>
       <div style="min-width:0;">
-        <div class="brand-title">ADDI MART | ዓዲ ማርት</div>
+        <div class="brand-title">
+          <span class="en-only">Addi Mart</span>
+          <span class="ti-only">ዓዲ ማርት</span>
+        </div>
         <div class="brand-sub">
-          <span class="en-only">Mekelle Neighborhood Grocery</span>
-          <span class="ti-only"> • ናይ ኣስቤዛ ድኳን ኣብ መቐለ</span>
+          <span class="en-only">Mekelle Fresh Grocery</span>
+          <span class="ti-only">ናይ መቐለ ኣስቤዛ ድኳን</span>
         </div>
       </div>
     </div>
     <div class="header-actions">
       <div class="lang-switch" role="group" aria-label="Language switcher">
-        <button type="button" class="lang-btn active" data-lang="both">EN/ትግ</button>
-        <button type="button" class="lang-btn" data-lang="en">EN</button>
+        <button type="button" class="lang-btn active" data-lang="en">EN</button>
         <button type="button" class="lang-btn" data-lang="ti">ትግርኛ</button>
       </div>
-      <button type="button" id="headerCartBtn" class="cart-pill" aria-label="Open shopping basket">
-        🛒 <span id="headerCartCount">0</span> • <span id="headerCartTotal">0</span> ETB
+      <button type="button" id="headerCartBtn" class="cart-icon-btn" aria-label="Open shopping basket">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="cart-badge" id="headerCartCount">0</span>
       </button>
+    </div>
+  </div>
+
+  <!-- Sticky Delivery Context Strip -->
+  <div class="header-deliver-strip">
+    <div class="deliver-row">
+      <div class="deliver-left">
+        <label for="homeSubCity" class="deliver-label">
+          📍 <span class="en-only">Deliver to:</span><span class="ti-only">መብጽሒ:</span>
+        </label>
+        <select id="homeSubCity" class="deliver-select needs-choice">
+          <option value="">Select sub-city</option>
+          <option value="Hawelti">Hawelti — 40 ETB</option>
+          <option value="Kedamay Weyane">Kedamay Weyane — 40 ETB</option>
+          <option value="Adi Haki">Adi Haki — 40 ETB</option>
+          <option value="Ayder">Ayder — 50 ETB</option>
+          <option value="Semien">Semien — 50 ETB</option>
+          <option value="Hadnet">Hadnet — 50 ETB</option>
+        </select>
+      </div>
+      <span class="eta-pill">🛵 30–50 min</span>
     </div>
   </div>
 </header>
 
-<!-- First-screen Delivery Area & Fee Selector -->
-<div id="appDeliveryBar" class="delivery-strip">
-  <div class="delivery-strip-inner">
-    <div class="deliver-control">
-      <label for="homeSubCity" class="deliver-label">
-        📍 <span class="en-only">Deliver to:</span><span class="ti-only">መብጽሒ:</span>
-      </label>
-      <select id="homeSubCity" class="deliver-select needs-choice">
-        <option value="">Select sub-city / ክፍለ ከተማ ምረጹ</option>
-      </select>
-    </div>
-    <div class="eta-tag">
-      🛵 <span class="en-only">30–50 min Bajaj</span><span class="ti-only">30–50 ደቒቕ ባጃጅ</span>
-    </div>
-  </div>
-</div>
-
 <main id="appMain" class="container">
-  <!-- Quiet connectivity notice (shown only if offline/fallback) -->
-  <div id="quietSyncNotice" class="quiet-notice" role="status" aria-live="polite"></div>
+  <!-- Pill Search Bar -->
+  <div class="search-wrap">
+    <span class="search-icon" aria-hidden="true">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </span>
+    <input
+      type="search"
+      id="searchInput"
+      class="search-box"
+      placeholder='Search for "Teff, Oil, Shiro, Eggs"...'
+    />
+    <button type="button" id="clearSearchBtn" class="search-clear" aria-label="Clear search">✕</button>
+  </div>
 
-  <!-- Order recovery & stock notices -->
+  <!-- Soft Sage Promo Card -->
+  <section class="promo-card" aria-label="Neighborhood delivery highlight">
+    <div>
+      <span class="promo-eyebrow">
+        <span class="en-only">Mekelle Daily Staples</span>
+        <span class="ti-only">መዓልታዊ ኣስቤዛ መቐለ</span>
+      </span>
+      <div class="promo-title">
+        <span class="en-only">Fresh Neighborhood Groceries</span>
+        <span class="ti-only">ትኩስ ኣስቤዛ ኣብ ገዛኹም</span>
+      </div>
+      <div class="promo-sub">
+        <span class="en-only">40–50 ETB Bajaj delivery • telebirr, CBE, or Cash</span>
+        <span class="ti-only">40–50 ETB መብጽሒ ባጃጅ • ቴሌብር፣ ንግድ ባንክ ወይ ጥረ ገንዘብ</span>
+      </div>
+    </div>
+    <div class="promo-art" aria-hidden="true">
+      <svg viewBox="0 0 80 80" width="66" height="66">
+        <rect x="18" y="28" width="44" height="42" rx="8" fill="#D4A373"/>
+        <path d="M18 28 L62 28 L58 70 L22 70 Z" fill="#E6CCB2"/>
+        <circle cx="30" cy="24" r="9" fill="#EF4444"/>
+        <circle cx="48" cy="22" r="10" fill="#2E7D32"/>
+        <path d="M36 12 C42 12 45 26 39 28 C33 26 32 14 36 12 Z" fill="#F59E0B"/>
+        <path d="M26 16 C22 10 16 14 20 22 Z" fill="#4CAF50"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Quiet connectivity & recovery notices -->
+  <div id="quietSyncNotice" class="quiet-notice" role="status" aria-live="polite"></div>
   <div id="recoveryBanner" class="alert-banner recovery" role="alert"></div>
   <div id="reconcileBanner" class="alert-banner" role="status" aria-live="polite"></div>
   <div id="reorderBanner" class="alert-banner reorder"></div>
 
-  <!-- Search & Categories right above products -->
-  <div class="controls">
-    <label for="searchInput" style="position:absolute;left:-9999px;">Search groceries</label>
-    <div class="search-wrap">
-      <input
-        type="search"
-        id="searchInput"
-        class="search-box"
-        placeholder="🔎 Search teff, oil, berbere, shiro, eggs... / ጣፍ፣ ዘይቲ፣ በርበረ፣ ሽሮ ድለዩ..."
-      />
-      <button type="button" id="clearSearchBtn" class="search-clear" aria-label="Clear search">✕</button>
-    </div>
+  <!-- Category Pills -->
+  <div class="cat-pills-wrap">
     <div class="cat-pills" id="categoryPills" role="group" aria-label="Product categories"></div>
   </div>
 
-  <div class="section-title">
-    <span>🛍️ <span class="en-only">Everyday Groceries</span> <span class="ti-only">መዓልታዊ ኣስቤዛ</span></span>
-    <span style="font-size:12px;color:var(--muted);font-weight:600;" id="catalogCount"></span>
+  <!-- Everyday Groceries Grid -->
+  <div class="section-header">
+    <h2 class="section-title">
+      <span class="en-only">Everyday Groceries</span>
+      <span class="ti-only">መዓልታዊ ኣስቤዛ</span>
+    </h2>
+    <span class="section-meta" id="catalogCount"></span>
   </div>
   <div class="product-grid" id="productGrid"></div>
 
-  <div class="section-title">
-    <span>🧺 <span class="en-only">Household Combo Bundles</span> <span class="ti-only">ናይ ስድራቤት ፓኬጃት</span></span>
+  <!-- Household Combo Bundles -->
+  <div class="section-header">
+    <h2 class="section-title">
+      <span class="en-only">Household Bundles</span>
+      <span class="ti-only">ናይ ስድራቤት ፓኬጃት</span>
+    </h2>
   </div>
   <div class="bundles-grid" id="bundlesGrid"></div>
 </main>
 
 <footer id="appFooter">
-  <div><strong>Addi Mart (ዓዲ ማርት)</strong> — Mekelle, Tigray • Open Daily 7:00 AM – 9:00 PM</div>
-  <div>Telegram Support: <strong>@AddiMartMekelle_bot</strong></div>
+  <div class="footer-card">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-avatar" aria-hidden="true">ዓ</div>
+        <div>
+          <div style="font-size:14px;font-weight:800;color:var(--text);">
+            <span class="en-only">Addi Mart Mekelle</span>
+            <span class="ti-only">ዓዲ ማርት መቐለ</span>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);font-weight:600;">
+            <span class="en-only">Daily 7:00 AM – 9:00 PM • All 6 Sub-Cities</span>
+            <span class="ti-only">መዓልታዊ 7:00 ንግሆ – 9:00 ምሸት • ኩለን 6 ክፍለ ከተማታት</span>
+          </div>
+        </div>
+      </div>
+      <span id="storeHoursBadge" class="footer-status-pill">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="storeHoursText"></span>
+      </span>
+    </div>
+
+    <div class="footer-actions">
+      <a href="https://t.me/AddiMartMekelle_bot" target="_blank" rel="noopener" class="footer-chip">
+        💬 <span class="en-only">Telegram Support</span><span class="ti-only">ሓገዝ ቴሌግራም</span>
+      </a>
+      <a href="tel:+251955005400" class="footer-chip">
+        📞 <span class="en-only">Call +251955005400</span><span class="ti-only">ደውሉ +251955005400</span>
+      </a>
+      <button type="button" id="footerLastOrderBtn" class="footer-chip highlight" style="display:none;">
+        🧾 <span class="en-only">Last Receipt</span><span class="ti-only">ናይ መወዳእታ ቅብሊት</span>
+      </button>
+    </div>
+
+    <div class="footer-bottom">
+      <span>
+        <span class="en-only">30–50 min Bajaj delivery to your gate</span>
+        <span class="ti-only">ኣብ 30–50 ደቒቕ ብባጃጅ ኣብ ገዛኹም ይበጽሕ</span>
+      </span>
+      <div class="pay-badges" aria-label="Accepted payment methods">
+        <span class="pay-badge" style="background:#FFFFFF;border-color:#BAE6FD;color:#0369A1;">
+          <img src="telebirr-logo.png" alt="telebirr" class="footer-logo-img" onerror="this.outerHTML='<svg width=\'20\' height=\'16\' viewBox=\'0 0 44 36\' aria-hidden=\'true\'><path d=\'M13 3 C13 9, 17 12, 23 12 L23 15 L13 15 Z\' fill=\'#0088CC\'/><path d=\'M3 16 L11 16 L11 25 C8 22, 5 19, 3 16 Z\' fill=\'#0088CC\'/><path d=\'M13 17 L24 17 L24 20 L16 20 L16 25 C16 30, 22 31, 25 27 C27 24, 25 21, 22 22 C20 23, 20 25, 22 26 C20 27, 18 25, 19 22 C20 19, 25 18, 28 22 C31 26, 28 33, 21 34 C15 35, 13 30, 13 25 Z\' fill=\'#0088CC\'/></svg>'" />
+          <span style="color:#0369A1;font-weight:800;">telebirr</span>
+        </span>
+        <span class="pay-badge" style="background:#FFFDF7;border-color:#F3D999;color:#78350F;">
+          <img src="cbe-logo.png" alt="CBE" class="footer-logo-img" onerror="this.outerHTML='<svg width=\'18\' height=\'18\' viewBox=\'0 0 36 36\' aria-hidden=\'true\'><ellipse cx=\'18\' cy=\'18\' rx=\'16\' ry=\'8\' transform=\'rotate(-35 18 18)\' fill=\'none\' stroke=\'#B97D2B\' stroke-width=\'1.2\' opacity=\'0.75\'/><ellipse cx=\'18\' cy=\'18\' rx=\'16\' ry=\'8\' transform=\'rotate(35 18 18)\' fill=\'none\' stroke=\'#B97D2B\' stroke-width=\'1.2\' opacity=\'0.75\'/><circle cx=\'18\' cy=\'18\' r=\'11\' fill=\'#D59E48\' stroke=\'#7C4D12\' stroke-width=\'1.4\'/><text x=\'18\' y=\'21\' text-anchor=\'middle\' fill=\'#4A2804\' font-family=\'Georgia, serif\' font-weight=\'900\' font-size=\'7.5\'>CBE</text></svg>'" />
+          <span style="color:#78350F;font-weight:800;">CBE</span>
+        </span>
+        <span class="pay-badge">
+          💵 <span class="en-only">Cash</span><span class="ti-only">ጥረ ገንዘብ</span>
+        </span>
+      </div>
+    </div>
+  </div>
 </footer>
 
 <div id="appSticky" class="sticky-checkout">
   <div class="sticky-inner">
     <div>
-      <div style="font-size:12px;color:var(--muted);font-weight:600;" id="stickyCountLine"></div>
-      <div style="font-size:16px;font-weight:800;color:var(--primary-dark);" id="stickyTotalLine"></div>
+      <div style="font-size:11.5px;color:var(--muted);font-weight:600;" id="stickyCountLine"></div>
+      <div style="font-size:16px;font-weight:800;color:var(--text);" id="stickyTotalLine"></div>
     </div>
     <button type="button" id="stickyOpenCartBtn" class="btn-primary">
       <span class="en-only">Review Basket →</span>
       <span class="ti-only">ዘንቢል ርኣዩ →</span>
     </button>
+  </div>
+</div>
+
+<!-- Product Detail Bottom Sheet -->
+<div class="detail-backdrop" id="detailBackdrop" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+  <div class="detail-sheet" id="detailSheetPanel">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <span id="detailCatBadge" style="font-size:11.5px;font-weight:700;color:var(--primary-dark);background:var(--primary-soft);padding:4px 11px;border-radius:999px;"></span>
+      <button type="button" id="closeDetailBtn" class="icon-circle-btn" aria-label="Close item details">✕</button>
+    </div>
+    <div class="detail-showcase" id="detailMedia"></div>
+    <div>
+      <h3 id="detailTitle" style="font-size:19px;font-weight:800;color:var(--text);"></h3>
+      <p id="detailDesc" style="font-size:13px;color:var(--muted);margin-top:4px;"></p>
+    </div>
+    <div class="detail-facts">
+      <div>
+        <div class="fact-label"><span class="en-only">Pack</span><span class="ti-only">ዓቐን</span></div>
+        <div class="fact-val" id="detailPack"></div>
+      </div>
+      <div>
+        <div class="fact-label"><span class="en-only">Availability</span><span class="ti-only">ክምችት</span></div>
+        <div class="fact-val" id="detailStock"></div>
+      </div>
+      <div>
+        <div class="fact-label"><span class="en-only">Origin</span><span class="ti-only">መበቆል</span></div>
+        <div class="fact-val" id="detailOrigin"></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px;">
+      <div>
+        <div style="font-size:11.5px;color:var(--muted);font-weight:600;"><span class="en-only">Price</span><span class="ti-only">ዋጋ</span></div>
+        <div id="detailPrice" style="font-size:20px;font-weight:800;color:var(--primary-dark);"></div>
+      </div>
+      <div id="detailActionWrap" style="min-width:165px;"></div>
+    </div>
   </div>
 </div>
 
@@ -739,153 +1449,229 @@
     <div class="drawer-header">
       <div>
         <h2 id="drawerHeading" style="font-size:17px;"></h2>
-        <div class="step-pills" id="stepPillsRow" style="margin-top:4px;">
+        <div class="step-pills" id="stepPillsRow">
           <span class="step-pill active" id="pillStep1">1. <span class="en-only">Basket</span><span class="ti-only">ዘንቢል</span></span>
           <span class="step-pill" id="pillStep2">2. <span class="en-only">Delivery & Pay</span><span class="ti-only">ኣድራሻን ክፍሊትን</span></span>
         </div>
       </div>
-      <button type="button" id="closeDrawerBtn" class="close-btn" aria-label="Close order drawer">✕</button>
+      <button type="button" id="closeDrawerBtn" class="icon-circle-btn" aria-label="Close order drawer">✕</button>
     </div>
 
-    <!-- Recovery & Check Order Status always at the TOP when unresolved -->
-    <div id="orderStatusCard" class="status-card" role="alert" aria-live="assertive"></div>
-    <div id="drawerReconcileBox" class="alert-banner" role="alert"></div>
+    <div class="drawer-scroll-body" id="drawerScrollBody">
+      <div id="orderStatusCard" class="status-card" role="alert" aria-live="assertive"></div>
+      <div id="drawerReconcileBox" class="alert-banner" role="alert"></div>
 
-    <!-- STEP 1: REVIEW BASKET -->
-    <div id="step1Container" style="display:flex;flex-direction:column;gap:12px;">
-      <div id="cartItemsList"></div>
-
-      <div class="form-group">
-        <label for="subPref">
-          <span class="en-only">Default if an item runs out</span>
-          <span class="ti-only"> • ኣቕሓ እንተተወዲኡ</span>
-        </label>
-        <select id="subPref" class="form-control">
-          <option value="Call me first">Call me first / ቅድሚ ምቕያር ደውሉለይ</option>
-          <option value="Skip unavailable item">Skip unavailable item / ዘየለ ኣቕሓ ኣውጽእዎ</option>
-        </select>
-      </div>
-
-      <div class="summary-box">
-        <div class="summary-line">
-          <span><span class="en-only">Items subtotal</span><span class="ti-only"> / ድምር ኣቑሑት</span></span>
-          <span><strong id="step1Subtotal">0</strong> ETB</span>
+      <!-- STEP 1 BODY: REVIEW BASKET -->
+      <div id="step1Container" style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:12px;font-weight:700;color:var(--muted);" id="step1HeaderNote">
+            <span class="en-only">Your selected groceries</span>
+            <span class="ti-only">ዝመረጽኩምዎ ኣቑሑት</span>
+          </span>
+          <button type="button" id="clearBasketBtn" class="btn-secondary" style="min-height:36px;padding:5px 11px;font-size:11.5px;display:none;">
+            🗑 <span class="en-only">Clear Basket</span><span class="ti-only">ዘንቢል ኣጽሪ</span>
+          </button>
         </div>
-        <div class="summary-line">
-          <span><span class="en-only">Bajaj delivery</span><span class="ti-only"> / መብጽሒ ባጃጅ</span></span>
-          <span id="step1DeliveryLabel">Select sub-city</span>
-        </div>
-        <div class="summary-total">
-          <span><span class="en-only">Estimated total</span><span class="ti-only"> / ጠቕላላ</span></span>
-          <span id="step1TotalLabel">0 ETB</span>
-        </div>
-      </div>
-
-      <button type="button" id="toStep2Btn" class="btn-primary drawer-primary-cta" style="width:100%;">
-        <span class="en-only">Continue to Delivery & Payment →</span>
-        <span class="ti-only">ናብ ኣድራሻን ክፍሊትን ቀጽል →</span>
-      </button>
-    </div>
-
-    <!-- STEP 2: DELIVERY & PAYMENT -->
-    <div id="step2Container" style="display:none;flex-direction:column;gap:12px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <button type="button" id="backToStep1Btn" class="btn-secondary">
-          ← <span class="en-only">Back to Basket</span><span class="ti-only">ናብ ዘንቢል ተመለስ</span>
-        </button>
-        <span style="font-size:12px;color:var(--muted);font-weight:700;" id="step2ItemCount"></span>
-      </div>
-
-      <div class="form-row-2col">
-        <div class="form-group">
-          <label for="custName"><span class="en-only">Your Name *</span><span class="ti-only"> / ሽም *</span></label>
-          <input type="text" id="custName" class="form-control" maxlength="80" autocomplete="name" placeholder="Selamawit / ሰላማዊት" />
-        </div>
+        <div id="cartItemsList"></div>
 
         <div class="form-group">
-          <label for="custPhone"><span class="en-only">Phone *</span><span class="ti-only"> / ቁጽሪ ስልኪ *</span></label>
+          <label for="subPref">
+            <span class="en-only">Default if an item runs out</span>
+            <span class="ti-only">ኣቕሓ እንተተወዲኡ</span>
+          </label>
+          <select id="subPref" class="form-control">
+            <option value="Call me first">Call me first</option>
+            <option value="Skip unavailable item">Skip unavailable item</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- STEP 2 BODY: DELIVERY & PAYMENT -->
+      <div id="step2Container" style="display:none;flex-direction:column;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <button type="button" id="backToStep1Btn" class="btn-secondary">
+            ← <span class="en-only">Back to Basket</span><span class="ti-only">ናብ ዘንቢል ተመለስ</span>
+          </button>
+          <span style="font-size:12px;color:var(--muted);font-weight:700;" id="step2ItemCount"></span>
+        </div>
+
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label for="custName"><span class="en-only">Your Name *</span><span class="ti-only">ሽም *</span></label>
+            <input type="text" id="custName" class="form-control" maxlength="80" autocomplete="name" placeholder="Selamawit" />
+            <small id="errCustName" class="field-error" role="alert"></small>
+          </div>
+
+          <div class="form-group">
+            <label for="custPhone"><span class="en-only">Phone *</span><span class="ti-only">ቁጽሪ ስልኪ *</span></label>
+            <div class="gps-row">
+              <input type="tel" id="custPhone" class="form-control" autocomplete="tel" placeholder="0914... / 07..." />
+              <button type="button" id="tgPhoneBtn" class="btn-secondary">📱 <span class="en-only">Telegram</span><span class="ti-only">ቴሌግራም</span></button>
+            </div>
+            <small id="errCustPhone" class="field-error" role="alert"></small>
+            <small id="phoneStatusMsg" style="font-size:11.5px;color:var(--muted);" aria-live="polite"></small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="subCity"><span class="en-only">Mekelle Sub-City *</span><span class="ti-only">ክፍለ ከተማ *</span></label>
+          <select id="subCity" class="form-control">
+            <option value="">Select sub-city</option>
+          </select>
+          <small id="errSubCity" class="field-error" role="alert"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="locationInput"><span class="en-only">Landmark or GPS Pin *</span><span class="ti-only">ኣድራሻ ወይ GPS *</span></label>
           <div class="gps-row">
-            <input type="tel" id="custPhone" class="form-control" autocomplete="tel" placeholder="0914... / +2519..." />
-            <button type="button" id="tgPhoneBtn" class="btn-secondary">📱 <span class="en-only">Telegram</span><span class="ti-only"> / ቴሌግራም</span></button>
+            <input type="text" id="locationInput" class="form-control" maxlength="300" placeholder="Nearby landmark, building, or gate" />
+            <button type="button" id="pinGpsBtn" class="btn-secondary">📍 <span class="en-only">Pin GPS</span><span class="ti-only">GPS</span></button>
           </div>
-          <small id="phoneStatusMsg" style="font-size:11px;color:var(--muted);" aria-live="polite"></small>
+          <small id="errLocation" class="field-error" role="alert"></small>
+          <div id="landmarkChips" class="landmark-chips" aria-label="Popular Mekelle landmarks"></div>
+          <div id="gpsPinBar" class="gps-badge-bar">
+            <a id="gpsMapLink" href="#" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;"></a>
+            <button type="button" id="clearGpsBtn" class="gps-clear-btn" aria-label="Remove GPS pin">✕</button>
+          </div>
+          <small id="gpsStatusMsg" style="font-size:11.5px;color:var(--muted);" aria-live="polite"></small>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label for="subCity"><span class="en-only">Mekelle Sub-City *</span><span class="ti-only"> / ክፍለ ከተማ *</span></label>
-        <select id="subCity" class="form-control">
-          <option value="">Select sub-city / ክፍለ ከተማ ምረጹ</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="locationInput"><span class="en-only">Landmark or GPS Pin *</span><span class="ti-only"> / ኣድራሻ ወይ GPS *</span></label>
-        <div class="gps-row">
-          <input type="text" id="locationInput" class="form-control" maxlength="300" placeholder="Nearby landmark or GPS link / ቀረባ ምልክት" />
-          <button type="button" id="pinGpsBtn" class="btn-secondary">📍 <span class="en-only">Pin GPS</span><span class="ti-only">GPS</span></button>
-        </div>
-        <small id="gpsStatusMsg" style="font-size:11px;color:var(--muted);" aria-live="polite"></small>
-      </div>
-
-      <div class="form-group">
-        <label for="paymentMethod"><span class="en-only">Payment Method *</span><span class="ti-only"> / ኣገባብ ክፍሊት *</span></label>
-        <select id="paymentMethod" class="form-control">
-          <option value="Telebirr">Telebirr / ቴሌብር</option>
-          <option value="CBE Transfer">CBE Transfer / ንግድ ባንክ</option>
-          <option value="Cash">Cash on Delivery / ኣብ ምብጻሕ ብጥረ ገንዘብ</option>
-        </select>
-      </div>
-
-      <div class="pay-card" id="payInfoBox">
-        <div id="telebirrBox">
-          <strong>Telebirr / ቴሌብር (Addi Mart):</strong>
-          <div class="copy-row">
-            <span id="telebirrDisplay">+251955005400 (Addi Mart)</span>
-            <button type="button" id="copyTelebirrBtn" class="btn-secondary">Copy / ቅዳሕ</button>
+        <div class="form-group">
+          <label id="paymentGroupLabel"><span class="en-only">Payment Method *</span><span class="ti-only">ኣገባብ ክፍሊት *</span></label>
+          <input type="hidden" id="paymentMethod" value="Telebirr" />
+          <div class="pay-cards-grid" role="radiogroup" aria-labelledby="paymentGroupLabel">
+            <button type="button" class="pay-choice-card selected" role="radio" aria-checked="true" data-pay="Telebirr">
+              <img src="telebirr-logo.png" alt="telebirr" style="height:22px;width:auto;" onerror="this.outerHTML='<svg width=\'26\' height=\'22\' viewBox=\'0 0 44 36\' aria-hidden=\'true\'><path d=\'M13 3 C13 9, 17 12, 23 12 L23 15 L13 15 Z\' fill=\'#0088CC\'/><path d=\'M3 16 L11 16 L11 25 C8 22, 5 19, 3 16 Z\' fill=\'#0088CC\'/><path d=\'M13 17 L24 17 L24 20 L16 20 L16 25 C16 30, 22 31, 25 27 C27 24, 25 21, 22 22 C20 23, 20 25, 22 26 C20 27, 18 25, 19 22 C20 19, 25 18, 28 22 C31 26, 28 33, 21 34 C15 35, 13 30, 13 25 Z\' fill=\'#0088CC\'/></svg>'" />
+              <span class="pay-choice-label" style="color:#0369A1;">telebirr</span>
+            </button>
+            <button type="button" class="pay-choice-card" role="radio" aria-checked="false" data-pay="CBE Transfer">
+              <img src="cbe-logo.png" alt="CBE" style="height:22px;width:auto;" onerror="this.outerHTML='<svg width=\'24\' height=\'24\' viewBox=\'0 0 36 36\' aria-hidden=\'true\'><circle cx=\'18\' cy=\'18\' r=\'13\' fill=\'#D59E48\' stroke=\'#7C4D12\' stroke-width=\'1.5\'/><text x=\'18\' y=\'21.5\' text-anchor=\'middle\' fill=\'#4A2804\' font-family=\'Georgia, serif\' font-weight=\'900\' font-size=\'8.5\'>CBE</text></svg>'" />
+              <span class="pay-choice-label" style="color:#78350F;">CBE Bank</span>
+            </button>
+            <button type="button" class="pay-choice-card" role="radio" aria-checked="false" data-pay="Cash">
+              <span style="font-size:20px;line-height:1;" aria-hidden="true">💵</span>
+              <span class="pay-choice-label">
+                <span class="en-only">Cash</span>
+                <span class="ti-only">ጥረ ገንዘብ</span>
+              </span>
+            </button>
           </div>
         </div>
-        <div id="cbeBox" style="display:none;">
-          <strong>CBE / ንግድ ባንክ (Addi Mart):</strong>
-          <div class="copy-row">
-            <span id="cbeDisplay">1000034736425 (Addi Mart)</span>
-            <button type="button" id="copyCbeBtn" class="btn-secondary">Copy / ቅዳሕ</button>
+
+        <div class="pay-card" id="payInfoBox">
+          <div id="telebirrBox">
+            <div class="pay-brand-header">
+              <span class="pay-logo-pill" style="background:#FFFFFF;border:1px solid #E0F2FE;padding:3px 8px;">
+                <img src="telebirr-logo.png" alt="telebirr official logo" class="pay-logo-img" onerror="this.outerHTML='<svg width=\'96\' height=\'28\' viewBox=\'0 0 132 38\'><path d=\'M16 3 C16 10, 21 13, 28 13 L28 16.5 L16 16.5 Z\' fill=\'#0088CC\'/><path d=\'M4 18 L13.5 18 L13.5 28 C10 24.5, 6.5 21, 4 18 Z\' fill=\'#0088CC\'/><path d=\'M16 19 L29 19 L29 22.5 L19.5 22.5 L19.5 28 C19.5 33, 26 34.5, 29.5 30 C31.5 27, 29.5 23.5, 26 24.5 C24 25.2, 24 27.5, 26 28.5 C23.8 29.5, 21.5 27.5, 22.8 24.2 C24 21, 29.5 20, 33 24.5 C36.5 29, 33 36.5, 25 37.5 C18 38.5, 16 33, 16 28 Z\' fill=\'#0088CC\'/><text x=\'41\' y=\'17\' fill=\'#0088CC\' font-family=\'Noto Sans Ethiopic, sans-serif\' font-weight=\'800\' font-size=\'13\'>ቴሌብር</text><text x=\'41\' y=\'32\' fill=\'#F5B400\' font-family=\'Plus Jakarta Sans, sans-serif\' font-weight=\'800\' font-size=\'14.5\'>telebirr</text></svg>'" />
+              </span>
+              <div>
+                <strong style="display:block;color:#0369A1;">
+                  <span class="en-only">Telebirr Transfer</span>
+                  <span class="ti-only">ክፍሊት ብቴሌብር</span>
+                </strong>
+                <span style="font-size:11px;color:var(--muted);">Ethio telecom Mobile Money</span>
+              </div>
+            </div>
+            <div class="copy-row">
+              <span id="telebirrDisplay" style="font-weight:700;">+251955005400 (Addi Mart)</span>
+              <button type="button" id="copyTelebirrBtn" class="btn-secondary">
+                <span class="en-only">Copy</span><span class="ti-only">ቅዳሕ</span>
+              </button>
+            </div>
+          </div>
+          <div id="cbeBox" style="display:none;">
+            <div class="pay-brand-header">
+              <span class="pay-logo-pill" style="background:#FFFFFF;border:1px solid #F3D999;padding:3px 8px;">
+                <img src="cbe-logo.png" alt="Commercial Bank of Ethiopia official logo" class="pay-logo-img" onerror="this.outerHTML='<svg width=\'86\' height=\'28\' viewBox=\'0 0 112 38\'><ellipse cx=\'22\' cy=\'19\' rx=\'19\' ry=\'9\' transform=\'rotate(-38 22 19)\' fill=\'none\' stroke=\'#B97C28\' stroke-width=\'1.2\' opacity=\'0.75\'/><ellipse cx=\'22\' cy=\'19\' rx=\'19\' ry=\'9\' transform=\'rotate(32 22 19)\' fill=\'none\' stroke=\'#B97C28\' stroke-width=\'1.2\' opacity=\'0.75\'/><circle cx=\'22\' cy=\'19\' r=\'13.5\' fill=\'#D59D46\' stroke=\'#7C4D12\' stroke-width=\'1.6\'/><text x=\'22\' y=\'22.5\' text-anchor=\'middle\' fill=\'#4A2804\' font-family=\'Georgia, serif\' font-weight=\'900\' font-size=\'9.5\'>CBE</text><text x=\'46\' y=\'24\' fill=\'#78350F\' font-family=\'Plus Jakarta Sans, sans-serif\' font-weight=\'800\' font-size=\'16\'>CBE</text></svg>'" />
+              </span>
+              <div>
+                <strong style="display:block;color:#78350F;">
+                  <span class="en-only">CBE Bank Transfer</span>
+                  <span class="ti-only">ክፍሊት ብንግድ ባንክ (CBE)</span>
+                </strong>
+                <span style="font-size:11px;color:var(--muted);">Commercial Bank of Ethiopia</span>
+              </div>
+            </div>
+            <div class="copy-row">
+              <span id="cbeDisplay" style="font-weight:700;">1000034736425 (Addi Mart)</span>
+              <button type="button" id="copyCbeBtn" class="btn-secondary">
+                <span class="en-only">Copy</span><span class="ti-only">ቅዳሕ</span>
+              </button>
+            </div>
+          </div>
+          <div id="cashBox" style="display:none;">
+            <span class="en-only"><strong>Pay on delivery:</strong> Pay your Bajaj rider in cash at your gate.</span>
+            <span class="ti-only"><strong>ኣብ ምብጻሕ ይኽፈል:</strong> ባጃጅ ምስ በጽሐ ብጥረ ገንዘብ ይኽፈል።</span>
           </div>
         </div>
-        <div id="cashBox" style="display:none;">
-          <span class="en-only"><strong>Pay on delivery:</strong> Pay your Bajaj rider in cash at your gate.</span>
-          <span class="ti-only"><strong>ኣብ ምብጻሕ ይኽፈል:</strong> ባጃጅ ምስ በጽሐ ብጥረ ገንዘብ ይኽፈል።</span>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;min-height:36px;">
+            <input type="checkbox" id="rememberDetailsChk" style="width:18px;height:18px;accent-color:var(--primary-dark);" />
+            <span><span class="en-only">Save details</span><span class="ti-only">ኣድራሻይ ዓቅብ</span></span>
+          </label>
+          <button type="button" id="clearDetailsBtn" style="background:none;border:none;color:var(--muted);text-decoration:underline;font-size:12px;font-weight:700;min-height:36px;padding:6px 8px;cursor:pointer;">
+            <span class="en-only">Clear saved</span><span class="ti-only">ኣጽሪ</span>
+          </button>
         </div>
       </div>
+    </div>
 
-      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;">
-          <input type="checkbox" id="rememberDetailsChk" />
-          <span><span class="en-only">Save details</span><span class="ti-only"> / ኣድራሻይ ዓቅብ</span></span>
-        </label>
-        <button type="button" id="clearDetailsBtn" style="background:none;border:none;color:var(--muted);text-decoration:underline;font-size:12px;cursor:pointer;">
-          <span class="en-only">Clear saved</span><span class="ti-only">ኣጽሪ</span>
+    <!-- Sticky Drawer Footer: Summary + Primary CTA Always Visible -->
+    <div class="drawer-sticky-footer" id="drawerStickyFooter">
+      <div id="step1FooterBlock" style="display:flex;flex-direction:column;gap:10px;">
+        <div class="summary-box">
+          <div class="summary-line">
+            <span><span class="en-only">Items subtotal</span><span class="ti-only">ድምር ኣቑሑት</span></span>
+            <span><strong id="step1Subtotal">0</strong> ETB</span>
+          </div>
+          <div class="summary-line">
+            <span><span class="en-only">Bajaj delivery</span><span class="ti-only">መብጽሒ ባጃጅ</span></span>
+            <span id="step1DeliveryLabel">Select sub-city</span>
+          </div>
+          <div class="summary-total">
+            <span><span class="en-only">Estimated total</span><span class="ti-only">ጠቕላላ</span></span>
+            <span id="step1TotalLabel">0 ETB</span>
+          </div>
+        </div>
+        <button type="button" id="toStep2Btn" class="btn-primary drawer-primary-cta" style="width:100%;">
+          <span class="en-only">Continue to Delivery & Payment →</span>
+          <span class="ti-only">ናብ ኣድራሻን ክፍሊትን ቀጽል →</span>
         </button>
       </div>
 
-      <div class="summary-box">
-        <div class="summary-line">
-          <span><span class="en-only">Items subtotal</span><span class="ti-only"> / ድምር ኣቑሑት</span></span>
-          <span><strong id="sumSubtotal">0</strong> ETB</span>
+      <div id="step2FooterBlock" style="display:none;flex-direction:column;gap:10px;">
+        <div class="summary-box">
+          <div class="summary-line">
+            <span><span class="en-only">Items subtotal</span><span class="ti-only">ድምር ኣቑሑት</span></span>
+            <span><strong id="sumSubtotal">0</strong> ETB</span>
+          </div>
+          <div class="summary-line">
+            <span><span class="en-only">Bajaj delivery</span><span class="ti-only">መብጽሒ ባጃጅ</span></span>
+            <span id="sumDeliveryLabel">Select sub-city</span>
+          </div>
+          <div class="summary-total">
+            <span><span class="en-only">Total payable</span><span class="ti-only">ጠቕላላ ክፍሊት</span></span>
+            <span id="sumTotalLabel">0 ETB</span>
+          </div>
         </div>
-        <div class="summary-line">
-          <span><span class="en-only">Bajaj delivery</span><span class="ti-only"> / መብጽሒ ባጃጅ</span></span>
-          <span id="sumDeliveryLabel">Select sub-city</span>
-        </div>
-        <div class="summary-total">
-          <span><span class="en-only">Total payable</span><span class="ti-only"> / ጠቕላላ ክፍሊት</span></span>
-          <span id="sumTotalLabel">0 ETB</span>
-        </div>
+        <button type="button" id="placeOrderBtn" class="btn-primary drawer-primary-cta" style="width:100%;font-size:15px;"></button>
       </div>
-
-      <button type="button" id="placeOrderBtn" class="btn-primary drawer-primary-cta" style="width:100%;font-size:15px;"></button>
     </div>
   </aside>
+</div>
+
+<!-- In-App Toast & Confirmation Dialog -->
+<div id="appToast" class="toast-pill" role="status" aria-live="polite"></div>
+<div id="confirmOverlay" class="confirm-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+  <div class="confirm-dialog" id="confirmDialogPanel">
+    <strong id="confirmTitle" style="font-size:15px;color:var(--text);"></strong>
+    <p id="confirmBody" style="font-size:13px;color:var(--muted);line-height:1.45;"></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button type="button" id="confirmCancelBtn" class="btn-secondary"></button>
+      <button type="button" id="confirmOkBtn" class="btn-primary" style="min-height:38px;padding:7px 14px;"></button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -903,43 +1689,63 @@
   };
 
   const SUBCITY_META = [
-    { key: 'Hawelti', en: 'Hawelti', ti: 'ሓወልቲ', defaultFee: 40 },
-    { key: 'Kedamay Weyane', en: 'Kedamay Weyane', ti: 'ቀዳማይ ወያነ', defaultFee: 40 },
-    { key: 'Adi Haki', en: 'Adi Haki', ti: 'ዓዲ ሓቂ', defaultFee: 40 },
-    { key: 'Ayder', en: 'Ayder', ti: 'ዓይደር', defaultFee: 50 },
-    { key: 'Semien', en: 'Semien', ti: 'ሰሜን', defaultFee: 50 },
-    { key: 'Hadnet', en: 'Hadnet', ti: 'ሓድነት', defaultFee: 50 }
+    { key: 'Hawelti', en: 'Hawelti', ti: 'ሓወልቲ', defaultFee: 40, lat: 13.4865, lng: 39.4625, landmarks: ['Hawelti Monument', '16 Kebele', 'Mekelle Airport Rd'] },
+    { key: 'Kedamay Weyane', en: 'Kedamay Weyane', ti: 'ቀዳማይ ወያነ', defaultFee: 40, lat: 13.4968, lng: 39.4752, landmarks: ['Romanat Square', 'Kedamay Weyane Market', 'Abraha Castle'] },
+    { key: 'Adi Haki', en: 'Adi Haki', ti: 'ዓዲ ሓቂ', defaultFee: 40, lat: 13.4810, lng: 39.4835, landmarks: ['Adi Haki Campus', 'Elala Bridge', 'Kebele 05'] },
+    { key: 'Ayder', en: 'Ayder', ti: 'ዓይደር', defaultFee: 50, lat: 13.5125, lng: 39.4640, landmarks: ['Ayder Referral Hospital', 'Ayder Square', "Chom'a"] },
+    { key: 'Semien', en: 'Semien', ti: 'ሰሜን', defaultFee: 50, lat: 13.5085, lng: 39.4820, landmarks: ['Semien Market', 'Enda Gabir', 'Mesfin Industrial'] },
+    { key: 'Hadnet', en: 'Hadnet', ti: 'ሓድነት', defaultFee: 50, lat: 13.4695, lng: 39.4730, landmarks: ['Hadnet Square', 'Mekelle Bus Station', 'Arid Campus'] }
   ];
   const VALID_SUBCITIES = SUBCITY_META.map(s => s.key);
   const VALID_PAYMENTS = ['Telebirr', 'CBE Transfer', 'Cash'];
 
   const CATEGORY_TRANSLATIONS = {
-    'All': { en: 'All', ti: 'ኩሉ' },
+    'All': { en: 'All Items', ti: 'ኩሉ' },
     'Grains & Flour': { en: 'Grains & Flour', ti: 'እኽልን ሓሪጭን' },
     'Oils & Sweeteners': { en: 'Oils & Sugar', ti: 'ዘይትን ሽኮርን' },
     'Spices & Legumes': { en: 'Spices & Shiro', ti: 'ቅመማትን ሽሮን' },
-    'Fresh Produce': { en: 'Vegetables', ti: 'ኣሕምልቲ' },
+    'Fresh Produce': { en: 'Fresh Produce', ti: 'ኣሕምልቲ' },
     'Dairy & Eggs': { en: 'Dairy & Eggs', ti: 'ጸባን እንቋቑሖን' },
     'Household & Beverage': { en: 'Coffee & Home', ti: 'ቡንን ናይ ገዛን' }
   };
 
+  /* Clean Inline SVG Grocery Artwork */
+  const ARTWORK = {
+    teffWhite: '<svg viewBox="0 0 80 80"><path d="M22 24 C22 18 58 18 58 24 L62 66 C62 70 18 70 18 66 Z" fill="#F3E9D2" stroke="#D4B982" stroke-width="2"/><path d="M26 22 Q40 12 54 22" fill="none" stroke="#C59B47" stroke-width="3"/><circle cx="40" cy="46" r="11" fill="#E6D3A3"/><path d="M40 38 L40 54 M36 42 L40 39 L44 42 M36 47 L40 44 L44 47" stroke="#9C7A33" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
+    teffRed: '<svg viewBox="0 0 80 80"><path d="M22 24 C22 18 58 18 58 24 L62 66 C62 70 18 70 18 66 Z" fill="#E7C6B6" stroke="#B87A62" stroke-width="2"/><circle cx="40" cy="46" r="11" fill="#A64B2A"/><path d="M40 38 L40 54 M36 42 L40 39 L44 42 M36 47 L40 44 L44 47" stroke="#F8E5D8" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
+    flour: '<svg viewBox="0 0 80 80"><rect x="22" y="20" width="36" height="48" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2"/><rect x="22" y="34" width="36" height="16" fill="#F59E0B" opacity="0.22"/><path d="M35 30 L45 30 L43 52 L37 52 Z" fill="#D97706"/></svg>',
+    sorghum: '<svg viewBox="0 0 80 80"><path d="M22 24 C22 18 58 18 58 24 L62 66 C62 70 18 70 18 66 Z" fill="#EFE6D5" stroke="#B7A98E" stroke-width="2"/><circle cx="36" cy="44" r="3" fill="#8C6D46"/><circle cx="44" cy="42" r="3" fill="#8C6D46"/><circle cx="40" cy="50" r="3" fill="#8C6D46"/><circle cx="34" cy="51" r="2.5" fill="#8C6D46"/><circle cx="46" cy="49" r="2.5" fill="#8C6D46"/></svg>',
+    oil: '<svg viewBox="0 0 80 80"><rect x="24" y="24" width="32" height="46" rx="9" fill="#FACC15" stroke="#EAB308" stroke-width="2"/><rect x="33" y="13" width="14" height="11" rx="3" fill="#EA580C"/><rect x="52" y="28" width="6" height="18" rx="3" fill="#FEF08A"/><circle cx="40" cy="47" r="9" fill="#FFFBEB"/><circle cx="40" cy="47" r="5" fill="#F59E0B"/></svg>',
+    sugar: '<svg viewBox="0 0 80 80"><path d="M24 22 L56 22 L60 66 L20 66 Z" fill="#E0F2FE" stroke="#7DD3FC" stroke-width="2"/><rect x="28" y="36" width="24" height="18" rx="4" fill="#FFFFFF"/><rect x="34" y="41" width="6" height="6" fill="#38BDF8"/><rect x="41" y="43" width="6" height="6" fill="#0284C7"/></svg>',
+    berbere: '<svg viewBox="0 0 80 80"><ellipse cx="40" cy="54" rx="22" ry="11" fill="#7F1D1D"/><path d="M20 53 Q40 26 60 53 Z" fill="#DC2626"/><path d="M44 26 C52 20 62 24 58 32 C54 36 46 32 44 26 Z" fill="#B91C1C"/><path d="M44 26 L39 22" stroke="#15803D" stroke-width="2.5" stroke-linecap="round"/></svg>',
+    shiro: '<svg viewBox="0 0 80 80"><ellipse cx="40" cy="54" rx="22" ry="11" fill="#B45309"/><path d="M20 53 Q40 28 60 53 Z" fill="#EA580C"/><circle cx="36" cy="44" r="2" fill="#FED7AA"/><circle cx="44" cy="46" r="2" fill="#FED7AA"/></svg>',
+    lentils: '<svg viewBox="0 0 80 80"><ellipse cx="40" cy="54" rx="22" ry="11" fill="#9A3412"/><path d="M20 53 Q40 30 60 53 Z" fill="#F97316"/><circle cx="35" cy="46" r="2.5" fill="#FFEDD5"/><circle cx="43" cy="44" r="2.5" fill="#FFEDD5"/><circle cx="40" cy="50" r="2.5" fill="#FFEDD5"/></svg>',
+    tomato: '<svg viewBox="0 0 80 80"><circle cx="34" cy="46" r="16" fill="#EF4444"/><circle cx="49" cy="49" r="14" fill="#DC2626"/><path d="M34 30 L30 24 M34 30 L38 24 M34 30 L34 22" stroke="#16A34A" stroke-width="2.5" stroke-linecap="round"/><circle cx="29" cy="41" r="3" fill="#FCA5A5" opacity="0.6"/></svg>',
+    onion: '<svg viewBox="0 0 80 80"><path d="M36 22 C36 30 22 36 22 50 C22 61 30 66 38 66 C46 66 54 61 54 50 C54 36 40 30 40 22 Z" fill="#9D174D"/><path d="M38 24 C34 36 34 54 38 65 M38 24 C42 36 42 54 38 65" stroke="#FBCFE8" stroke-width="1.3" fill="none" opacity="0.5"/><circle cx="53" cy="55" r="11" fill="#BE185D"/></svg>',
+    potato: '<svg viewBox="0 0 80 80"><ellipse cx="35" cy="46" rx="17" ry="13" transform="rotate(-15 35 46)" fill="#D97706"/><ellipse cx="48" cy="52" rx="15" ry="11" transform="rotate(12 48 52)" fill="#B45309"/><circle cx="31" cy="43" r="1.5" fill="#78350F"/><circle cx="40" cy="48" r="1.5" fill="#78350F"/><circle cx="51" cy="51" r="1.5" fill="#78350F"/></svg>',
+    eggs: '<svg viewBox="0 0 80 80"><rect x="16" y="46" width="48" height="16" rx="5" fill="#CBD5E1"/><ellipse cx="28" cy="41" rx="8" ry="11" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/><ellipse cx="40" cy="39" rx="8" ry="11" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/><ellipse cx="52" cy="41" rx="8" ry="11" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/></svg>',
+    milk: '<svg viewBox="0 0 80 80"><path d="M27 28 L33 18 L47 18 L53 28 L53 66 L27 66 Z" fill="#FFFFFF" stroke="#93C5FD" stroke-width="2"/><rect x="33" y="14" width="14" height="5" rx="2" fill="#2563EB"/><rect x="27" y="38" width="26" height="14" fill="#DBEAFE"/></svg>',
+    coffee: '<svg viewBox="0 0 80 80"><ellipse cx="33" cy="44" rx="11" ry="15" transform="rotate(-20 33 44)" fill="#5C2D16"/><path d="M30 31 Q35 44 36 57" stroke="#D7A86E" stroke-width="2" fill="none"/><ellipse cx="50" cy="49" rx="10" ry="14" transform="rotate(18 50 49)" fill="#3E1D0E"/><path d="M52 36 Q48 49 47 62" stroke="#D7A86E" stroke-width="2" fill="none"/></svg>',
+    soap: '<svg viewBox="0 0 80 80"><rect x="20" y="34" width="40" height="24" rx="8" fill="#38BDF8" stroke="#0284C7" stroke-width="2"/><rect x="26" y="39" width="28" height="14" rx="4" fill="#BAE6FD"/><circle cx="56" cy="24" r="5" fill="#E0F2FE"/><circle cx="64" cy="30" r="3" fill="#E0F2FE"/></svg>'
+  };
+
   const FALLBACK_PRODUCTS = [
-    { sku: 'AM-GR-001', cat: 'Grains & Flour', en: 'White Teff', ti: 'ጻዕዳ ጣፍ', unit: '1 kg', price: 118, stock: 65, emoji: '🌾', aliases: 'tef taff white' },
-    { sku: 'AM-GR-002', cat: 'Grains & Flour', en: 'Red Teff', ti: 'ቀይሕ ጣፍ', unit: '1 kg', price: 105, stock: 60, emoji: '🌾', aliases: 'tef taff red keyih' },
-    { sku: 'AM-GR-003', cat: 'Grains & Flour', en: 'Wheat Flour', ti: 'ሓሪጭ ስርናይ', unit: '1 kg', price: 78, stock: 170, emoji: '🥖', aliases: 'harich sirnay fino' },
-    { sku: 'AM-GR-004', cat: 'Grains & Flour', en: 'Sorghum / Mashila', ti: 'መሸላ', unit: '1 kg', price: 64, stock: 80, emoji: '🌿', aliases: 'meshela' },
-    { sku: 'AM-OL-001', cat: 'Oils & Sweeteners', en: 'Sunflower Cooking Oil', ti: 'ዘይቲ መግቢ', unit: '5 L Bottle', price: 1040, stock: 12, emoji: '🛢️', aliases: 'zeyti cooking oil' },
-    { sku: 'AM-OL-002', cat: 'Oils & Sweeteners', en: 'Refined Sugar', ti: 'ሽኮር', unit: '1 kg', price: 98, stock: 90, emoji: '🍬', aliases: 'shikor sukar' },
-    { sku: 'AM-SP-001', cat: 'Spices & Legumes', en: 'Mekelle Berbere', ti: 'በርበረ', unit: '1 kg', price: 450, stock: 57, emoji: '🌶️', aliases: 'berberi pepper' },
-    { sku: 'AM-SP-002', cat: 'Spices & Legumes', en: 'Roasted Shiro Powder', ti: 'ሽሮ', unit: '1 kg', price: 198, stock: 36, emoji: '🍲', aliases: 'shiro mitin' },
-    { sku: 'AM-SP-003', cat: 'Spices & Legumes', en: 'Split Red Lentils', ti: 'ምስር ክክ', unit: '1 kg', price: 155, stock: 60, emoji: '🫘', aliases: 'misir kik' },
-    { sku: 'AM-PR-001', cat: 'Fresh Produce', en: 'Fresh Tomatoes', ti: 'ኮሚደረ', unit: '1 kg', price: 45, stock: 7, emoji: '🍅', aliases: 'komidere timatim' },
-    { sku: 'AM-PR-002', cat: 'Fresh Produce', en: 'Red Onions', ti: 'ቀይሕ ሽጉርቲ', unit: '1 kg', price: 62, stock: 70, emoji: '🧅', aliases: 'shigurti shinkurt' },
-    { sku: 'AM-PR-003', cat: 'Fresh Produce', en: 'Potatoes', ti: 'ድንሽ', unit: '1 kg', price: 38, stock: 70, emoji: '🥔', aliases: 'dinish dinich' },
-    { sku: 'AM-DY-001', cat: 'Dairy & Eggs', en: 'Farm Eggs', ti: 'እንቋቑሖ', unit: 'Tray of 30', price: 365, stock: 34, emoji: '🥚', aliases: 'enkuakho inkulal' },
-    { sku: 'AM-DY-002', cat: 'Dairy & Eggs', en: 'Pasteurized Milk', ti: 'ጸባ', unit: '1 L', price: 80, stock: 33, emoji: '🥛', aliases: 'tseba wetet' },
-    { sku: 'AM-HH-001', cat: 'Household & Beverage', en: 'Ethiopian Coffee Beans', ti: 'ቡን', unit: '1 kg', price: 520, stock: 25, emoji: '☕', aliases: 'bun buna' },
-    { sku: 'AM-HH-002', cat: 'Household & Beverage', en: 'Laundry Bar Soap', ti: 'ሳሙና', unit: '1 Piece', price: 52, stock: 60, emoji: '🧼', aliases: 'samuna' }
+    { sku: 'AM-GR-001', cat: 'Grains & Flour', en: 'White Teff', ti: 'ጻዕዳ ጣፍ', unit: '1 kg', price: 118, stock: 65, originEn: 'Tigray', originTi: 'ትግራይ', descEn: 'Cleaned first-grade white teff ready for injera milling.', descTi: 'ንእንጀራ ዝተዳለወ ጽሩይ ጻዕዳ ጣፍ።', art: 'teffWhite', photoUrl: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=420&q=75', aliases: 'tef taff white' },
+    { sku: 'AM-GR-002', cat: 'Grains & Flour', en: 'Red Teff', ti: 'ቀይሕ ጣፍ', unit: '1 kg', price: 105, stock: 60, originEn: 'Tigray', originTi: 'ትግራይ', descEn: 'Iron-rich red teff grain, carefully sifted and weighed.', descTi: 'ንጥዕና ጠቓሚ ዝኾነ ጽሩይ ቀይሕ ጣፍ።', art: 'teffRed', photoUrl: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=420&q=75', aliases: 'tef taff red keyih' },
+    { sku: 'AM-GR-003', cat: 'Grains & Flour', en: 'Wheat Flour', ti: 'ሓሪጭ ስርናይ', unit: '1 kg', price: 78, stock: 170, originEn: 'Mekelle', originTi: 'መቐለ', descEn: 'Fine baking wheat flour ideal for bread, himbasha, and pasta.', descTi: 'ንሕምባሻን ባኒን ዝኸውን ልስሉስ ሓሪጭ ስርናይ።', art: 'flour', photoUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=420&q=75', aliases: 'harich sirnay fino' },
+    { sku: 'AM-GR-004', cat: 'Grains & Flour', en: 'Sorghum / Mashila', ti: 'መሸላ', unit: '1 kg', price: 64, stock: 80, originEn: 'Raya', originTi: 'ራያ', descEn: 'Cleaned Raya sorghum grain for injera blends and traditional dishes.', descTi: 'ጽሩይ መሸላ ራያ ንእንጀራን ባህላዊ መግብን።', art: 'sorghum', photoUrl: 'https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?auto=format&fit=crop&w=420&q=75', aliases: 'meshela' },
+    { sku: 'AM-OL-001', cat: 'Oils & Sweeteners', en: 'Sunflower Cooking Oil', ti: 'ዘይቲ መግቢ', unit: '5 L Bottle', price: 1040, stock: 12, originEn: 'Imported', originTi: 'ዝኣተወ', descEn: '5-liter sealed family bottle of pure sunflower cooking oil.', descTi: '5 ሊትሮ ዝዓቐኑ ጽሩይ ዘይቲ መግቢ።', art: 'oil', photoUrl: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=420&q=75', aliases: 'zeyti cooking oil' },
+    { sku: 'AM-OL-002', cat: 'Oils & Sweeteners', en: 'Refined Sugar', ti: 'ሽኮር', unit: '1 kg', price: 98, stock: 90, originEn: 'Ethiopia', originTi: 'ኢትዮጵያ', descEn: 'Pure white crystal sugar packed in sealed 1 kg bags.', descTi: 'ንሻሂን ቡንን ዝኸውን ጽሩይ ሽኮር።', art: 'sugar', photoUrl: 'https://images.unsplash.com/photo-1581441363689-1f3c3c414635?auto=format&fit=crop&w=420&q=75', aliases: 'shikor sukar' },
+    { sku: 'AM-SP-001', cat: 'Spices & Legumes', en: 'Mekelle Berbere', ti: 'በርበረ', unit: '1 kg', price: 450, stock: 57, originEn: 'Mekelle', originTi: 'መቐለ', descEn: 'Aromatic sun-dried Mekelle spice blend roasted with local herbs.', descTi: 'ብባህላዊ ቅመማት ዝተዳለወ ጥዑም በርበረ መቐለ።', art: 'berbere', photoUrl: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=420&q=75', aliases: 'berberi pepper' },
+    { sku: 'AM-SP-002', cat: 'Spices & Legumes', en: 'Roasted Shiro Powder', ti: 'ሽሮ', unit: '1 kg', price: 198, stock: 36, originEn: 'Mekelle', originTi: 'መቐለ', descEn: 'Seasoned mitin shiro powder milled fresh for rich stew.', descTi: 'ብቅመማት ዝተቆለወን ዝተጣሕነን ምጥን ሽሮ።', art: 'shiro', photoUrl: 'https://images.unsplash.com/photo-1599909533681-74fc22c0292b?auto=format&fit=crop&w=420&q=75', aliases: 'shiro mitin' },
+    { sku: 'AM-SP-003', cat: 'Spices & Legumes', en: 'Split Red Lentils', ti: 'ምስር ክክ', unit: '1 kg', price: 155, stock: 60, originEn: 'Ethiopia', originTi: 'ኢትዮጵያ', descEn: 'Fast-cooking split red lentils cleaned and stone-free.', descTi: 'ብቕልጡፍ ዝበስል ጽሩይ ምስር ክክ።', art: 'lentils', photoUrl: 'https://images.unsplash.com/photo-1515543904379-3d757afe72e4?auto=format&fit=crop&w=420&q=75', aliases: 'misir kik' },
+    { sku: 'AM-PR-001', cat: 'Fresh Produce', en: 'Fresh Tomatoes', ti: 'ኮሚደረ', unit: '1 kg', price: 45, stock: 7, originEn: 'Local Farm', originTi: 'ናይ ከባቢ ሕርሻ', descEn: 'Ripe, firm farm tomatoes hand-picked daily for stews and salads.', descTi: 'መዓልታዊ ዝመጽእ ትኩስ ኮሚደረ።', art: 'tomato', photoUrl: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=420&q=75', aliases: 'komidere timatim' },
+    { sku: 'AM-PR-002', cat: 'Fresh Produce', en: 'Red Onions', ti: 'ቀይሕ ሽጉርቲ', unit: '1 kg', price: 62, stock: 70, originEn: 'Local Farm', originTi: 'ናይ ከባቢ ሕርሻ', descEn: 'Flavorful red onions essential for everyday cooking.', descTi: 'ንኹሉ መግቢ ዝኸውን ትኩስ ቀይሕ ሽጉርቲ።', art: 'onion', photoUrl: 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&w=420&q=75', aliases: 'shigurti shinkurt' },
+    { sku: 'AM-PR-003', cat: 'Fresh Produce', en: 'Potatoes', ti: 'ድንሽ', unit: '1 kg', price: 38, stock: 70, originEn: 'Local Farm', originTi: 'ናይ ከባቢ ሕርሻ', descEn: 'Freshly harvested cooking potatoes, sorted by size.', descTi: 'ጽሩይን ትኩስን ድንሽ።', art: 'potato', photoUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=420&q=75', aliases: 'dinish dinich' },
+    { sku: 'AM-DY-001', cat: 'Dairy & Eggs', en: 'Farm Eggs', ti: 'እንቋቑሖ', unit: 'Tray of 30', price: 365, stock: 34, originEn: 'Mekelle Farm', originTi: 'መቐለ', descEn: 'Full 30-egg tray of fresh local farm eggs packed safely.', descTi: '30 ዝሓዘ ሙሉእ ትሬይ ትኩስ እንቋቑሖ።', art: 'eggs', photoUrl: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=420&q=75', aliases: 'enkuakho inkulal' },
+    { sku: 'AM-DY-002', cat: 'Dairy & Eggs', en: 'Pasteurized Milk', ti: 'ጸባ', unit: '1 L', price: 80, stock: 33, originEn: 'Mekelle Dairy', originTi: 'መቐለ', descEn: 'Chilled 1-liter fresh pasteurized milk delivered cold.', descTi: 'ዝሑልን ጽሩይን 1 ሊትሮ ጸባ።', art: 'milk', photoUrl: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=420&q=75', aliases: 'tseba wetet' },
+    { sku: 'AM-HH-001', cat: 'Household & Beverage', en: 'Ethiopian Coffee Beans', ti: 'ቡን', unit: '1 kg', price: 520, stock: 25, originEn: 'Ethiopia', originTi: 'ኢትዮጵያ', descEn: 'Washed green coffee beans ready for traditional home roasting.', descTi: 'ንባህላዊ ቆሎ ቡን ዝተዳለወ ጽሩይ ቡን።', art: 'coffee', photoUrl: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=420&q=75', aliases: 'bun buna' },
+    { sku: 'AM-HH-002', cat: 'Household & Beverage', en: 'Laundry Bar Soap', ti: 'ሳሙና', unit: '1 Piece', price: 52, stock: 60, originEn: 'Ethiopia', originTi: 'ኢትዮጵያ', descEn: 'Long-lasting multipurpose laundry and household bar soap.', descTi: 'ንኽዳውንትን ኣቑሑትን ዝኸውን ሳሙና።', art: 'soap', photoUrl: 'https://images.unsplash.com/photo-1600857062241-98e5dba7f214?auto=format&fit=crop&w=420&q=75', aliases: 'samuna' }
   ];
 
   const BUNDLES = [
@@ -1125,33 +1931,94 @@
   let activeCategory = 'All';
   let selectedSubCity = '';
   let drawerStep = 1;
-  let lastFocusedBeforeDrawer = null;
+  let activeDetailSku = null;
+  let lastFocusedElement = null;
   let isCheckingStatus = false;
   let gpsRequestSeq = 0;
-  let userEditedLocationAfterGps = false;
+  let pinnedGpsUrl = '';
+  let pinnedGpsOutsideMekelle = false;
+  let lastConfirmedOrder = null;
+  let currentLang = 'en';
+  let toastTimer = null;
 
   const tgWebApp = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
 
+  function t(enText, tiText) {
+    return currentLang === 'ti' ? tiText : enText;
+  }
+
   function showNativeNotice(message) {
-    if (tgWebApp && typeof tgWebApp.showAlert === 'function') {
-      try {
-        tgWebApp.showAlert(String(message));
-        return;
-      } catch (e) {}
+    const toast = document.getElementById('appToast');
+    if (toast) {
+      toast.textContent = String(message);
+      toast.classList.add('visible');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('visible'), 3200);
     }
-    window.alert(String(message));
+    try {
+      if (tgWebApp && tgWebApp.HapticFeedback && tgWebApp.HapticFeedback.notificationOccurred) {
+        tgWebApp.HapticFeedback.notificationOccurred('warning');
+      }
+    } catch (e) {}
   }
 
   function showNativeConfirm(message, onConfirm) {
-    if (tgWebApp && typeof tgWebApp.showConfirm === 'function') {
-      try {
-        tgWebApp.showConfirm(String(message), confirmed => {
-          if (confirmed) onConfirm();
-        });
-        return;
-      } catch (e) {}
+    const overlay = document.getElementById('confirmOverlay');
+    const titleEl = document.getElementById('confirmTitle');
+    const bodyEl = document.getElementById('confirmBody');
+    const cancelBtn = document.getElementById('confirmCancelBtn');
+    const okBtn = document.getElementById('confirmOkBtn');
+    if (!overlay) return;
+
+    lastFocusedElement = document.activeElement;
+    titleEl.textContent = t('Please Confirm', 'በጃኹም ኣረጋግጹ');
+    bodyEl.textContent = String(message);
+    cancelBtn.textContent = t('Cancel', 'ሰርዝ');
+    okBtn.textContent = t('Confirm', 'ኣረጋግጽ');
+
+    const closeModal = () => {
+      overlay.classList.remove('open');
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+      }
+    };
+    cancelBtn.onclick = closeModal;
+    okBtn.onclick = () => {
+      closeModal();
+      onConfirm();
+    };
+    overlay.classList.add('open');
+    okBtn.focus();
+  }
+
+  function setFieldError(inputId, errorId, message) {
+    const inp = document.getElementById(inputId);
+    const errEl = document.getElementById(errorId);
+    if (inp) {
+      if (message) {
+        inp.classList.add('input-error');
+        inp.setAttribute('aria-invalid', 'true');
+      } else {
+        inp.classList.remove('input-error');
+        inp.removeAttribute('aria-invalid');
+      }
     }
-    if (window.confirm(String(message))) onConfirm();
+    if (errEl) {
+      errEl.textContent = message || '';
+      errEl.classList.toggle('visible', Boolean(message));
+    }
+  }
+
+  function clearAllFieldErrors() {
+    setFieldError('custName', 'errCustName', '');
+    setFieldError('custPhone', 'errCustPhone', '');
+    setFieldError('subCity', 'errSubCity', '');
+    setFieldError('locationInput', 'errLocation', '');
+  }
+
+  function isValidEthiopianPhone(raw) {
+    const digits = String(raw || '').replace(/[\s\-().]/g, '');
+    return /^(\+251|251|0)?[79]\d{8}$/.test(digits);
   }
 
   function persistPendingRecord(record) {
@@ -1175,6 +2042,14 @@
       tgWebApp.expand();
       if (tgWebApp.BackButton) {
         tgWebApp.BackButton.onClick(() => {
+          if (document.getElementById('confirmOverlay').classList.contains('open')) {
+            document.getElementById('confirmOverlay').classList.remove('open');
+            return;
+          }
+          if (document.getElementById('detailBackdrop').classList.contains('open')) {
+            closeProductDetail();
+            return;
+          }
           const isOpen = document.getElementById('cartBackdrop').classList.contains('open');
           if (!isOpen) return;
           if (drawerStep === 2 && !isCheckoutLocked()) {
@@ -1207,7 +2082,6 @@
     return Number(liveFees[selectedSubCity]);
   }
 
-  /* Synchronize both Homepage & Checkout Sub-City dropdowns with live fees */
   function populateSubCitySelectors() {
     const homeSel = document.getElementById('homeSubCity');
     const drawerSel = document.getElementById('subCity');
@@ -1217,25 +2091,94 @@
       clearNode(sel);
       const placeholder = document.createElement('option');
       placeholder.value = '';
-      placeholder.textContent = 'Select sub-city / ክፍለ ከተማ ምረጹ';
+      placeholder.textContent = t('Select sub-city', 'ክፍለ ከተማ ምረጹ');
       sel.appendChild(placeholder);
 
       SUBCITY_META.forEach(sc => {
         const fee = liveFees[sc.key];
         const opt = document.createElement('option');
         opt.value = sc.key;
-        opt.textContent = sc.en + ' / ' + sc.ti + ' — ' + fee + ' ETB';
+        opt.textContent = t(sc.en, sc.ti) + ' — ' + fee + ' ETB';
         sel.appendChild(opt);
       });
       sel.value = VALID_SUBCITIES.includes(current) ? current : '';
     });
 
     homeSel.classList.toggle('needs-choice', !homeSel.value);
+    renderLandmarkChips();
+  }
+
+  function renderLandmarkChips() {
+    const wrap = document.getElementById('landmarkChips');
+    if (!wrap) return;
+    clearNode(wrap);
+    const activeSc = SUBCITY_META.find(s => s.key === selectedSubCity);
+    const list = activeSc
+      ? activeSc.landmarks
+      : ['Romanat Square', 'Ayder Hospital', 'Hawelti Monument', 'Hadnet Square'];
+    const locked = isCheckoutLocked();
+
+    list.forEach(place => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'landmark-chip';
+      chip.disabled = locked;
+      chip.textContent = '+ ' + place;
+      chip.addEventListener('click', () => {
+        const inp = document.getElementById('locationInput');
+        const cur = inp.value.trim();
+        if (!cur) {
+          inp.value = place;
+        } else if (!cur.toLowerCase().includes(place.toLowerCase())) {
+          inp.value = cur + ', ' + place;
+        }
+        setFieldError('locationInput', 'errLocation', '');
+        inp.focus();
+      });
+      wrap.appendChild(chip);
+    });
+  }
+
+  function updateGpsPinBar(accuracyMeters) {
+    const bar = document.getElementById('gpsPinBar');
+    const link = document.getElementById('gpsMapLink');
+    if (!bar || !link) return;
+    if (!pinnedGpsUrl) {
+      bar.classList.remove('visible', 'outside');
+      return;
+    }
+    const accText = Number.isFinite(accuracyMeters) && accuracyMeters > 0
+      ? (' (±' + Math.round(accuracyMeters) + 'm)')
+      : '';
+    link.href = pinnedGpsUrl;
+    link.textContent = pinnedGpsOutsideMekelle
+      ? t('⚠️ GPS outside Mekelle' + accText + ' • View Map ↗', '⚠️ GPS ካብ መቐለ ወጻኢ' + accText + ' • ካርታ ርኣዩ ↗')
+      : t('📍 GPS Pin Attached' + accText + ' • Preview Map ↗', '📍 GPS ተታሒዙ ኣሎ' + accText + ' • ካርታ ርኣዩ ↗');
+    bar.classList.toggle('outside', pinnedGpsOutsideMekelle);
+    bar.classList.add('visible');
+  }
+
+  function detectNearestMekelleSubCity(lat, lng) {
+    const inMekelle = lat >= 13.41 && lat <= 13.57 && lng >= 39.39 && lng <= 39.56;
+    if (!inMekelle) return { inMekelle: false, subCity: '' };
+    let bestKey = '';
+    let bestDist = Infinity;
+    SUBCITY_META.forEach(sc => {
+      const dLat = lat - sc.lat;
+      const dLng = lng - sc.lng;
+      const distSq = dLat * dLat + dLng * dLng;
+      if (distSq < bestDist) {
+        bestDist = distSq;
+        bestKey = sc.key;
+      }
+    });
+    return { inMekelle: true, subCity: bestKey };
   }
 
   function setSelectedSubCity(val) {
     if (isCheckoutLocked()) return;
     selectedSubCity = VALID_SUBCITIES.includes(val) ? val : '';
+    setFieldError('subCity', 'errSubCity', '');
     populateSubCitySelectors();
     updateTotals();
     if (document.getElementById('rememberDetailsChk').checked) {
@@ -1252,8 +2195,8 @@
 
       if (locked) {
         document.body.classList.add('has-tg-mainbutton');
-        mb.setText(drawerOpen ? 'Check Order Status' : 'Check Order Status');
-        mb.color = '#1B5E20';
+        mb.setText(t('Check Order Status', 'ኩነታት ትእዛዝ ኣረጋግጽ'));
+        mb.color = '#144D24';
         mb.show();
         mb.enable();
         return;
@@ -1266,16 +2209,16 @@
       }
 
       document.body.classList.add('has-tg-mainbutton');
-      mb.color = '#1B5E20';
+      mb.color = '#144D24';
 
       if (!drawerOpen) {
-        mb.setText('Review Basket (' + count + ') • ' + subtotal.toLocaleString() + ' ETB');
+        mb.setText(t('Review Basket', 'ዘንቢል ርኣዩ') + ' (' + count + ') • ' + subtotal.toLocaleString() + ' ETB');
       } else if (drawerStep === 1) {
-        mb.setText('Continue to Delivery & Payment →');
+        mb.setText(t('Continue to Delivery & Payment →', 'ናብ ኣድራሻን ክፍሊትን ቀጽል →'));
       } else {
         const totalText = fee === null
-          ? 'Place Order • Select Area'
-          : ('Place Order • ' + (subtotal + fee).toLocaleString() + ' ETB');
+          ? t('Place Order • Select Area', 'ትእዛዝ ኣረጋግጽ • ክፍለ ከተማ ምረጹ')
+          : (t('Place Order', 'ትእዛዝ ኣረጋግጽ') + ' • ' + (subtotal + fee).toLocaleString() + ' ETB');
         mb.setText(totalText);
       }
       mb.show();
@@ -1286,6 +2229,9 @@
   if (tgWebApp && tgWebApp.MainButton) {
     try {
       tgWebApp.MainButton.onClick(() => {
+        if (document.getElementById('detailBackdrop').classList.contains('open')) {
+          closeProductDetail();
+        }
         const drawerOpen = document.getElementById('cartBackdrop').classList.contains('open');
         if (isCheckoutLocked()) {
           if (!drawerOpen) openCart();
@@ -1323,6 +2269,14 @@
     } catch (e) {}
   }
 
+  function animateCartBadge() {
+    const badge = document.getElementById('headerCartCount');
+    if (!badge) return;
+    badge.classList.remove('pop');
+    void badge.offsetWidth;
+    badge.classList.add('pop');
+  }
+
   function saveCart() {
     SafeStore.set(STORAGE_KEYS.CART, cart);
     SafeStore.set(STORAGE_KEYS.ITEM_SUBS, itemSubOverrides);
@@ -1346,14 +2300,56 @@
     document.getElementById('cbeDisplay').textContent = paymentConfig.cbe;
   }
 
+  function setPaymentMethodValue(method) {
+    const val = VALID_PAYMENTS.includes(method) ? method : 'Telebirr';
+    document.getElementById('paymentMethod').value = val;
+    document.querySelectorAll('.pay-choice-card').forEach(btn => {
+      const active = btn.dataset.pay === val;
+      btn.classList.toggle('selected', active);
+      btn.setAttribute('aria-checked', active ? 'true' : 'false');
+    });
+    togglePayDetails();
+  }
+
   function applySavedLanguage() {
     const saved = SafeStore.get(STORAGE_KEYS.LANG);
-    const lang = ['both', 'en', 'ti'].includes(saved) ? saved : 'both';
-    document.body.classList.remove('lang-both', 'lang-en', 'lang-ti');
-    document.body.classList.add('lang-' + lang);
+    currentLang = ['en', 'ti'].includes(saved) ? saved : 'en';
+    document.body.classList.remove('lang-en', 'lang-ti');
+    document.body.classList.add('lang-' + currentLang);
     document.querySelectorAll('.lang-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.lang === lang);
+      b.classList.toggle('active', b.dataset.lang === currentLang);
     });
+
+    const searchInp = document.getElementById('searchInput');
+    if (searchInp) {
+      searchInp.placeholder = t(
+        'Search for "Teff, Oil, Shiro, Eggs"...',
+        'ጣፍ፣ ዘይቲ፣ ሽሮ፣ እንቋቑሖ ድለዩ...'
+      );
+    }
+    const nameInp = document.getElementById('custName');
+    if (nameInp) {
+      nameInp.placeholder = t('Selamawit', 'ሰላማዊት');
+    }
+    const locInp = document.getElementById('locationInput');
+    if (locInp) {
+      locInp.placeholder = t(
+        'Nearby landmark, building, or gate',
+        'ቀረባ ምልክት፣ ህንጻ ወይ ኣፍደገ'
+      );
+    }
+    const subPrefSel = document.getElementById('subPref');
+    if (subPrefSel && subPrefSel.options.length >= 2) {
+      subPrefSel.options[0].textContent = t('Call me first', 'ቅድሚ ምቕያር ደውሉለይ');
+      subPrefSel.options[1].textContent = t('Skip unavailable item', 'ዘየለ ኣቕሓ ኣውጽእዎ');
+    }
+    const quietNotice = document.getElementById('quietSyncNotice');
+    if (quietNotice && quietNotice.classList.contains('visible')) {
+      quietNotice.textContent = t(
+        '⚠️ Offline snapshot shown — live stock & fees will be confirmed at checkout.',
+        '⚠️ ናይ ኦፍላይን ዝርዝር ተራእዩ ኣሎ — ኣብ ናይ መወዳእታ ትእዛዝ ዋጋ ክረጋገጽ እዩ።'
+      );
+    }
   }
 
   function loadSavedProfile() {
@@ -1366,8 +2362,13 @@
         selectedSubCity = profile.subCity;
       }
       if (typeof profile.location === 'string') document.getElementById('locationInput').value = profile.location.slice(0, 300);
+      if (typeof profile.gpsUrl === 'string' && profile.gpsUrl.startsWith('https://maps.google.com/')) {
+        pinnedGpsUrl = profile.gpsUrl;
+        pinnedGpsOutsideMekelle = Boolean(profile.gpsOutsideMekelle);
+        updateGpsPinBar();
+      }
       if (typeof profile.payment === 'string' && VALID_PAYMENTS.includes(profile.payment)) {
-        document.getElementById('paymentMethod').value = profile.payment;
+        setPaymentMethodValue(profile.payment);
       }
       if (typeof profile.subPref === 'string') {
         document.getElementById('subPref').value = profile.subPref;
@@ -1391,6 +2392,8 @@
       phone: document.getElementById('custPhone').value.trim().slice(0, 25),
       subCity: selectedSubCity,
       location: document.getElementById('locationInput').value.trim().slice(0, 300),
+      gpsUrl: pinnedGpsUrl,
+      gpsOutsideMekelle: pinnedGpsOutsideMekelle,
       payment: document.getElementById('paymentMethod').value,
       subPref: document.getElementById('subPref').value
     });
@@ -1447,8 +2450,12 @@
           unit: String(lp.unit || (fb ? fb.unit : '1 unit')).trim(),
           price: price,
           stock: Math.floor(rawStock),
-          emoji: fb ? fb.emoji : '🛒',
-          imageUrl: typeof lp.imageUrl === 'string' && lp.imageUrl.startsWith('https://') ? lp.imageUrl : '',
+          originEn: fb ? fb.originEn : 'Mekelle',
+          originTi: fb ? fb.originTi : 'መቐለ',
+          descEn: fb ? fb.descEn : 'Fresh neighborhood grocery staple.',
+          descTi: fb ? fb.descTi : 'ንጹህን ትኩስን ኣስቤዛ።',
+          art: fb ? fb.art : 'flour',
+          photoUrl: (typeof lp.imageUrl === 'string' && lp.imageUrl.startsWith('https://')) ? lp.imageUrl : (fb ? fb.photoUrl : ''),
           aliases: fb ? fb.aliases : ''
         });
       }
@@ -1482,10 +2489,14 @@
       renderCartItems();
       updateTotals();
       renderReorderBanner();
+      if (activeDetailSku) renderDetailSheet(activeDetailSku);
 
       quietNotice.classList.remove('visible');
     } catch (err) {
-      quietNotice.textContent = '⚠️ Offline snapshot shown — live stock & fees will be confirmed at checkout / ኣብ ናይ መወዳእታ ትእዛዝ ዋጋ ክረጋገጽ እዩ።';
+      quietNotice.textContent = t(
+        '⚠️ Offline snapshot shown — live stock & fees will be confirmed at checkout.',
+        '⚠️ ናይ ኦፍላይን ዝርዝር ተራእዩ ኣሎ — ኣብ ናይ መወዳእታ ትእዛዝ ዋጋ ክረጋገጽ እዩ።'
+      );
       quietNotice.classList.add('visible');
     }
   }
@@ -1497,11 +2508,17 @@
       const p = PRODUCTS.find(x => x.sku === sku);
       const requested = cart[sku];
       if (!p || p.stock <= 0) {
-        changes.push((p ? p.en : sku) + ' (removed / ተወዲኡ)');
+        changes.push({
+          en: (p ? p.en : sku) + ' (removed — out of stock)',
+          ti: (p ? p.ti : sku) + ' (ተወዲኡ ስለዝኾነ ተኣልዩ)'
+        });
         delete cart[sku];
         delete itemSubOverrides[sku];
       } else if (requested > p.stock) {
-        changes.push(p.en + ' (' + requested + ' → ' + p.stock + ')');
+        changes.push({
+          en: p.en + ' (' + requested + ' → ' + p.stock + ')',
+          ti: p.ti + ' (' + requested + ' → ' + p.stock + ')'
+        });
         cart[sku] = p.stock;
       }
     });
@@ -1523,16 +2540,18 @@
 
     if (!unacknowledgedStockChanges.length || isCheckoutLocked()) return;
 
+    const listText = unacknowledgedStockChanges.map(c => t(c.en, c.ti)).join('; ');
+
     [topBanner, drawerBox].forEach(container => {
       const strong = document.createElement('strong');
-      strong.textContent = '⚠️ Basket updated for live stock / ዘንቢል ተመሓይሹ: ';
+      strong.textContent = t('⚠️ Basket updated for live stock: ', '⚠️ ዘንቢል ብመሰረት ዘሎ ክምችት ተመሓይሹ: ');
       const msg = document.createElement('span');
-      msg.textContent = unacknowledgedStockChanges.join('; ') + '. ';
+      msg.textContent = listText + '. ';
       const ackBtn = document.createElement('button');
       ackBtn.type = 'button';
       ackBtn.className = 'btn-secondary';
       ackBtn.style.marginTop = '6px';
-      ackBtn.textContent = 'OK, Review Basket / ሕራይ';
+      ackBtn.textContent = t('OK, Review Basket', 'ሕራይ፣ ዘንቢል ርኣዩ');
       ackBtn.addEventListener('click', () => {
         unacknowledgedStockChanges = [];
         renderReconciliationNotices();
@@ -1547,6 +2566,28 @@
 
   function clearNode(el) {
     while (el.firstChild) el.removeChild(el.firstChild);
+  }
+
+  function renderProductVisual(container, p, index) {
+    clearNode(container);
+    const fallbackSvg = ARTWORK[p.art] || ARTWORK.flour;
+    if (p.photoUrl) {
+      const img = document.createElement('img');
+      img.src = p.photoUrl;
+      img.alt = t(p.en, p.ti);
+      img.decoding = 'async';
+      if (typeof index === 'number' && index < 4) {
+        img.setAttribute('fetchpriority', 'high');
+      } else {
+        img.loading = 'lazy';
+      }
+      img.onerror = function () {
+        container.innerHTML = fallbackSvg;
+      };
+      container.appendChild(img);
+    } else {
+      container.innerHTML = fallbackSvg;
+    }
   }
 
   function renderCategories() {
@@ -1565,7 +2606,7 @@
       enSpan.textContent = tr.en;
       const tiSpan = document.createElement('span');
       tiSpan.className = 'ti-only';
-      tiSpan.textContent = (tr.en === tr.ti) ? tr.ti : (' / ' + tr.ti);
+      tiSpan.textContent = tr.ti;
 
       btn.appendChild(enSpan);
       btn.appendChild(tiSpan);
@@ -1574,6 +2615,10 @@
         activeCategory = cat;
         renderCategories();
         renderCatalog();
+        const activeBtn = container.querySelector('.cat-pill.active');
+        if (activeBtn && activeBtn.scrollIntoView) {
+          activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
       });
       container.appendChild(btn);
     });
@@ -1589,7 +2634,7 @@
       return matchCat && (!q || hay.includes(q));
     });
 
-    document.getElementById('catalogCount').textContent = filtered.length + ' items / ኣቑሑት';
+    document.getElementById('catalogCount').textContent = filtered.length + ' ' + t('items', 'ኣቑሑት');
     const grid = document.getElementById('productGrid');
     clearNode(grid);
     const locked = isCheckoutLocked();
@@ -1600,11 +2645,11 @@
       const msg = document.createElement('p');
       msg.style.fontWeight = '700';
       msg.style.marginBottom = '10px';
-      msg.textContent = 'No products found / ዝተረኽበ ኣቕሓ የለን';
+      msg.textContent = t('No products found', 'ዝተረኽበ ኣቕሓ የለን');
       const resetBtn = document.createElement('button');
       resetBtn.type = 'button';
       resetBtn.className = 'btn-secondary';
-      resetBtn.textContent = 'Clear filters / መጻረዪ ኣጽሪ';
+      resetBtn.textContent = t('Clear filters', 'መጻረዪ ኣጽሪ');
       resetBtn.addEventListener('click', () => {
         document.getElementById('searchInput').value = '';
         activeCategory = 'All';
@@ -1617,7 +2662,7 @@
       return;
     }
 
-    filtered.forEach(p => {
+    filtered.forEach((p, idx) => {
       const qty = cart[p.sku] || 0;
       const isOut = p.stock <= 0;
       const isLow = p.stock > 0 && p.stock <= 12;
@@ -1625,118 +2670,237 @@
       const card = document.createElement('article');
       card.className = 'card' + (isOut ? ' sold-out' : '');
 
-      const topBlock = document.createElement('div');
+      const tapArea = document.createElement('div');
+      tapArea.className = 'card-tap-area';
+      tapArea.setAttribute('role', 'button');
+      tapArea.setAttribute('tabindex', '0');
+      tapArea.setAttribute('aria-label', t('View details for ' + p.en, 'ዝርዝር ሓበሬታ ' + p.ti));
+      tapArea.addEventListener('click', () => openProductDetail(p.sku));
+      tapArea.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openProductDetail(p.sku);
+        }
+      });
+
       const media = document.createElement('div');
       media.className = 'card-media';
-
-      if (p.imageUrl) {
-        const img = document.createElement('img');
-        img.src = p.imageUrl;
-        img.alt = p.en;
-        img.loading = 'lazy';
-        media.appendChild(img);
-      } else {
-        const iconSpan = document.createElement('span');
-        iconSpan.style.fontSize = '34px';
-        iconSpan.setAttribute('aria-hidden', 'true');
-        iconSpan.textContent = p.emoji;
-        media.appendChild(iconSpan);
-      }
-
-      const packBadge = document.createElement('span');
-      packBadge.className = 'pack-pill';
-      packBadge.textContent = p.unit;
-      media.appendChild(packBadge);
+      renderProductVisual(media, p, idx);
 
       if (isOut || isLow) {
         const badge = document.createElement('span');
-        badge.className = 'stock-badge ' + (isOut ? 'out' : 'low');
-        badge.textContent = isOut ? 'Out / ተወዲኡ' : ('Low: ' + p.stock);
+        badge.className = 'stock-badge ' + (isOut ? 'out' : '');
+        badge.textContent = isOut ? t('Sold out', 'ተወዲኡ') : (t('Low: ', 'ውሑድ: ') + p.stock);
         media.appendChild(badge);
       }
 
       const title = document.createElement('h3');
       title.className = 'item-name';
-      title.style.marginTop = '8px';
       const enSpan = document.createElement('span');
       enSpan.className = 'en-only';
       enSpan.textContent = p.en;
       const tiSpan = document.createElement('span');
       tiSpan.className = 'ti-only';
-      tiSpan.textContent = ' (' + p.ti + ')';
+      tiSpan.textContent = p.ti;
       title.appendChild(enSpan);
       title.appendChild(tiSpan);
 
-      topBlock.appendChild(media);
-      topBlock.appendChild(title);
+      const packEl = document.createElement('div');
+      packEl.className = 'item-pack';
+      packEl.textContent = p.unit;
 
-      const bottomBlock = document.createElement('div');
-      const priceRow = document.createElement('div');
-      priceRow.className = 'item-price-row';
-      priceRow.style.marginBottom = '8px';
-
-      const priceEl = document.createElement('span');
+      const priceEl = document.createElement('div');
       priceEl.className = 'item-price';
-      priceEl.textContent = p.price.toLocaleString() + ' ETB';
+      priceEl.textContent = p.price.toLocaleString() + ' ';
+      const curSmall = document.createElement('small');
+      curSmall.textContent = 'ETB';
+      priceEl.appendChild(curSmall);
 
-      const unitEl = document.createElement('span');
-      unitEl.className = 'item-unit';
-      unitEl.textContent = '/ ' + p.unit;
-
-      priceRow.appendChild(priceEl);
-      priceRow.appendChild(unitEl);
-      bottomBlock.appendChild(priceRow);
+      tapArea.appendChild(media);
+      tapArea.appendChild(title);
+      tapArea.appendChild(packEl);
+      tapArea.appendChild(priceEl);
+      card.appendChild(tapArea);
 
       if (isOut) {
         const outBtn = document.createElement('button');
         outBtn.type = 'button';
-        outBtn.className = 'btn-add';
+        outBtn.className = 'btn-card-plus';
         outBtn.disabled = true;
-        outBtn.textContent = 'Out of Stock / ተወዲኡ';
-        bottomBlock.appendChild(outBtn);
+        outBtn.textContent = t('Out of stock', 'ተወዲኡ');
+        card.appendChild(outBtn);
       } else if (qty === 0) {
-        const addBtn = document.createElement('button');
-        addBtn.type = 'button';
-        addBtn.className = 'btn-add';
-        addBtn.disabled = locked;
-        addBtn.textContent = '+ Add / ወስኽ';
-        addBtn.setAttribute('aria-label', 'Add ' + p.en + ' to basket');
-        addBtn.addEventListener('click', () => changeQty(p.sku, 1));
-        bottomBlock.appendChild(addBtn);
+        const plusBtn = document.createElement('button');
+        plusBtn.type = 'button';
+        plusBtn.className = 'btn-card-plus';
+        plusBtn.disabled = locked;
+        plusBtn.textContent = '+';
+        plusBtn.setAttribute('aria-label', t('Add ' + p.en + ' to basket', p.ti + ' ናብ ዘንቢል ወስኽ'));
+        plusBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          changeQty(p.sku, 1);
+        });
+        card.appendChild(plusBtn);
       } else {
         const stepper = document.createElement('div');
-        stepper.className = 'qty-stepper';
+        stepper.className = 'card-stepper';
 
         const decBtn = document.createElement('button');
         decBtn.type = 'button';
-        decBtn.className = 'qty-btn';
+        decBtn.className = 'card-step-btn';
         decBtn.disabled = locked;
         decBtn.textContent = '−';
-        decBtn.setAttribute('aria-label', 'Decrease ' + p.en);
-        decBtn.addEventListener('click', () => changeQty(p.sku, -1));
+        decBtn.setAttribute('aria-label', t('Decrease ' + p.en, 'ቀንስ ' + p.ti));
+        decBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          changeQty(p.sku, -1);
+        });
 
         const valSpan = document.createElement('span');
-        valSpan.className = 'qty-val';
-        valSpan.textContent = qty + ' × ' + p.unit;
+        valSpan.className = 'card-step-val';
+        valSpan.textContent = String(qty);
 
         const incBtn = document.createElement('button');
         incBtn.type = 'button';
-        incBtn.className = 'qty-btn';
+        incBtn.className = 'card-step-btn';
         incBtn.disabled = locked || qty >= Math.min(p.stock, 100);
         incBtn.textContent = '+';
-        incBtn.setAttribute('aria-label', 'Increase ' + p.en);
-        incBtn.addEventListener('click', () => changeQty(p.sku, 1));
+        incBtn.setAttribute('aria-label', t('Increase ' + p.en, 'ወስኽ ' + p.ti));
+        incBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          changeQty(p.sku, 1);
+        });
 
         stepper.appendChild(decBtn);
         stepper.appendChild(valSpan);
         stepper.appendChild(incBtn);
-        bottomBlock.appendChild(stepper);
+        card.appendChild(stepper);
       }
 
-      card.appendChild(topBlock);
-      card.appendChild(bottomBlock);
       grid.appendChild(card);
     });
+  }
+
+  /* Product Detail Bottom Sheet */
+  function openProductDetail(sku) {
+    lastFocusedElement = document.activeElement;
+    activeDetailSku = sku;
+    renderDetailSheet(sku);
+    document.getElementById('detailBackdrop').classList.add('open');
+    document.body.classList.add('drawer-open');
+    if (tgWebApp && tgWebApp.BackButton) {
+      try { tgWebApp.BackButton.show(); } catch (e) {}
+    }
+    document.getElementById('closeDetailBtn').focus();
+  }
+
+  function closeProductDetail() {
+    activeDetailSku = null;
+    document.getElementById('detailBackdrop').classList.remove('open');
+    if (!document.getElementById('cartBackdrop').classList.contains('open')) {
+      document.body.classList.remove('drawer-open');
+      if (tgWebApp && tgWebApp.BackButton) {
+        try { tgWebApp.BackButton.hide(); } catch (e) {}
+      }
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+      }
+    }
+  }
+
+  function renderDetailSheet(sku) {
+    const p = PRODUCTS.find(x => x.sku === sku);
+    if (!p) return;
+
+    const tr = CATEGORY_TRANSLATIONS[p.cat] || { en: p.cat, ti: p.cat };
+    document.getElementById('detailCatBadge').textContent = t(tr.en, tr.ti);
+
+    const media = document.getElementById('detailMedia');
+    renderProductVisual(media, p, 0);
+
+    const title = document.getElementById('detailTitle');
+    clearNode(title);
+    const enT = document.createElement('span');
+    enT.className = 'en-only';
+    enT.textContent = p.en;
+    const tiT = document.createElement('span');
+    tiT.className = 'ti-only';
+    tiT.textContent = p.ti;
+    title.appendChild(enT);
+    title.appendChild(tiT);
+
+    const desc = document.getElementById('detailDesc');
+    clearNode(desc);
+    const enD = document.createElement('span');
+    enD.className = 'en-only';
+    enD.textContent = p.descEn;
+    const tiD = document.createElement('span');
+    tiD.className = 'ti-only';
+    tiD.textContent = p.descTi;
+    desc.appendChild(enD);
+    desc.appendChild(tiD);
+
+    document.getElementById('detailPack').textContent = p.unit;
+    document.getElementById('detailStock').textContent = p.stock > 0
+      ? (p.stock + ' ' + t('in stock', 'ኣብ መኽዘን ኣሎ'))
+      : t('Out of stock', 'ተወዲኡ');
+    document.getElementById('detailOrigin').textContent = t(p.originEn || 'Mekelle', p.originTi || 'መቐለ');
+    document.getElementById('detailPrice').textContent = p.price.toLocaleString() + ' ETB';
+
+    const wrap = document.getElementById('detailActionWrap');
+    clearNode(wrap);
+    const qty = cart[p.sku] || 0;
+    const locked = isCheckoutLocked();
+
+    if (p.stock <= 0) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn-primary';
+      btn.style.width = '100%';
+      btn.disabled = true;
+      btn.textContent = t('Out of Stock', 'ተወዲኡ');
+      wrap.appendChild(btn);
+    } else if (qty === 0) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn-primary';
+      btn.style.width = '100%';
+      btn.disabled = locked;
+      btn.textContent = t('Add to Cart +', 'ናብ ዘንቢል ወስኽ +');
+      btn.addEventListener('click', () => changeQty(p.sku, 1));
+      wrap.appendChild(btn);
+    } else {
+      const stepper = document.createElement('div');
+      stepper.className = 'card-stepper';
+      stepper.style.height = '44px';
+
+      const dec = document.createElement('button');
+      dec.type = 'button';
+      dec.className = 'card-step-btn';
+      dec.style.width = '38px';
+      dec.style.height = '36px';
+      dec.disabled = locked;
+      dec.textContent = '−';
+      dec.addEventListener('click', () => changeQty(p.sku, -1));
+
+      const val = document.createElement('span');
+      val.className = 'card-step-val';
+      val.textContent = qty + ' × ' + p.unit;
+
+      const inc = document.createElement('button');
+      inc.type = 'button';
+      inc.className = 'card-step-btn';
+      inc.style.width = '38px';
+      inc.style.height = '36px';
+      inc.disabled = locked || qty >= Math.min(p.stock, 100);
+      inc.textContent = '+';
+      inc.addEventListener('click', () => changeQty(p.sku, 1));
+
+      stepper.appendChild(dec);
+      stepper.appendChild(val);
+      stepper.appendChild(inc);
+      wrap.appendChild(stepper);
+    }
   }
 
   function renderBundles() {
@@ -1751,17 +2915,24 @@
       const top = document.createElement('div');
       const tag = document.createElement('span');
       tag.className = 'bundle-tag';
-      tag.textContent = b.tagEn + ' • ' + b.tagTi;
+      const tagEn = document.createElement('span');
+      tagEn.className = 'en-only';
+      tagEn.textContent = b.tagEn;
+      const tagTi = document.createElement('span');
+      tagTi.className = 'ti-only';
+      tagTi.textContent = b.tagTi;
+      tag.appendChild(tagEn);
+      tag.appendChild(tagTi);
 
       const h3 = document.createElement('h3');
       h3.style.fontSize = '15px';
-      h3.style.marginTop = '7px';
+      h3.style.marginTop = '8px';
       const en = document.createElement('span');
       en.className = 'en-only';
       en.textContent = b.en;
       const ti = document.createElement('span');
       ti.className = 'ti-only';
-      ti.textContent = ' (' + b.ti + ')';
+      ti.textContent = b.ti;
       h3.appendChild(en);
       h3.appendChild(ti);
 
@@ -1774,7 +2945,7 @@
       dEn.textContent = b.descEn;
       const dTi = document.createElement('span');
       dTi.className = 'ti-only';
-      dTi.textContent = ' / ' + b.descTi;
+      dTi.textContent = b.descTi;
       desc.appendChild(dEn);
       desc.appendChild(dTi);
 
@@ -1796,18 +2967,15 @@
       bottom.style.alignItems = 'center';
 
       const priceEl = document.createElement('strong');
-      priceEl.style.fontSize = '15px';
-      priceEl.style.color = 'var(--primary)';
+      priceEl.style.fontSize = '16px';
+      priceEl.style.color = 'var(--primary-dark)';
       priceEl.textContent = bundleTotal.toLocaleString() + ' ETB';
 
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'btn-primary';
-      btn.style.minHeight = '36px';
-      btn.style.padding = '7px 12px';
-      btn.style.fontSize = '12px';
+      btn.className = 'btn-secondary';
       btn.disabled = locked || !allAvailable;
-      btn.textContent = allAvailable ? '+ Add Pack / ፓኬጅ ወስኽ' : 'Item Out / ተወዲኡ';
+      btn.textContent = allAvailable ? t('+ Add Pack', '+ ፓኬጅ ወስኽ') : t('Item Out', 'ተወዲኡ');
       btn.addEventListener('click', () => addBundle(b));
 
       bottom.appendChild(priceEl);
@@ -1836,9 +3004,11 @@
     }
 
     hapticLight();
+    if (delta > 0) animateCartBadge();
     saveCart();
     renderCatalog();
     renderCartItems();
+    if (activeDetailSku === sku) renderDetailSheet(sku);
   }
 
   function addBundle(bundle) {
@@ -1848,12 +3018,12 @@
       const p = PRODUCTS.find(x => x.sku === sku);
       const current = cart[sku] || 0;
       if (!p || current + addQty > Math.min(p.stock, 100)) {
-        shortages.push(p ? p.en : sku);
+        shortages.push(p ? t(p.en, p.ti) : sku);
       }
     });
 
     if (shortages.length) {
-      showNativeNotice('Insufficient stock for / እኹል ክምችት የለን: ' + shortages.join(', '));
+      showNativeNotice(t('Insufficient stock for: ', 'እኹል ክምችት የለን: ') + shortages.join(', '));
       return;
     }
 
@@ -1862,9 +3032,10 @@
     });
 
     hapticLight();
+    animateCartBadge();
     saveCart();
     renderCatalog();
-    openCart();
+    showNativeNotice(t(bundle.en + ' added to basket', bundle.ti + ' ናብ ዘንቢል ተወሲኹ'));
   }
 
   function renderCartItems() {
@@ -1876,14 +3047,19 @@
     const frozenPrices = locked ? pendingCheckout.snapshot.linePrices : null;
     const entries = Object.entries(displayCart);
 
+    const clearBasketBtn = document.getElementById('clearBasketBtn');
+    if (clearBasketBtn) {
+      clearBasketBtn.style.display = (!locked && entries.length > 0) ? 'inline-flex' : 'none';
+    }
+
     if (!entries.length) {
       const empty = document.createElement('p');
       empty.style.color = 'var(--muted)';
       empty.style.fontSize = '14px';
       empty.style.padding = '12px 0';
       empty.textContent = locked
-        ? 'Order reference preserved above / መለለዪ ትእዛዝ ኣብ ላዕሊ ተዓቂቡ ኣሎ።'
-        : 'Your basket is empty / ዘንቢልኩም ባዶ እዩ።';
+        ? t('Order reference preserved above.', 'መለለዪ ትእዛዝ ኣብ ላዕሊ ተዓቂቡ ኣሎ።')
+        : t('Your basket is empty.', 'ዘንቢልኩም ባዶ እዩ።');
       box.appendChild(empty);
       return;
     }
@@ -1906,7 +3082,14 @@
       const nameDiv = document.createElement('div');
       nameDiv.style.fontWeight = '700';
       nameDiv.style.fontSize = '14px';
-      nameDiv.textContent = labelTi ? (labelEn + ' (' + labelTi + ')') : labelEn;
+      const nEn = document.createElement('span');
+      nEn.className = 'en-only';
+      nEn.textContent = labelEn;
+      const nTi = document.createElement('span');
+      nTi.className = 'ti-only';
+      nTi.textContent = labelTi || labelEn;
+      nameDiv.appendChild(nEn);
+      nameDiv.appendChild(nTi);
 
       const calcDiv = document.createElement('div');
       calcDiv.style.fontSize = '12px';
@@ -1926,7 +3109,7 @@
       decBtn.className = 'qty-btn';
       decBtn.disabled = locked;
       decBtn.textContent = '−';
-      decBtn.setAttribute('aria-label', 'Decrease ' + labelEn);
+      decBtn.setAttribute('aria-label', t('Decrease ' + labelEn, 'ቀንስ ' + (labelTi || labelEn)));
       decBtn.addEventListener('click', () => changeQty(sku, -1));
 
       const qtyStrong = document.createElement('strong');
@@ -1939,7 +3122,7 @@
       incBtn.className = 'qty-btn';
       incBtn.disabled = locked || (p && qty >= Math.min(p.stock, 100));
       incBtn.textContent = '+';
-      incBtn.setAttribute('aria-label', 'Increase ' + labelEn);
+      incBtn.setAttribute('aria-label', t('Increase ' + labelEn, 'ወስኽ ' + (labelTi || labelEn)));
       incBtn.addEventListener('click', () => changeQty(sku, 1));
 
       controls.appendChild(decBtn);
@@ -1950,22 +3133,21 @@
       mainLine.appendChild(controls);
       row.appendChild(mainLine);
 
-      // Optional item-level substitution preference
       if (!locked) {
         const subRow = document.createElement('div');
         subRow.className = 'item-sub-row';
         const subLbl = document.createElement('span');
-        subLbl.textContent = 'If out / እንተተወዲኡ:';
+        subLbl.textContent = t('If out:', 'እንተተወዲኡ:');
         const subSel = document.createElement('select');
         subSel.className = 'item-sub-select';
         [
-          { v: '', t: 'Use order default / ሓፈሻዊ ምርጫ' },
-          { v: 'Call me first', t: 'Call me first / ደውሉለይ' },
-          { v: 'Skip this item', t: 'Skip this item / ኣውጽእዎ' }
+          { v: '', en: 'Use order default', ti: 'ሓፈሻዊ ምርጫ ተጠቐም' },
+          { v: 'Call me first', en: 'Call me first', ti: 'ቅድሚ ምቕያር ደውሉለይ' },
+          { v: 'Skip this item', en: 'Skip this item', ti: 'ነዚ ኣቕሓ ኣውጽእዎ' }
         ].forEach(o => {
           const opt = document.createElement('option');
           opt.value = o.v;
-          opt.textContent = o.t;
+          opt.textContent = t(o.en, o.ti);
           subSel.appendChild(opt);
         });
         subSel.value = itemSubOverrides[sku] || '';
@@ -2000,42 +3182,40 @@
     });
 
     const activeFee = subtotal === 0 ? 0 : getActiveDeliveryFee();
+    const scObj = SUBCITY_META.find(s => s.key === selectedSubCity);
+    const scLabel = scObj ? t(scObj.en, scObj.ti) : selectedSubCity;
 
     document.getElementById('headerCartCount').textContent = String(count);
-    document.getElementById('headerCartTotal').textContent = subtotal.toLocaleString();
-    document.getElementById('step2ItemCount').textContent = count + ' items / ኣቑሑት';
+    document.getElementById('step2ItemCount').textContent = count + ' ' + t('items', 'ኣቑሑት');
 
-    // Sticky bar displays exact total if sub-city chosen, or subtotal + area prompt
     document.getElementById('stickyCountLine').textContent = selectedSubCity
-      ? (count + ' items • ' + selectedSubCity + ' (' + (activeFee || 0) + ' ETB delivery)')
-      : (count + ' items • Select sub-city for delivery fee');
+      ? (count + ' ' + t('items', 'ኣቑሑት') + ' • ' + scLabel + ' (' + (activeFee || 0) + ' ETB)')
+      : (count + ' ' + t('items • Select sub-city above', 'ኣቑሑት • ኣብ ላዕሊ ክፍለ ከተማ ምረጹ'));
     document.getElementById('stickyTotalLine').textContent = activeFee === null
-      ? ('Subtotal: ' + subtotal.toLocaleString() + ' ETB')
-      : ('Total: ' + (subtotal + activeFee).toLocaleString() + ' ETB');
+      ? (t('Subtotal: ', 'ድምር: ') + subtotal.toLocaleString() + ' ETB')
+      : (t('Total: ', 'ጠቕላላ: ') + (subtotal + activeFee).toLocaleString() + ' ETB');
 
-    // Step 1 Summary
     document.getElementById('step1Subtotal').textContent = subtotal.toLocaleString();
     document.getElementById('step1DeliveryLabel').textContent = activeFee === null
-      ? 'Select area / ክፍለ ከተማ ምረጹ'
+      ? t('Select sub-city', 'ክፍለ ከተማ ምረጹ')
       : (activeFee.toLocaleString() + ' ETB');
     document.getElementById('step1TotalLabel').textContent = activeFee === null
-      ? (subtotal.toLocaleString() + ' ETB + delivery')
+      ? (subtotal.toLocaleString() + ' ETB + ' + t('delivery', 'መብጽሒ'))
       : ((subtotal + activeFee).toLocaleString() + ' ETB');
 
-    // Step 2 Summary & Place Order CTA
     document.getElementById('sumSubtotal').textContent = subtotal.toLocaleString();
     document.getElementById('sumDeliveryLabel').textContent = activeFee === null
-      ? 'Select sub-city / ምረጹ'
+      ? t('Select sub-city', 'ክፍለ ከተማ ምረጹ')
       : (activeFee.toLocaleString() + ' ETB');
     document.getElementById('sumTotalLabel').textContent = activeFee === null
-      ? (subtotal.toLocaleString() + ' ETB + delivery')
+      ? (subtotal.toLocaleString() + ' ETB + ' + t('delivery', 'መብጽሒ'))
       : ((subtotal + activeFee).toLocaleString() + ' ETB');
 
     if (!locked) {
       const placeBtn = document.getElementById('placeOrderBtn');
       placeBtn.textContent = activeFee === null
-        ? '✅ Place Order / ትእዛዝ ኣረጋግጽ'
-        : ('✅ Place Order • ' + (subtotal + activeFee).toLocaleString() + ' ETB');
+        ? t('Place Order', 'ትእዛዝ ኣረጋግጽ')
+        : (t('Place Order', 'ትእዛዝ ኣረጋግጽ') + ' • ' + (subtotal + activeFee).toLocaleString() + ' ETB');
     }
 
     syncTelegramMainButton(count, subtotal, activeFee);
@@ -2045,31 +3225,32 @@
     drawerStep = isCheckoutLocked() ? 2 : (step === 2 ? 2 : 1);
     const s1 = document.getElementById('step1Container');
     const s2 = document.getElementById('step2Container');
+    const f1 = document.getElementById('step1FooterBlock');
+    const f2 = document.getElementById('step2FooterBlock');
     const p1 = document.getElementById('pillStep1');
     const p2 = document.getElementById('pillStep2');
     const heading = document.getElementById('drawerHeading');
 
+    s1.style.display = drawerStep === 1 ? 'flex' : 'none';
+    s2.style.display = drawerStep === 2 ? 'flex' : 'none';
+    f1.style.display = drawerStep === 1 ? 'flex' : 'none';
+    f2.style.display = drawerStep === 2 ? 'flex' : 'none';
+    p1.classList.toggle('active', drawerStep === 1);
+    p2.classList.toggle('active', drawerStep === 2);
+
+    document.getElementById('drawerScrollBody').scrollTop = 0;
+
     clearNode(heading);
     const enH = document.createElement('span');
     enH.className = 'en-only';
+    enH.textContent = isCheckoutLocked()
+      ? 'Order Verification'
+      : (drawerStep === 1 ? 'Review Basket' : 'Delivery & Payment');
     const tiH = document.createElement('span');
     tiH.className = 'ti-only';
-
-    if (drawerStep === 1) {
-      s1.style.display = 'flex';
-      s2.style.display = 'none';
-      p1.classList.add('active');
-      p2.classList.remove('active');
-      enH.textContent = '🛒 Review Basket';
-      tiH.textContent = ' / ዘንቢል ርኣዩ';
-    } else {
-      s1.style.display = 'none';
-      s2.style.display = 'flex';
-      p1.classList.remove('active');
-      p2.classList.add('active');
-      enH.textContent = isCheckoutLocked() ? '🔍 Order Status' : '🛵 Delivery & Payment';
-      tiH.textContent = isCheckoutLocked() ? ' / ኩነታት ትእዛዝ' : ' / ኣድራሻን ክፍሊትን';
-    }
+    tiH.textContent = isCheckoutLocked()
+      ? 'መረጋገጺ ትእዛዝ'
+      : (drawerStep === 1 ? 'ዘንቢል ርኣዩ' : 'ኣድራሻን ክፍሊትን');
     heading.appendChild(enH);
     heading.appendChild(tiH);
     updateTotals();
@@ -2082,13 +3263,17 @@
     }
     if (unacknowledgedStockChanges.length) {
       renderReconciliationNotices();
-      showNativeNotice('Please tap "OK, Review Basket" on the stock update notice first / ቅድም ዝተመሓየሸ ዘንቢል ኣረጋግጹ።');
+      showNativeNotice(t(
+        'Please tap "OK, Review Basket" on the stock update notice first.',
+        'ቅድም ዝተመሓየሸ ዘንቢል ኣረጋግጹ።'
+      ));
       return;
     }
     if (Object.keys(cart).length === 0) {
-      showNativeNotice('Your basket is empty / ዘንቢልኩም ባዶ እዩ።');
+      showNativeNotice(t('Your basket is empty.', 'ዘንቢልኩም ባዶ እዩ።'));
       return;
     }
+    clearAllFieldErrors();
     setDrawerStep(2);
     if (!document.getElementById('custPhone').value.trim() && tgWebApp && typeof tgWebApp.requestContact === 'function') {
       setTimeout(requestTelegramPhone, 250);
@@ -2102,53 +3287,128 @@
     document.getElementById('cashBox').style.display = m === 'Cash' ? 'block' : 'none';
   }
 
-  async function copyDisplayValue(rawValue, btn) {
+  function copyDisplayValue(rawValue, btn) {
     const clean = extractCopyAccount(rawValue);
+    let copied = false;
     try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(clean);
-        const old = btn.textContent;
-        btn.textContent = 'Copied! / ተቐዲሑ';
-        setTimeout(() => { btn.textContent = old; }, 1600);
-        return;
-      }
+      const ta = document.createElement('textarea');
+      ta.value = clean;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      copied = document.execCommand('copy');
+      document.body.removeChild(ta);
     } catch (e) {}
-    window.prompt('Copy / ቅዳሕ:', clean);
+
+    if (!copied && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(clean).catch(() => {});
+    }
+
+    if (btn) {
+      const old = btn.textContent;
+      btn.textContent = t('Copied!', 'ተቐዲሑ!');
+      setTimeout(() => { btn.textContent = old; }, 1600);
+    }
+    showNativeNotice(t('Copied: ', 'ተቐዲሑ: ') + clean);
   }
 
-function pinGPS() {
+  function pinGPS() {
     if (isCheckoutLocked()) return;
     const inp = document.getElementById('locationInput');
     const status = document.getElementById('gpsStatusMsg');
     const btn = document.getElementById('pinGpsBtn');
     const reqId = ++gpsRequestSeq;
-    userEditedLocationAfterGps = false;
 
-    const applyGpsCoords = (lat, lng) => {
-      if (reqId !== gpsRequestSeq || isCheckoutLocked() || userEditedLocationAfterGps) return;
+    const finishSuccess = (lat, lng, accuracyMeters) => {
+      if (reqId !== gpsRequestSeq || isCheckoutLocked()) return;
       btn.disabled = false;
-      inp.value = 'https://maps.google.com/?q=' + lat.toFixed(6) + ',' + lng.toFixed(6);
-      status.textContent = 'GPS captured / GPS ተታሒዙ ኣሎ።';
+      const numLat = Number(lat);
+      const numLng = Number(lng);
+      pinnedGpsUrl = 'https://maps.google.com/?q=' + numLat.toFixed(6) + ',' + numLng.toFixed(6);
+      setFieldError('locationInput', 'errLocation', '');
+
+      const geoCheck = detectNearestMekelleSubCity(numLat, numLng);
+      pinnedGpsOutsideMekelle = !geoCheck.inMekelle;
+      if (geoCheck.inMekelle && !selectedSubCity && geoCheck.subCity) {
+        setSelectedSubCity(geoCheck.subCity);
+      }
+
+      updateGpsPinBar(accuracyMeters);
+      status.textContent = pinnedGpsOutsideMekelle
+        ? t('Pin looks outside Mekelle — also type your Mekelle landmark above.', 'GPS ካብ መቐለ ወጻኢ ይመስል — ኣብ መቐለ ዝርከብ ቀረባ ምልክት እውን ጽሓፉ።')
+        : t('GPS location attached! Add a gate or building note above if helpful.', 'GPS ተታሒዙ ኣሎ! ዝያዳ ምልክት ህንጻ ወይ ኣፍደገ ክትውስኹ ትኽእሉ ኢኹም።');
+      if (!inp.value.trim()) inp.focus();
+    };
+
+    const finishFailure = (msg) => {
+      if (reqId !== gpsRequestSeq || isCheckoutLocked()) return;
+      btn.disabled = false;
+      status.textContent = msg;
     };
 
     const runBrowserGeolocation = () => {
       if (reqId !== gpsRequestSeq || isCheckoutLocked()) return;
       if (!navigator.geolocation) {
-        btn.disabled = false;
-        status.textContent = 'GPS unavailable on this device. Type your nearby landmark / ቀረባ ምልክት ጽሓፉ።';
+        finishFailure(t(
+          'GPS unavailable on this device. Tap a landmark chip above or type your street.',
+          'ኣብዚ መሳርሒ GPS ኣይሰርሕን። ካብቶም ናይ ላዕሊ ምልክታት ምረጹ ወይ ኣድራሻኹም ጽሓፉ።'
+        ));
         return;
       }
-      status.textContent = 'Requesting device GPS...';
+      status.textContent = t('Locating device GPS...', 'GPS ይድለ ኣሎ...');
+
+      let done = false;
+      const hardGuard = setTimeout(() => {
+        if (!done) {
+          done = true;
+          finishFailure(t(
+            'GPS timed out. Tap a landmark chip above or type your landmark.',
+            'GPS ግዜኡ ወዲኡ። ካብቶም ናይ ላዕሊ ምልክታት ምረጹ ወይ ኣድራሻኹም ጽሓፉ።'
+          ));
+        }
+      }, 15000);
+
       navigator.geolocation.getCurrentPosition(
-        pos => applyGpsCoords(pos.coords.latitude, pos.coords.longitude),
-        err => {
-          if (reqId !== gpsRequestSeq || isCheckoutLocked()) return;
-          btn.disabled = false;
-          status.textContent = err && err.code === 1
-            ? 'Location blocked. Allow GPS or type landmark / ፍቓድ GPS ኣብርሁ ወይ ምልክት ጽሓፉ።'
-            : 'Could not lock GPS. Type your nearby landmark / ቀረባ ምልክት ጽሓፉ።';
+        pos => {
+          if (done) return;
+          done = true;
+          clearTimeout(hardGuard);
+          finishSuccess(pos.coords.latitude, pos.coords.longitude, pos.coords.accuracy);
         },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
+        err => {
+          if (done || reqId !== gpsRequestSeq) return;
+          if (err && err.code === 1) {
+            done = true;
+            clearTimeout(hardGuard);
+            finishFailure(t(
+              'Location permission blocked. Allow location or tap a landmark chip above.',
+              'ፍቓድ GPS ተዓጽዩ ኣሎ። ፍቓድ ኣብርሁ ወይ ካብቶም ምልክታት ምረጹ።'
+            ));
+            return;
+          }
+          status.textContent = t('Refining location via network...', 'ብኔትወርክ ቦታ ይረጋገጽ ኣሎ...');
+          navigator.geolocation.getCurrentPosition(
+            pos2 => {
+              if (done) return;
+              done = true;
+              clearTimeout(hardGuard);
+              finishSuccess(pos2.coords.latitude, pos2.coords.longitude, pos2.coords.accuracy);
+            },
+            () => {
+              if (done) return;
+              done = true;
+              clearTimeout(hardGuard);
+              finishFailure(t(
+                'Could not lock GPS indoors. Tap a landmark chip above or type your landmark.',
+                'ኣብ ውሽጢ ገዛ GPS ክርከብ ኣይከኣለን። ካብቶም ምልክታት ምረጹ ወይ ኣድራሻኹም ጽሓፉ።'
+              ));
+            },
+            { enableHighAccuracy: false, timeout: 7000, maximumAge: 120000 }
+          );
+        },
+        { enableHighAccuracy: true, timeout: 7000, maximumAge: 30000 }
       );
     };
 
@@ -2162,7 +3422,7 @@ function pinGPS() {
           settled = true;
           runBrowserGeolocation();
         }
-      }, 4000);
+      }, 3500);
 
       const queryTelegramLocation = () => {
         if (settled) return;
@@ -2172,13 +3432,13 @@ function pinGPS() {
           runBrowserGeolocation();
           return;
         }
-        status.textContent = 'Requesting Telegram GPS...';
+        status.textContent = t('Requesting Telegram GPS...', 'ካብ ቴሌግራም GPS ይሕተት ኣሎ...');
         lm.getLocation(loc => {
           if (settled) return;
           settled = true;
           clearTimeout(fallbackTimer);
           if (loc && Number.isFinite(loc.latitude) && Number.isFinite(loc.longitude)) {
-            applyGpsCoords(loc.latitude, loc.longitude);
+            finishSuccess(loc.latitude, loc.longitude, loc.horizontal_accuracy);
           } else {
             runBrowserGeolocation();
           }
@@ -2203,13 +3463,13 @@ function pinGPS() {
     const btn = document.getElementById('tgPhoneBtn');
 
     if (!tgWebApp || typeof tgWebApp.requestContact !== 'function') {
-      status.textContent = 'Type your phone number above / ቁጽሪ ስልክኹም ኣብ ላዕሊ ጽሓፉ።';
+      status.textContent = t('Type your phone number above.', 'ቁጽሪ ስልክኹም ኣብ ላዕሊ ጽሓፉ።');
       phoneInput.focus();
       return;
     }
 
     btn.disabled = true;
-    status.textContent = 'Confirm phone share in Telegram...';
+    status.textContent = t('Confirm phone share in Telegram...', 'ኣብ ቴሌግራም ምክፋል ቁጽሪ ስልኪ ኣረጋግጹ...');
 
     tgWebApp.requestContact((shared, eventData) => {
       btn.disabled = false;
@@ -2220,17 +3480,18 @@ function pinGPS() {
       if (shared && rawPhone) {
         const formatted = rawPhone.startsWith('+') ? rawPhone : ('+' + rawPhone);
         phoneInput.value = formatted;
-        status.textContent = 'Telegram number added (editable) / ቁጽሪ ተመሊኡ ኣሎ።';
+        setFieldError('custPhone', 'errCustPhone', '');
+        status.textContent = t('Telegram number added (editable).', 'ቁጽሪ ቴሌግራም ተመሊኡ ኣሎ (ምቕያር ይከኣል)።');
         persistProfileIfOptedIn();
       } else {
-        status.textContent = 'Type any phone number above / ዝደለኹምዎ ቁጽሪ ስልኪ ጽሓፉ።';
+        status.textContent = t('Type any phone number above.', 'ዝደለኹምዎ ቁጽሪ ስልኪ ኣብ ላዕሊ ጽሓፉ።');
         phoneInput.focus();
       }
     });
-  } 
-  
+  }
+
   function setBackgroundInert(isInert) {
-    ['appHeader', 'appDeliveryBar', 'appMain', 'appFooter', 'appSticky'].forEach(id => {
+    ['appHeader', 'appMain', 'appFooter', 'appSticky'].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
         if (isInert) el.setAttribute('inert', '');
@@ -2240,7 +3501,8 @@ function pinGPS() {
   }
 
   function openCart() {
-    lastFocusedBeforeDrawer = document.activeElement;
+    closeProductDetail();
+    lastFocusedElement = document.activeElement;
     renderCartItems();
     renderReconciliationNotices();
     syncLockUiState();
@@ -2266,18 +3528,21 @@ function pinGPS() {
       try { tgWebApp.BackButton.hide(); } catch (e) {}
     }
     updateTotals();
-    if (lastFocusedBeforeDrawer && typeof lastFocusedBeforeDrawer.focus === 'function') {
-      lastFocusedBeforeDrawer.focus();
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+      lastFocusedElement.focus();
     }
   }
 
   function syncLockUiState() {
     const locked = isCheckoutLocked();
     const isCorruptedMissingPhone = Boolean(locked && pendingCheckout.corrupted && !pendingCheckout.snapshot.phone && !(tgWebApp && tgWebApp.initData));
-    const formIds = ['homeSubCity', 'custName', 'subCity', 'locationInput', 'pinGpsBtn', 'subPref', 'paymentMethod', 'rememberDetailsChk', 'clearDetailsBtn', 'backToStep1Btn'];
+    const formIds = ['homeSubCity', 'custName', 'tgPhoneBtn', 'subCity', 'locationInput', 'pinGpsBtn', 'clearGpsBtn', 'subPref', 'rememberDetailsChk', 'clearDetailsBtn', 'backToStep1Btn'];
     formIds.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.disabled = locked;
+    });
+    document.querySelectorAll('.pay-choice-card').forEach(btn => {
+      btn.disabled = locked;
     });
     const phoneEl = document.getElementById('custPhone');
     if (phoneEl) phoneEl.disabled = locked && !isCorruptedMissingPhone;
@@ -2289,7 +3554,7 @@ function pinGPS() {
 
     if (locked) {
       placeBtn.disabled = true;
-      placeBtn.textContent = '⏳ Awaiting Confirmation / ትእዛዝ ይረጋገጽ ኣሎ...';
+      placeBtn.textContent = t('⏳ Awaiting Confirmation...', '⏳ ትእዛዝ ይረጋገጽ ኣሎ...');
 
       const snap = pendingCheckout.snapshot;
       document.getElementById('custName').value = snap.customerName || '';
@@ -2299,19 +3564,24 @@ function pinGPS() {
       populateSubCitySelectors();
       document.getElementById('locationInput').value = snap.location || '';
       document.getElementById('subPref').value = snap.subPref || 'Call me first';
-      document.getElementById('paymentMethod').value = snap.payment || 'Telebirr';
-      togglePayDetails();
+      setPaymentMethodValue(snap.payment || 'Telebirr');
 
       const bTitle = document.createElement('strong');
-      bTitle.textContent = '⚠️ Pending Order Check (' + pendingCheckout.clientOrderRef + ')';
+      bTitle.textContent = t(
+        '⚠️ Pending Order Check (' + pendingCheckout.clientOrderRef + ')',
+        '⚠️ ዘይተረጋገጸ ትእዛዝ (' + pendingCheckout.clientOrderRef + ')'
+      );
       const bText = document.createElement('div');
       bText.style.marginTop = '4px';
-      bText.textContent = 'Your previous submission needs verification before starting a new basket / ዝሓለፈ ትእዛዝኩም መረጋገጺ ይደሊ ኣሎ።';
+      bText.textContent = t(
+        'Your previous submission needs verification before starting a new basket.',
+        'ሓድሽ ዘንቢል ቅድሚ ምጅማርኩም ዝሓለፈ ትእዛዝኩም ክረጋገጽ ኣለዎ።'
+      );
       const bBtn = document.createElement('button');
       bBtn.type = 'button';
       bBtn.className = 'btn-secondary';
       bBtn.style.marginTop = '8px';
-      bBtn.textContent = '🔍 Check Order Status / ኩነታት ትእዛዝ ርኣዩ';
+      bBtn.textContent = t('🔍 Check Order Status', '🔍 ኩነታት ትእዛዝ ርኣዩ');
       bBtn.addEventListener('click', openCart);
       recoveryBanner.appendChild(bTitle);
       recoveryBanner.appendChild(bText);
@@ -2342,18 +3612,27 @@ function pinGPS() {
 
     const title = document.createElement('strong');
     title.textContent = isCorrupted
-      ? '⚠️ Incomplete Saved Checkout / ዘይተማልአ መዝገብ'
+      ? t('⚠️ Incomplete Saved Checkout', '⚠️ ዘይተማልአ መዝገብ ትእዛዝ')
       : (isRetryable
-          ? '⚠️ Order Not Yet Recorded / ትእዛዝ ገና ኣይተመዝገበን'
-          : '⚠️ Check Order Status / ኩነታት ትእዛዝ ኣረጋግጽ');
+          ? t('⚠️ Order Not Yet Recorded', '⚠️ ትእዛዝ ገና ኣይተመዝገበን')
+          : t('⚠️ Check Order Status', '⚠️ ኩነታት ትእዛዝ ኣረጋግጽ'));
 
     const desc = document.createElement('p');
     desc.style.marginTop = '6px';
     desc.textContent = isCorrupted
-      ? 'Enter your phone number below (if outside Telegram) and tap Check Order Status to verify this reference / ቁጽሪ ስልክኹም ኣእቲኹም ኩነታት ትእዛዝ ኣረጋግጹ:'
+      ? t(
+          'Enter your phone number below (if outside Telegram) and tap Check Order Status to verify this reference:',
+          'ቁጽሪ ስልክኹም ኣብ ታሕቲ ኣእቲኹም ኩነታት ትእዛዝ ኣረጋግጹ:'
+        )
       : (isRetryable
-          ? 'The server confirmed no duplicate was recorded yet. Tap Retry Same Order to submit safely / እቲ ትእዛዝ ስለዘይተመዝገበ እንደገና ክትልእኽዎ ትኽእሉ ኢኹም:'
-          : 'Your connection dropped before confirmation arrived. Check order status first so you do not pay twice / ድርብ ክፍሊት ንምክልኻል ቅድም ኩነታት ትእዛዝ ኣረጋግጹ:');
+          ? t(
+              'The server confirmed no duplicate was recorded yet. Tap Retry Same Order to submit safely:',
+              'እቲ ትእዛዝ ስለዘይተመዝገበ እንደገና ብዘይ ስግኣት ክትልእኽዎ ትኽእሉ ኢኹም:'
+            )
+          : t(
+              'Your connection dropped before confirmation arrived. Check order status first so you do not pay twice:',
+              'ድርብ ክፍሊት ንምክልኻል ቅድም ኩነታት ትእዛዝ ኣረጋግጹ:'
+            ));
 
     const refBox = document.createElement('div');
     refBox.style.marginTop = '7px';
@@ -2372,7 +3651,7 @@ function pinGPS() {
       retryBtn.type = 'button';
       retryBtn.className = 'btn-primary';
       retryBtn.style.flex = '1';
-      retryBtn.textContent = '🔄 Retry Same Order / እንደገና ለኣኽ';
+      retryBtn.textContent = t('🔄 Retry Same Order', '🔄 እንደገና ለኣኽ');
       retryBtn.addEventListener('click', () => dispatchPendingSnapshot(pendingCheckout));
       btnRow.appendChild(retryBtn);
     }
@@ -2382,13 +3661,15 @@ function pinGPS() {
     checkBtn.className = isRetryable ? 'btn-secondary' : 'btn-primary';
     if (!isRetryable) checkBtn.style.flex = '1';
     checkBtn.disabled = isCheckingStatus;
-    checkBtn.textContent = isCheckingStatus ? '⏳ Checking...' : '🔍 Check Order Status / ኣረጋግጽ';
+    checkBtn.textContent = isCheckingStatus
+      ? t('⏳ Checking...', '⏳ ይረጋገጽ ኣሎ...')
+      : t('🔍 Check Order Status', '🔍 ኣረጋግጽ');
     checkBtn.addEventListener('click', verifyPendingOrderStatus);
 
     const copyRefBtn = document.createElement('button');
     copyRefBtn.type = 'button';
     copyRefBtn.className = 'btn-secondary';
-    copyRefBtn.textContent = 'Copy Ref';
+    copyRefBtn.textContent = t('Copy Ref', 'መለለዪ ቅዳሕ');
     copyRefBtn.addEventListener('click', () => copyDisplayValue(pendingCheckout.clientOrderRef, copyRefBtn));
 
     btnRow.appendChild(checkBtn);
@@ -2398,14 +3679,17 @@ function pinGPS() {
       const discardBtn = document.createElement('button');
       discardBtn.type = 'button';
       discardBtn.className = 'btn-secondary';
-      discardBtn.textContent = 'Discard / ኣወግድ';
+      discardBtn.textContent = t('Discard', 'ኣወግድ');
       discardBtn.addEventListener('click', () => {
-        showNativeConfirm('Discard this incomplete reference only after verifying you did not place it?', () => {
-          persistPendingRecord(null);
-          clearNode(card);
-          card.className = 'status-card';
-          setDrawerStep(1);
-        });
+        showNativeConfirm(
+          t('Discard this incomplete reference only after verifying you did not place it?', 'ነዚ ትእዛዝ ከምዘይለኣኽኩምዎ ምስ ኣረጋገጽኩም ጥራይ ይወገድ ዶ?'),
+          () => {
+            persistPendingRecord(null);
+            clearNode(card);
+            card.className = 'status-card';
+            setDrawerStep(1);
+          }
+        );
       });
       btnRow.appendChild(discardBtn);
     }
@@ -2416,8 +3700,8 @@ function pinGPS() {
     card.appendChild(btnRow);
   }
 
-  /* Distinct "Order received · Awaiting payment" vs "Pay on delivery" */
   function renderConfirmedCard(orderData, storageClearFailed) {
+    lastConfirmedOrder = orderData;
     const card = document.getElementById('orderStatusCard');
     clearNode(card);
 
@@ -2427,13 +3711,19 @@ function pinGPS() {
     const title = document.createElement('strong');
     title.style.fontSize = '14px';
     title.textContent = isTransfer
-      ? ('⏳ Order received · Awaiting payment (#' + String(orderData.orderId) + ') / ትእዛዝ ተቐቢልና · ክፍሊት ይጽበ ኣሎ')
-      : ('✅ Order received · Pay on delivery (#' + String(orderData.orderId) + ') / ትእዛዝ ተቐቢልና · ኣብ ምብጻሕ ይኽፈል');
+      ? t(
+          '⏳ Order received · Awaiting payment (#' + String(orderData.orderId) + ')',
+          '⏳ ትእዛዝ ተቐቢልና · ክፍሊት ይጽበ ኣሎ (#' + String(orderData.orderId) + ')'
+        )
+      : t(
+          '✅ Order received · Pay on delivery (#' + String(orderData.orderId) + ')',
+          '✅ ትእዛዝ ተቐቢልና · ኣብ ምብጻሕ ይኽፈል (#' + String(orderData.orderId) + ')'
+        );
 
     const totalLine = document.createElement('div');
     totalLine.style.marginTop = '6px';
     totalLine.style.fontWeight = '700';
-    totalLine.textContent = 'Amount / ጠቕላላ ክፍሊት: ' + Number(orderData.total).toLocaleString() + ' ETB (' + String(orderData.payment) + ')';
+    totalLine.textContent = t('Amount: ', 'ጠቕላላ ክፍሊት: ') + Number(orderData.total).toLocaleString() + ' ETB (' + String(orderData.payment) + ')';
 
     card.appendChild(title);
     card.appendChild(totalLine);
@@ -2442,28 +3732,60 @@ function pinGPS() {
       const warn = document.createElement('p');
       warn.style.marginTop = '7px';
       warn.style.fontWeight = '700';
-      warn.textContent = 'Note: If a status banner appears on reload, tap "Check Order Status" instead of ordering again.';
+      warn.textContent = t(
+        'Note: If a status banner appears on reload, tap "Check Order Status" instead of ordering again.',
+        'መተሓሳሰቢ: ገጽ ምስ ተሓደሰ ምልክት እንተተራእዩ እንደገና ከይኣዘዝኩም "ኩነታት ትእዛዝ ኣረጋግጽ" ጠውቑ።'
+      );
       card.appendChild(warn);
     }
 
     if (isTransfer) {
-      const accountStr = orderData.payment === 'Telebirr'
+      const isTelebirr = orderData.payment === 'Telebirr';
+      const accountStr = isTelebirr
         ? String(orderData.telebirr || paymentConfig.telebirr)
         : String(orderData.cbe || paymentConfig.cbe);
+
+      const brandRow = document.createElement('div');
+      brandRow.style.display = 'flex';
+      brandRow.style.alignItems = 'center';
+      brandRow.style.gap = '8px';
+      brandRow.style.marginTop = '9px';
+
+      const logoImg = document.createElement('img');
+      logoImg.src = isTelebirr ? 'telebirr-logo.png' : 'cbe-logo.png';
+      logoImg.alt = isTelebirr ? 'telebirr logo' : 'CBE logo';
+      logoImg.style.height = '24px';
+      logoImg.style.width = 'auto';
+      logoImg.onerror = function () {
+        this.style.display = 'none';
+      };
+
+      const brandText = document.createElement('span');
+      brandText.style.fontWeight = '800';
+      brandText.style.fontSize = '12.5px';
+      brandText.style.color = isTelebirr ? '#0369A1' : '#78350F';
+      brandText.textContent = isTelebirr
+        ? t('telebirr Mobile Money', 'ቴሌብር (telebirr)')
+        : t('Commercial Bank of Ethiopia (CBE)', 'ንግድ ባንክ ኢትዮጵያ (CBE)');
+
+      brandRow.appendChild(logoImg);
+      brandRow.appendChild(brandText);
+      card.appendChild(brandRow);
 
       const acctBox = document.createElement('div');
       acctBox.className = 'copy-row';
       acctBox.style.background = '#FFFFFF';
       acctBox.style.padding = '8px 10px';
       acctBox.style.borderRadius = '9px';
-      acctBox.style.marginTop = '8px';
+      acctBox.style.marginTop = '6px';
 
       const acctSpan = document.createElement('strong');
       acctSpan.textContent = accountStr;
+
       const copyBtn = document.createElement('button');
       copyBtn.type = 'button';
       copyBtn.className = 'btn-secondary';
-      copyBtn.textContent = 'Copy / ቅዳሕ';
+      copyBtn.textContent = t('Copy', 'ቅዳሕ');
       copyBtn.addEventListener('click', () => copyDisplayValue(accountStr, copyBtn));
 
       acctBox.appendChild(acctSpan);
@@ -2472,7 +3794,10 @@ function pinGPS() {
 
       const instr = document.createElement('p');
       instr.style.marginTop = '8px';
-      instr.textContent = 'Next step: Transfer ' + Number(orderData.total).toLocaleString() + ' ETB and share your payment screenshot in @AddiMartMekelle_bot so we can verify and dispatch your Bajaj / ቐጺልኩም ክፍሊት ፈጺምኩም ስክሪንሾት ኣብ @AddiMartMekelle_bot ስደዱልና።';
+      instr.textContent = t(
+        'Next step: Transfer ' + Number(orderData.total).toLocaleString() + ' ETB and share your payment screenshot in @AddiMartMekelle_bot so we can verify and dispatch your Bajaj.',
+        'ቐጺልኩም ' + Number(orderData.total).toLocaleString() + ' ETB ክፍሊት ፈጺምኩም ስክሪንሾት ኣብ @AddiMartMekelle_bot ስደዱልና።'
+      );
       card.appendChild(instr);
 
       const tgLink = document.createElement('a');
@@ -2480,12 +3805,15 @@ function pinGPS() {
       tgLink.href = 'https://t.me/AddiMartMekelle_bot';
       tgLink.target = '_blank';
       tgLink.rel = 'noopener';
-      tgLink.textContent = '📤 Share Payment Proof in Telegram / መረጋገጺ ክፍሊት ስደዱ';
+      tgLink.textContent = t('📤 Share Payment Proof in Telegram', '📤 መረጋገጺ ክፍሊት ኣብ ቴሌግራም ስደዱ');
       card.appendChild(tgLink);
     } else {
       const instr = document.createElement('p');
       instr.style.marginTop = '8px';
-      instr.textContent = 'Next step: Keep ' + Number(orderData.total).toLocaleString() + ' ETB cash ready. Our Bajaj rider will call your phone upon arrival (30–50 mins) / ባጃጅ ምስ በጽሐ ብጥረ ገንዘብ ክትከፍሉ ኢኹም።';
+      instr.textContent = t(
+        'Next step: Keep ' + Number(orderData.total).toLocaleString() + ' ETB cash ready. Our Bajaj rider will call your phone upon arrival (30–50 mins).',
+        'ቐጺልኩም ' + Number(orderData.total).toLocaleString() + ' ETB ጥረ ገንዘብ ኣዳልዉ። ባጃጅ ምስ በጽሐ ክድውለልኩም እዩ (30–50 ደቒቕ)።'
+      );
       card.appendChild(instr);
 
       const tgLink = document.createElement('a');
@@ -2493,7 +3821,7 @@ function pinGPS() {
       tgLink.href = 'https://t.me/AddiMartMekelle_bot';
       tgLink.target = '_blank';
       tgLink.rel = 'noopener';
-      tgLink.textContent = '💬 Open @AddiMartMekelle_bot';
+      tgLink.textContent = t('💬 Open @AddiMartMekelle_bot', '💬 @AddiMartMekelle_bot ክፈት');
       card.appendChild(tgLink);
     }
   }
@@ -2502,7 +3830,8 @@ function pinGPS() {
     const card = document.getElementById('orderStatusCard');
     clearNode(card);
     card.className = 'status-card error';
-    card.textContent = '⚠️ ' + String(message || 'Could not complete order / ትእዛዝ ኣይተሳኸዐን።');
+    card.textContent = '⚠️ ' + String(message || t('Could not complete order.', 'ትእዛዝ ኣይተሳኸዐን።'));
+    document.getElementById('drawerScrollBody').scrollTop = 0;
   }
 
   function finalizeConfirmedOrder(orderData, snapshot) {
@@ -2510,6 +3839,7 @@ function pinGPS() {
       SafeStore.set(STORAGE_KEYS.LAST_ORDER, {
         orderId: orderData.orderId,
         total: Number(orderData.total),
+        payment: orderData.payment,
         cart: snapshot.cart,
         savedAt: Date.now()
       });
@@ -2533,6 +3863,7 @@ function pinGPS() {
     syncLockUiState();
     renderConfirmedCard(orderData, !removed);
     renderReorderBanner();
+    initFooterExtras();
     syncLiveCatalog();
   }
 
@@ -2543,7 +3874,8 @@ function pinGPS() {
     const lookupPhone = targetRecord.snapshot.phone || document.getElementById('custPhone').value.trim();
 
     if (!(tgWebApp && tgWebApp.initData) && !lookupPhone) {
-      showNativeNotice('Please enter your phone number above to check this order / ቁጽሪ ስልክኹም ኣእትዉ።');
+      setFieldError('custPhone', 'errCustPhone', t('Enter your phone number to check this order.', 'ኩነታት ትእዛዝ ንምርኣይ ቁጽሪ ስልክኹም ኣእትዉ።'));
+      document.getElementById('custPhone').focus();
       return;
     }
 
@@ -2604,7 +3936,10 @@ function pinGPS() {
     const snapshot = record.snapshot;
 
     if (!persistPendingRecord({ ...record, state: 'submitting' })) {
-      renderErrorCard('Browser storage is blocked. Please enable site storage before placing an order.');
+      renderErrorCard(t(
+        'Browser storage is blocked. Please enable site storage before placing an order.',
+        'መኽዘን ብራውዘር ተዓጽዩ ኣሎ። በጃኹም ቅድሚ ምእዛዝኩም ፍቐዱሉ።'
+      ));
       return;
     }
 
@@ -2638,7 +3973,10 @@ function pinGPS() {
       if (data && data.code === 'PRICE_CHANGED') {
         persistPendingRecord(null);
         await syncLiveCatalog();
-        renderErrorCard(data.error || 'Prices or delivery fee updated. Please review the revised total and submit again / ዋጋ ስለዝተመሓየሸ ሓድሽ ድምር ርኣዩ።');
+        renderErrorCard(data.error || t(
+          'Prices or delivery fee updated. Please review the revised total and submit again.',
+          'ዋጋ ኣቑሑት ወይ መብጽሒ ስለዝተመሓየሸ ሓድሽ ድምር ርኢኹም እንደገና ኣረጋግጹ።'
+        ));
         return;
       }
 
@@ -2674,15 +4012,20 @@ function pinGPS() {
 
     if (unacknowledgedStockChanges.length) {
       renderReconciliationNotices();
-      renderErrorCard('Please acknowledge the updated basket quantities first / ቅድም ዝተመሓየሸ ዘንቢል ኣረጋግጹ።');
+      renderErrorCard(t(
+        'Please acknowledge the updated basket quantities first.',
+        'ቅድም ዝተመሓየሸ ዘንቢል ኣረጋግጹ።'
+      ));
       return;
     }
 
     const entries = Object.entries(cart);
     if (!entries.length) {
-      renderErrorCard('Your basket is empty / ዘንቢልኩም ባዶ እዩ።');
+      renderErrorCard(t('Your basket is empty.', 'ዘንቢልኩም ባዶ እዩ።'));
       return;
     }
+
+    clearAllFieldErrors();
 
     const customerName = document.getElementById('custName').value.trim();
     const phone = document.getElementById('custPhone').value.trim();
@@ -2691,14 +4034,40 @@ function pinGPS() {
     const payment = document.getElementById('paymentMethod').value;
     const defaultSub = document.getElementById('subPref').value;
 
-    if (!subCity || !VALID_SUBCITIES.includes(subCity)) {
-      renderErrorCard('Please select your Mekelle sub-city / ክፍለ ከተማኹም ምረጹ።');
-      document.getElementById('subCity').focus();
-      return;
+    let firstInvalidEl = null;
+
+    if (!customerName) {
+      setFieldError('custName', 'errCustName', t('Please enter your name.', 'በጃኹም ሽምኩም ጽሓፉ።'));
+      if (!firstInvalidEl) firstInvalidEl = document.getElementById('custName');
     }
 
-    if (!customerName || !phone || !landmark) {
-      renderErrorCard('Please enter your Name, Phone Number, and Delivery Landmark / ሽም፣ ስልኪ፣ ከምኡውን ኣድራሻ ኣእትዉ።');
+    if (!phone) {
+      setFieldError('custPhone', 'errCustPhone', t('Please enter your phone number.', 'በጃኹም ቁጽሪ ስልክኹም ኣእትዉ።'));
+      if (!firstInvalidEl) firstInvalidEl = document.getElementById('custPhone');
+    } else if (!isValidEthiopianPhone(phone)) {
+      setFieldError('custPhone', 'errCustPhone', t(
+        'Enter a valid Ethiopian phone (e.g. 0914... or 07...).',
+        'ትኽክለኛ ቁጽሪ ስልኪ ኣእትዉ (ንኣብነት 0914... ወይ 07...)።'
+      ));
+      if (!firstInvalidEl) firstInvalidEl = document.getElementById('custPhone');
+    }
+
+    if (!subCity || !VALID_SUBCITIES.includes(subCity)) {
+      setFieldError('subCity', 'errSubCity', t('Please select your Mekelle sub-city.', 'በጃኹም ክፍለ ከተማኹም ምረጹ።'));
+      if (!firstInvalidEl) firstInvalidEl = document.getElementById('subCity');
+    }
+
+    if (!landmark && !pinnedGpsUrl) {
+      setFieldError('locationInput', 'errLocation', t(
+        'Enter a nearby landmark or attach a GPS pin.',
+        'ቀረባ ምልክት ጽሓፉ ወይ GPS ኣተሓሕዙ።'
+      ));
+      if (!firstInvalidEl) firstInvalidEl = document.getElementById('locationInput');
+    }
+
+    if (firstInvalidEl) {
+      firstInvalidEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstInvalidEl.focus();
       return;
     }
 
@@ -2707,7 +4076,13 @@ function pinGPS() {
     const itemNotes = entries
       .filter(([sku]) => itemSubOverrides[sku])
       .map(([sku]) => sku + ':' + itemSubOverrides[sku]);
-    const fullLocation = landmark + ' [If out: ' + defaultSub + (itemNotes.length ? '; ' + itemNotes.join(', ') : '') + ']';
+    const locationParts = [];
+    if (landmark) locationParts.push(landmark);
+    if (pinnedGpsUrl && (!landmark || !landmark.includes(pinnedGpsUrl))) {
+      locationParts.push(pinnedGpsUrl);
+    }
+    const combinedAddress = locationParts.join(' — ');
+    const fullLocation = combinedAddress + ' [If out: ' + defaultSub + (itemNotes.length ? '; ' + itemNotes.join(', ') : '') + ']';
 
     const fee = Number(liveFees[subCity]);
     let reviewedSubtotal = 0;
@@ -2765,23 +4140,23 @@ function pinGPS() {
 
     const label = document.createElement('div');
     const strong = document.createElement('strong');
-    strong.textContent = '🔄 Buy again / እንደገና እዘዝ' + (last.orderId ? ' (#' + last.orderId + ')' : '');
+    strong.textContent = t('🔄 Buy again', '🔄 እንደገና እዘዝ') + (last.orderId ? ' (#' + last.orderId + ')' : '');
     const sub = document.createElement('div');
     sub.style.fontSize = '12px';
     sub.textContent = liveCatalogLoaded
-      ? (validEntries.length + ' item(s) • Checked against live stock & prices')
-      : (validEntries.length + ' item(s) • Checking live stock...');
+      ? (validEntries.length + ' ' + t('item(s) • Checked against live stock & prices', 'ኣቑሑት • ምስ ዘሎ ክምችት ተረጋጊጹ'))
+      : (validEntries.length + ' ' + t('item(s) • Checking live stock...', 'ኣቑሑት • ክምችት ይረጋገጽ ኣሎ...'));
     label.appendChild(strong);
     label.appendChild(sub);
 
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'btn-primary';
-    btn.style.minHeight = '36px';
+    btn.style.minHeight = '38px';
     btn.style.padding = '7px 13px';
     btn.style.fontSize = '12px';
     btn.disabled = !liveCatalogLoaded;
-    btn.textContent = liveCatalogLoaded ? 'Load Basket / ዘንቢል ጽዓን' : 'Syncing...';
+    btn.textContent = liveCatalogLoaded ? t('Load Basket', 'ዘንቢል ጽዓን') : t('Syncing...', 'ይጽበ ኣሎ...');
     btn.addEventListener('click', () => {
       cart = sanitizeCartObject(last.cart);
       reconcileDraftCartWithLiveStock();
@@ -2796,17 +4171,92 @@ function pinGPS() {
     banner.classList.add('visible');
   }
 
+  function initFooterExtras() {
+    const badge = document.getElementById('storeHoursBadge');
+    const textEl = document.getElementById('storeHoursText');
+    if (badge && textEl) {
+      const eatHour = (new Date().getUTCHours() + 3) % 24;
+      const isOpen = eatHour >= 7 && eatHour < 21;
+      badge.classList.toggle('closed', !isOpen);
+      clearNode(textEl);
+      const enS = document.createElement('span');
+      enS.className = 'en-only';
+      enS.textContent = isOpen ? 'Open Now' : 'Opens 7:00 AM';
+      const tiS = document.createElement('span');
+      tiS.className = 'ti-only';
+      tiS.textContent = isOpen ? 'ሕጂ ክፉት እዩ' : 'ንግሆ 7:00 ይኽፈት';
+      textEl.appendChild(enS);
+      textEl.appendChild(tiS);
+    }
+
+    const lastBtn = document.getElementById('footerLastOrderBtn');
+    const last = SafeStore.get(STORAGE_KEYS.LAST_ORDER);
+    if (lastBtn && last && last.orderId) {
+      lastBtn.style.display = 'inline-flex';
+      lastBtn.onclick = () => {
+        openCart();
+        renderConfirmedCard({
+          ok: true,
+          orderId: last.orderId,
+          total: last.total || 0,
+          payment: last.payment || 'Telebirr',
+          telebirr: paymentConfig.telebirr,
+          cbe: paymentConfig.cbe
+        }, false);
+      };
+    }
+  }
+
   /* Event Bindings */
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const lang = btn.dataset.lang;
       SafeStore.set(STORAGE_KEYS.LANG, lang);
       applySavedLanguage();
+      populateSubCitySelectors();
+      renderCategories();
+      renderCatalog();
+      renderBundles();
+      renderCartItems();
+      renderReconciliationNotices();
+      renderReorderBanner();
+      updateTotals();
+      updateGpsPinBar();
+      if (isCheckoutLocked()) renderRecoveryCardInDrawer();
+      else if (lastConfirmedOrder && document.getElementById('orderStatusCard').className !== 'status-card') {
+        renderConfirmedCard(lastConfirmedOrder, false);
+      }
+      if (activeDetailSku) renderDetailSheet(activeDetailSku);
     });
   });
 
   document.getElementById('homeSubCity').addEventListener('change', e => setSelectedSubCity(e.target.value));
   document.getElementById('subCity').addEventListener('change', e => setSelectedSubCity(e.target.value));
+
+  document.getElementById('custName').addEventListener('input', () => setFieldError('custName', 'errCustName', ''));
+  document.getElementById('custPhone').addEventListener('input', () => setFieldError('custPhone', 'errCustPhone', ''));
+  document.getElementById('locationInput').addEventListener('input', () => setFieldError('locationInput', 'errLocation', ''));
+
+  document.querySelectorAll('.pay-choice-card').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (isCheckoutLocked()) return;
+      setPaymentMethodValue(btn.dataset.pay);
+      persistProfileIfOptedIn();
+    });
+  });
+
+  document.getElementById('clearBasketBtn').addEventListener('click', () => {
+    if (isCheckoutLocked()) return;
+    showNativeConfirm(t('Remove all items from your basket?', 'ኩሉ ኣብ ዘንቢል ዘሎ ኣቕሓ ይወጽእ ዶ?'), () => {
+      cart = Object.create(null);
+      itemSubOverrides = Object.create(null);
+      unacknowledgedStockChanges = [];
+      saveCart();
+      renderReconciliationNotices();
+      renderCatalog();
+      renderCartItems();
+    });
+  });
 
   document.getElementById('searchInput').addEventListener('input', renderCatalog);
   document.getElementById('clearSearchBtn').addEventListener('click', () => {
@@ -2825,17 +4275,40 @@ function pinGPS() {
     if (e.target.id === 'cartBackdrop') closeCart();
   });
 
+  document.getElementById('closeDetailBtn').addEventListener('click', closeProductDetail);
+  document.getElementById('detailBackdrop').addEventListener('click', e => {
+    if (e.target.id === 'detailBackdrop') closeProductDetail();
+  });
+
   document.addEventListener('keydown', e => {
-    const backdrop = document.getElementById('cartBackdrop');
-    if (!backdrop.classList.contains('open')) return;
+    const confirmOpen = document.getElementById('confirmOverlay').classList.contains('open');
+    const detailOpen = document.getElementById('detailBackdrop').classList.contains('open');
+    const cartOpen = document.getElementById('cartBackdrop').classList.contains('open');
+
     if (e.key === 'Escape') {
-      closeCart();
-      return;
+      if (confirmOpen) {
+        document.getElementById('confirmOverlay').classList.remove('open');
+        return;
+      }
+      if (detailOpen) {
+        closeProductDetail();
+        return;
+      }
+      if (cartOpen) {
+        closeCart();
+        return;
+      }
     }
-    if (e.key === 'Tab') {
-      const panel = document.getElementById('drawerPanel');
+
+    const activePanel = confirmOpen
+      ? document.getElementById('confirmDialogPanel')
+      : (detailOpen
+          ? document.getElementById('detailSheetPanel')
+          : (cartOpen ? document.getElementById('drawerPanel') : null));
+
+    if (activePanel && e.key === 'Tab') {
       const focusables = Array.from(
-        panel.querySelectorAll('button:not([disabled]), input:not([disabled]), select:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])')
+        activePanel.querySelectorAll('button:not([disabled]), input:not([disabled]), select:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])')
       ).filter(el => el.offsetParent !== null);
       if (!focusables.length) return;
       const first = focusables[0];
@@ -2850,11 +4323,15 @@ function pinGPS() {
     }
   });
 
-  document.getElementById('locationInput').addEventListener('input', () => {
-    userEditedLocationAfterGps = true;
+  document.getElementById('clearGpsBtn').addEventListener('click', () => {
+    if (isCheckoutLocked()) return;
+    pinnedGpsUrl = '';
+    pinnedGpsOutsideMekelle = false;
+    updateGpsPinBar();
+    document.getElementById('gpsStatusMsg').textContent = '';
   });
-  document.getElementById('paymentMethod').addEventListener('change', togglePayDetails);
   document.getElementById('pinGpsBtn').addEventListener('click', pinGPS);
+  document.getElementById('tgPhoneBtn').addEventListener('click', requestTelegramPhone);
   document.getElementById('copyTelebirrBtn').addEventListener('click', function () {
     copyDisplayValue(paymentConfig.telebirr, this);
   });
@@ -2868,6 +4345,9 @@ function pinGPS() {
     document.getElementById('rememberDetailsChk').checked = false;
     document.getElementById('custPhone').value = '';
     document.getElementById('locationInput').value = '';
+    pinnedGpsUrl = '';
+    pinnedGpsOutsideMekelle = false;
+    updateGpsPinBar();
   });
   document.getElementById('placeOrderBtn').addEventListener('click', submitOrder);
 
@@ -2890,6 +4370,7 @@ function pinGPS() {
   renderCategories();
   renderCatalog();
   renderBundles();
+  initFooterExtras();
 
   if (pendingCheckout && pendingCheckout.state === 'submitting') {
     persistPendingRecord({ ...pendingCheckout, state: 'unknown' });
